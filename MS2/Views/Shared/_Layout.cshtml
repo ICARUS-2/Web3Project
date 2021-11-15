@@ -46,11 +46,21 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted" style="display:flex; flex-direction: row; justify-content: space-around;">
         <div class="container">
             &copy; 2021 - MS2 - <a asp-area="" asp-controller="Home" asp-action="Index">Home</a> - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> - <a asp-area="" asp-controller="Home" asp-action="Careers">Careers</a> - <a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a> - <a asp-area="" asp-controller="Home" asp-action="About">About Us</a> - <a asp-area="" asp-controller="Home" asp-action="Order">Orders</a>
         </div>
+        
+        <div class="container">
+            Social Media: <a href="https://www.facebook.com"><img class="social-media" src="//external-content.duckduckgo.com/ip3/www.facebook.com.ico" /></a> <a href="https://www.google.com"><img class="social-media" src="//external-content.duckduckgo.com/ip3/www.google.com.ico" /></a> <a href="https://www.youtube.com"><img class="social-media" src="//external-content.duckduckgo.com/ip3/www.youtube.com.ico" /></a>  <a href="https://www.instagram.com"><img class="social-media" src="//external-content.duckduckgo.com/ip3/www.instagram.com.ico" /></a>
+        </div>
     </footer>
+    <style>
+        .social-media{
+            height: 16px;
+            width: 16px;
+        }
+    </style>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
