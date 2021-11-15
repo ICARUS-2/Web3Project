@@ -1,0 +1,23 @@
+﻿@model IEnumerable<MS2.Data.Entities.Product>
+
+@{
+    ViewData["Title"] = "Order";
+}
+
+<h1>Order</h1>
+
+<div class="row">
+    @foreach (var item in Model)
+     {
+        <div class="col-md-3">
+            <img src="~/img/@(item.ItemName).jpg" class="img-fluid" alt="@item.ItemName" width="100" height="100" />
+            <br />
+            <h3>@item.ItemName</h3>
+            <br />
+            <h4>Price: @item.Price.ToString("c")</h4>
+            <br />
+            <button class="btn btn-success addToOrder">Add To Order</button>
+            <br>
+        </div>
+     }
+</div>
