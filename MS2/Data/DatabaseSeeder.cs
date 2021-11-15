@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace MS2.Data
 {
@@ -22,18 +23,36 @@ namespace MS2.Data
             if (!_context.Products.Any())
             {
                 List<Product> sampleData = new List<Product>();
-                sampleData.Add(new Product() { ItemName = "Pepperoni Pizza", Category = "Pizzas", Price = 7.99});
-                sampleData.Add(new Product() { ItemName = "Cheese Pizza", Category = "Pizzas", Price = 7.49 });
-                sampleData.Add(new Product() { ItemName = "All Dressed Pizza", Category = "Pizzas", Price = 8.49 });
-                sampleData.Add(new Product() { ItemName = "Meat Lovers' Pizza", Category = "Pizzas", Price = 8.99 });
-                sampleData.Add(new Product() { ItemName = "Vegetarian Pizza", Category = "Pizzas", Price = 7.49 });
+                
+                //Pizza
+                sampleData.Add(new Product() { ItemName = "Pepperoni Pizza", Category = "Pizzas", SmallPrice = 7.99, MediumPrice = 8.49, LargePrice = 8.99});
+                sampleData.Add(new Product() { ItemName = "Cheese Pizza", Category = "Pizzas", SmallPrice = 7.49, MediumPrice = 7.99, LargePrice = 8.49});
+                sampleData.Add(new Product() { ItemName = "All Dressed Pizza", Category = "Pizzas", SmallPrice = 8.49, MediumPrice = 8.99, LargePrice = 9.49 });
+                sampleData.Add(new Product() { ItemName = "Meat Lovers' Pizza", Category = "Pizzas", SmallPrice = 8.99, MediumPrice = 9.49, LargePrice = 9.99 });
+                sampleData.Add(new Product() { ItemName = "Vegetarian Pizza", Category = "Pizzas", SmallPrice = 7.49, MediumPrice = 7.99, LargePrice = 8.49 });
 
+                sampleData.Add(new Product() { ItemName = "Fries", Category = "Fries", SmallPrice = 1.99, MediumPrice = 2.49, LargePrice = 2.99 });
+                sampleData.Add(new Product() { ItemName = "Spicy Fries", Category = "Fries", SmallPrice = 1.99, MediumPrice = 2.49, LargePrice = 2.99 });
+
+                //Drinks
+                sampleData.Add(new Product() { ItemName = "Water", SmallPrice = 0.49, MediumPrice = 0.79, LargePrice = 0.99 });
+                sampleData.Add(new Product() { ItemName = "Pepsi", SmallPrice = 0.99, MediumPrice = 1.29, LargePrice = 1.79 });
+                sampleData.Add(new Product() { ItemName = "Diet Pepsi", SmallPrice = 0.99, MediumPrice = 1.29, LargePrice = 1.79 });
+                sampleData.Add(new Product() { ItemName = "Coke", SmallPrice = 0.99, MediumPrice = 1.29, LargePrice = 1.79 });
+                sampleData.Add(new Product() { ItemName = "Diet Coke", SmallPrice = 0.99, MediumPrice = 1.29, LargePrice = 1.79 });
+                sampleData.Add(new Product() { ItemName = "7-Up", SmallPrice = 0.99, MediumPrice = 1.29, LargePrice = 1.79 });
+                sampleData.Add(new Product() { ItemName = "Ginger Ale", SmallPrice = 0.99, MediumPrice = 1.29, LargePrice = 1.79 });
+
+                //Burgers
+                sampleData.Add(new Product() { ItemName = "Burger", SmallPrice = 3.99, MediumPrice = 4.49, LargePrice = 4.79 });
+                sampleData.Add(new Product() { ItemName = "Chicken Burger", SmallPrice = 3.99, MediumPrice = 4.49, LargePrice = 4.79 });
+                sampleData.Add(new Product() { ItemName = "Veggie Burger", SmallPrice = 4.99, MediumPrice = 5.49, LargePrice = 5.79 });
                 _context.Products.AddRange(sampleData);
 
                 Order order = new Order()
                 {
                     OrderDate = DateTime.Now,
-                    Status = Order.OrderStatus.Pending,
+                    Status = "Pending",
                     Items = new List<OrderEntry>()
                     {
                         new OrderEntry()

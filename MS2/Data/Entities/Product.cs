@@ -10,6 +10,8 @@ namespace MS2.Data.Entities
         public int Id { get; set; }
         public string ItemName { get; set; }
         public string Category { get; set; }
-        public double Price { get; set; }
+        public double SmallPrice { get; set; }
+        public double MediumPrice { get; set; }
+        public double LargePrice { get; set; }
     }
 }

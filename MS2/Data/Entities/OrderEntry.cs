@@ -11,13 +11,25 @@ namespace MS2.Data.Entities
         public int Id { get; set; }
         public Product Product { get; set; }
         public int Quantity { get; set; }
+        public string Size { get; set; }
 
         [NotMapped]
         public double EntryPrice
         {
             get
             {
-                return Product.Price * Quantity;
+                switch(Size)
+                {
+                    case "Small":
+                        return Product.SmallPrice * Quantity;
+
+                    case "Medium":
+                        return Product.MediumPrice * Quantity;
+
+                    case "Large":
+                        return Product.LargePrice * Quantity;
+                }
+                return 0;
             }
         }
     }

@@ -12,15 +12,6 @@ namespace MS2.Data.Entities
         public int OrderNumber { get; set; }
         public DateTime OrderDate { get; set; }
         public List<OrderEntry> Items { get; set; }
-        public OrderStatus Status { get; set; }
-
-        public enum OrderStatus
-        {
-            Pending,
-            Cooking,
-            Delivering,
-            Ready,
-            Filled,
-        }
+        public string Status { get; set; }
     }
 }

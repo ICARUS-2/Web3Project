@@ -41,6 +41,12 @@ namespace MS2.Controllers
             return View(_repository.GetAllProducts());
         }
 
+        [HttpGet("/Menu")]
+        public IActionResult Menu()
+        {
+            return View(_repository.GetAllProducts());
+        }
+
         [HttpGet("/Careers")]
         public IActionResult Careers()
         {

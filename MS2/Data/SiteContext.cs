@@ -11,7 +11,6 @@ namespace MS2.Data
     {
         public SiteContext(DbContextOptions opt) : base(opt)
         {
-
         }
 
         public DbSet<Product> Products { get; set; }
