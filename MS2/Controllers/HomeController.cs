@@ -41,6 +41,12 @@ namespace MS2.Controllers
             return View(_repository.GetAllProducts());
         }
 
+        [HttpGet("/Careers")]
+        public IActionResult Careers()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
