@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MS2.Data;
+using MS2.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +40,14 @@ namespace MS2
             .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 
             services.AddTransient<DatabaseSeeder>();
+
+            services.AddTransient<IEmailSender, SendGridEmailSender>();
+            services.Configure<SendGridEmailSenderOptions>(opt =>
+            {
+                opt.ApiKey = Configuration["ExternalProviders:SendGrid:ApiKey"];
+                opt.SenderEmail = Configuration["ExternalProviders:SendGrid:SenderEmail"];
+                opt.SenderName = Configuration["ExternalProviders:SendGrid:SenderName"];
+            });
 
             services.AddScoped<ISiteRepository, SiteRepository>();
 
