@@ -15,5 +15,6 @@ namespace MS2.Data
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderEntry> OrderEntries { get; set; }
     }
 }

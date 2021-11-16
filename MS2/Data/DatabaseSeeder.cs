@@ -20,6 +20,8 @@ namespace MS2.Data
         {
             _context.Database.EnsureCreated();
 
+            //ClearDatabase();
+
             if (!_context.Products.Any())
             {
                 List<Product> sampleData = new List<Product>();
@@ -35,18 +37,18 @@ namespace MS2.Data
                 sampleData.Add(new Product() { ItemName = "Spicy Fries", Category = "Fries", SmallPrice = 1.99, MediumPrice = 2.49, LargePrice = 2.99 });
 
                 //Drinks
-                sampleData.Add(new Product() { ItemName = "Water", SmallPrice = 0.49, MediumPrice = 0.79, LargePrice = 0.99 });
-                sampleData.Add(new Product() { ItemName = "Pepsi", SmallPrice = 0.99, MediumPrice = 1.29, LargePrice = 1.79 });
-                sampleData.Add(new Product() { ItemName = "Diet Pepsi", SmallPrice = 0.99, MediumPrice = 1.29, LargePrice = 1.79 });
-                sampleData.Add(new Product() { ItemName = "Coke", SmallPrice = 0.99, MediumPrice = 1.29, LargePrice = 1.79 });
-                sampleData.Add(new Product() { ItemName = "Diet Coke", SmallPrice = 0.99, MediumPrice = 1.29, LargePrice = 1.79 });
-                sampleData.Add(new Product() { ItemName = "7-Up", SmallPrice = 0.99, MediumPrice = 1.29, LargePrice = 1.79 });
-                sampleData.Add(new Product() { ItemName = "Ginger Ale", SmallPrice = 0.99, MediumPrice = 1.29, LargePrice = 1.79 });
+                sampleData.Add(new Product() { ItemName = "Water", Category = "Drinks", SmallPrice = 0.49, MediumPrice = 0.79, LargePrice = 0.99 });
+                sampleData.Add(new Product() { ItemName = "Pepsi", Category = "Drinks", SmallPrice = 0.99, MediumPrice = 1.29, LargePrice = 1.79 });
+                sampleData.Add(new Product() { ItemName = "Diet Pepsi", Category = "Drinks", SmallPrice = 0.99, MediumPrice = 1.29, LargePrice = 1.79 });
+                sampleData.Add(new Product() { ItemName = "Coke", Category = "Drinks", SmallPrice = 0.99, MediumPrice = 1.29, LargePrice = 1.79 });
+                sampleData.Add(new Product() { ItemName = "Diet Coke", Category = "Drinks", SmallPrice = 0.99, MediumPrice = 1.29, LargePrice = 1.79 });
+                sampleData.Add(new Product() { ItemName = "7-Up", Category = "Drinks", SmallPrice = 0.99, MediumPrice = 1.29, LargePrice = 1.79 });
+                sampleData.Add(new Product() { ItemName = "Ginger Ale", Category = "Drinks", SmallPrice = 0.99, MediumPrice = 1.29, LargePrice = 1.79 });
 
                 //Burgers
-                sampleData.Add(new Product() { ItemName = "Burger", SmallPrice = 3.99, MediumPrice = 4.49, LargePrice = 4.79 });
-                sampleData.Add(new Product() { ItemName = "Chicken Burger", SmallPrice = 3.99, MediumPrice = 4.49, LargePrice = 4.79 });
-                sampleData.Add(new Product() { ItemName = "Veggie Burger", SmallPrice = 4.99, MediumPrice = 5.49, LargePrice = 5.79 });
+                sampleData.Add(new Product() { ItemName = "Burger", Category = "Burgers", SmallPrice = 3.99, MediumPrice = 4.49, LargePrice = 4.79 });
+                sampleData.Add(new Product() { ItemName = "Chicken Burger", Category = "Burgers",SmallPrice = 3.99, MediumPrice = 4.49, LargePrice = 4.79 });
+                sampleData.Add(new Product() { ItemName = "Veggie Burger", Category = "Burgers", SmallPrice = 4.99, MediumPrice = 5.49, LargePrice = 5.79 });
                 _context.Products.AddRange(sampleData);
 
                 Order order = new Order()
@@ -67,5 +69,26 @@ namespace MS2.Data
                 _context.SaveChanges();
             }
         }
+
+        public void ClearDatabase()
+        {
+            foreach (OrderEntry oe in _context.OrderEntries)
+            {
+                _context.OrderEntries.Remove(oe);
+            }
+
+            foreach(Order o in _context.Orders)
+            {
+                _context.Orders.Remove(o);
+            }
+
+            foreach (Product p in _context.Products)
+            {
+                _context.Products.Remove(p);
+            }
+
+            _context.SaveChanges();
+        }
+
     }
 }
