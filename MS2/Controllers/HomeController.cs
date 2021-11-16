@@ -68,7 +68,7 @@ namespace MS2.Controllers
         }
 
         [HttpPost("/Contact")]
-        public IActionResult Contact(IFormCollection form)
+        public async Task<IActionResult> Contact(IFormCollection form)
         {
             const string CAPTCHA_SECRET_KEY = "6Ld6gRQdAAAAAH11bYtZc99wK1_yNoUbk1vkDJZe";
 
@@ -97,7 +97,7 @@ namespace MS2.Controllers
                 };
 
                 //_repository.Contacts.Add(contact);
-
+                await _emailSender.SendEmailAsync(contact.Email, contact.Topic, contact.Message);
                 return View("Success", contact);
             }
             return View();
