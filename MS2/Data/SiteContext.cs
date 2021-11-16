@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MS2.Models;
 
 namespace MS2.Data
 {
@@ -16,5 +17,6 @@ namespace MS2.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderEntry> OrderEntries { get; set; }
+        public DbSet<MS2.Models.ContactModel> ContactModel { get; set; }
     }
 }

@@ -9,6 +9,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Http;
+using static MS2.Controllers.Captcha;
 
 namespace MS2.Controllers
 {
@@ -56,6 +58,48 @@ namespace MS2.Controllers
         [HttpGet("/Careers")]
         public IActionResult Careers()
         {
+            return View();
+        }
+
+        [HttpGet("Contact")]
+        public IActionResult Contact()
+        {
+            return View();
+        }
+
+        [HttpPost("/Contact")]
+        public IActionResult Contact(IFormCollection form)
+        {
+            const string CAPTCHA_SECRET_KEY = "6Ld6gRQdAAAAAH11bYtZc99wK1_yNoUbk1vkDJZe";
+
+            if (ModelState.IsValid)
+            {
+                if (string.IsNullOrWhiteSpace(form["g-recaptcha-response"]))
+                {
+                    ViewData["Title"] = "Error!";
+                    return View("Error");
+                }
+                ReCaptchaResponse reCaptchaResponse = VerifyCaptcha(CAPTCHA_SECRET_KEY, form["g-recaptcha-response"]);
+                if (!reCaptchaResponse.success)
+                {
+                    ViewData["Title"] = "Error!";
+                    return View("Error");
+                }
+
+                ContactModel contact = new ContactModel
+                {
+                    Timestamp = DateTime.Now,
+                    Email = form["Email"],
+                    Topic = form["Topic"],
+                    Message = form["Message"],
+                    FirstName = form["FirstName"],
+                    LastName = form["LastName"]
+                };
+
+                //_repository.Contacts.Add(contact);
+
+                return View("Success", contact);
+            }
             return View();
         }
 

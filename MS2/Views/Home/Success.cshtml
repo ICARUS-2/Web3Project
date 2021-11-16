@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Success!";
+}
+
+@model MS2.Models.ContactModel
+
+<div class="text-center">
+    <h1 class="display-4">@ViewData["Title"]</h1>
+    <p>Thank you for contacting us, @Model.FirstName @Model.LastName!</p>
+    <p>Your form was sent in successfully, and we will get back to you soon.</p>
+</div>
+
+<style>
+    body
+    {
+        margin-top: 10em;
+    }
+</style>

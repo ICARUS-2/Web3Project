@@ -1,0 +1,78 @@
+﻿@model MS2.Models.ContactModel
+
+@{
+    ViewData["Title"] = "Contact";
+}
+
+<h1>Contact</h1>
+
+<h4>ContactModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Contact">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Topic" class="control-label"></label>
+                <!--<input asp-for="Topic" class="form-control" />-->
+                <select asp-for="Topic" class="form-control">
+                    <option value="Select topic">Select topic</option>
+                    <option value="My order">My order</option>
+                    <option value="Feedback">Feedback</option>
+                    <option value="Product questions">Product questions</option>
+                    <option value="Customer service and feedback">Customer service and feedback</option>
+                    <option value="Technical questions, specs, geometry, sizing and historical info">Technical questions, specs, geometry, sizing and historical info</option>
+                    <option value="Warranty">Warranty</option>
+                    <option value="Registration">Registration</option>
+                    <option value="Catalogue requests">Catalogue requests</option>
+                    <option value="Owner's manuals">Owner's manuals</option>
+                    <option value="Media enquiries">Media enquiries</option>
+                    <option value="Sponsorship and donations">Sponsorship and donations</option>
+                </select>
+                <span asp-validation-for="Topic" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Message" class="control-label"></label>
+                <input asp-for="Message" class="form-control" />
+                <span asp-validation-for="Message" class="text-danger"></span>
+            </div>
+            <div class="g-recaptcha" data-sitekey="6Ld6gRQdAAAAAEDm7rh5dbaHdeVUkkrOdOE8778p" name="reCaptcha" id="reCaptcha" data-callback="enableButton"></div>
+            <div class="form-group">
+                <input type="submit" value="Send" class="btn btn-primary" id="sendBtn" />
+            </div>
+            <div class="form-group">
+                <input type="reset" value="Reset" class="btn btn-primary" id="resetBtn" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<style>
+    body
+    {
+        margin-top: 150px;
+    }
+</style>
