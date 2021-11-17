@@ -8,5 +8,6 @@ namespace MS2.Data
         IEnumerable<Product> GetAllProducts();
         IEnumerable<Product> GetProductsByCategory(string category);
         bool SaveAll();
+        public IEnumerable<OrderEntry> GetShoppingCartItems();
     }
 }

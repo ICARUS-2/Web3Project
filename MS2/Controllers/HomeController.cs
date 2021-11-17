@@ -103,6 +103,11 @@ namespace MS2.Controllers
             return View();
         }
 
+        public IActionResult ShoppingCart()
+        {
+            return View(_repository.GetShoppingCartItems());
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
