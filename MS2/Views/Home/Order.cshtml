@@ -16,7 +16,7 @@
     @foreach (IGrouping<string, MS2.Data.Entities.Product> ig in Model.GroupBy(p => p.Category).OrderByDescending(ig => ig.FirstOrDefault().Category))
     {
         <tr>
-            <td><h2>@ig.FirstOrDefault().Category</h2></td>
+            <td id="menu-item-header-@ig.FirstOrDefault().Category"><h2 id="menu-item-header-@ig.FirstOrDefault()Category">@ig.FirstOrDefault().Category</h2></td>
         </tr>
         @foreach (MS2.Data.Entities.Product pr in ig)
         {
