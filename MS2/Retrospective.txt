@@ -1,0 +1,70 @@
+SPRINT REVIEW
+
+GROUP CONSENSUS: GROUP EFFORT/INDIVIDUAL EFFORT
+
+Good:
+	- Everything got done on time in terms of the group work.
+	- Productive use of lab time. 
+
+Bad:
+	- Sprint planning could have gone better.
+	- Could have tested it as a whole earlier.
+	- Not the most communication between all of us
+
+---
+
+Ethan (SM)
+Good:
+	- Got everything done the day I assigned my tasks
+	- Notified everyone about every change I made.
+Bad:
+	- Could have read the documentation for Bootstrap a little better
+	- Did not use branches
+
+---
+
+Phil
+Good:
+	- Played a lead role in polishing the app
+Bad:
+	- Did not use any branches.
+	- Did not finish the lab, so was unprepared.
+
+---
+
+Aidan
+Good:
+	- Used branches.
+Bad:
+	- Delayed the lab for a bit, causing unpreparedness
+
+---
+
+Tarik
+Good:
+	- Got everything done as soon as possible.
+	- Encouraged using gitignore, configured it.
+Bad:
+	- Did not use branches.
+	- Took mostly easy items, could have done more.
+
+---
+
+INDIVIDUAL EVALUATIONS OF SELF AND TEAMMATES (scale on 10):
+
+	-Self: I feel as if I had a good contribution to the sprint efforts. I picked a good balance between both difficult
+	and easy tasks to complete, got them done on the first day of receiving the requirements, and communicated them
+	effectively. I feel as if I could improve by using branches and maybe reading the documentation for things like
+	Bootstrap a little bit better next time. (9/10)
+	
+	-Tarik: Delivered features in a timely manner and communicated well, but could have selected a few harder 
+	ones to complete. (9/10)
+
+	-Phil: Polished his features quite well and fixed some bugs, although could have been a little bit more prepared
+	with the lab. (9/10)
+
+	-Aidan: Communication was very solid, and he used branches to keep the Master clean, although could have started
+  	on the features a little bit earlier. (9/10)
+	
+
+

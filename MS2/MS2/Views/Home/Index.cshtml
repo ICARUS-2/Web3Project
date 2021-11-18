@@ -12,7 +12,14 @@
         you order from HGP, you will always get the highest quality products, handled with the utmost care.</p>
     </div>
 
-    <div class="carousel slide" data-ride="carousel">
+    <div class="carousel slide" data-ride="carousel" id="index-carousel">
+
+        <ol class="carousel-indicators">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+        </ol>
         <div class="carousel-inner">
             <a href="/Order#menu-item-header-Pizzas" class="carousel-item active">
                 <img src="~/img/Pepperoni Pizza.jpg" />
@@ -39,6 +46,14 @@
                 </div>
             </a>
         </div>
+        <a class="carousel-control-prev" href="#index-carousel" role="button" data-slide="prev" style="background-color: rgba(255, 0, 0, 0.5)">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#index-carousel" role="button" data-slide="next" style="background-color: rgba(255, 0, 0, 0.5)">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
     </div>
 </div>
 

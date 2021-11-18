@@ -25,18 +25,17 @@
 <tr>
     <td><img src="~/img/@(pr.ItemName).jpg" class="img-fluid" alt="@pr.ItemName" width="100" height="100" /></td>
     <td><h3>@pr.ItemName</h3></td>
-    <td><h4>From @pr.SmallPrice.ToString("c")</h4></td>
     @if (pr.LargePrice > 0)
     {
-        <td>Sizes: Small, Medium, Large</td>
+        <td><h4>Small: @pr.SmallPrice.ToString("c"), Medium: @pr.MediumPrice.ToString("c"), Large: @pr.LargePrice.ToString("c")</h4></td>
     }
     else if (pr.MediumPrice < 0)
     {
-        <td>Sizes: Small, Medium</td>
+        <td><h4>Small: @pr.SmallPrice.ToString("c"), Medium: @pr.MediumPrice.ToString("c")</h4></td>
     }
     else
     {
-        <td>Sizes: Small</td>
+<td><h4>Small: @pr.SmallPrice.ToString("c")</h4></td>
     }
 </tr>
         }
