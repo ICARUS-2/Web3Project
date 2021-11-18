@@ -8,6 +8,23 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
+        <div id="ContactInfo">
+            <div>
+                <h3>SERVICE HOURS</h3>
+                <ul>
+                    <li>Sunday: 11AM - 8PM</li>
+                    <li>Monday: 10AM - 9PM</li>
+                    <li>Tuesday: 10AM - 9PM</li>
+                    <li>Wednesday: 10AM - 9PM</li>
+                    <li>Thursday: 10AM - 9PM</li>
+                    <li>Friday: 10AM - 9PM</li>
+                    <li>Saturday: 11AM - 8PM</li>
+                </ul>
+                <p>Phone number: <a href="tel:+15144575036">(514) 457-5036</a></p>
+                <p>Email: <a href="mailto:placeholder@email.com">placeholder@email.com</a></p>
+            </div>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2801.145383763798!2d-73.9439169!3d45.4064078!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4cc938500caad3a7%3A0xd807d74a59dcffcf!2sJohn%20Abbott%20College!5e0!3m2!1sen!2sca!4v1637248351473!5m2!1sen!2sca" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        </div>
         <form asp-action="Contact">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -33,35 +50,27 @@
                     <option value="My order">My order</option>
                     <option value="Feedback">Feedback</option>
                     <option value="Product questions">Product questions</option>
-                    <option value="Customer service and feedback">Customer service and feedback</option>
-                    <option value="Technical questions, specs, geometry, sizing and historical info">Technical questions, specs, geometry, sizing and historical info</option>
-                    <option value="Warranty">Warranty</option>
-                    <option value="Registration">Registration</option>
-                    <option value="Catalogue requests">Catalogue requests</option>
-                    <option value="Owner's manuals">Owner's manuals</option>
-                    <option value="Media enquiries">Media enquiries</option>
+                    <option value="Media inquiries">Media inquiries</option>
                     <option value="Sponsorship and donations">Sponsorship and donations</option>
                 </select>
                 <span asp-validation-for="Topic" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Message" class="control-label"></label>
-                <input asp-for="Message" class="form-control" />
+                <textarea asp-for="Message" class="form-control"></textarea>
                 <span asp-validation-for="Message" class="text-danger"></span>
             </div>
             <div class="g-recaptcha" data-sitekey="6Ld6gRQdAAAAAEDm7rh5dbaHdeVUkkrOdOE8778p" name="reCaptcha" id="reCaptcha" data-callback="enableButton"></div>
-            <div class="form-group">
-                <input type="submit" value="Send" class="btn btn-primary" id="sendBtn" />
-            </div>
-            <div class="form-group">
-                <input type="reset" value="Reset" class="btn btn-primary" id="resetBtn" />
+            <div id="btns">
+                <div class="form-group">
+                    <input type="submit" value="Send" class="btn btn-primary" id="sendBtn"/>
+                </div>
+                <div class="form-group">
+                    <input type="reset" value="Reset" class="btn btn-primary" id="resetBtn" />
+                </div>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
@@ -72,5 +81,26 @@
     body
     {
         margin-top: 150px;
+    }
+
+    #ContactInfo
+    {
+        margin-bottom: 2em;
+    }
+
+    #btns
+    {
+        display: flex;
+        margin-top: 1em;
+    }
+
+    #sendBtn
+    {
+        margin-right: 10px;
+    }
+
+    #resetBtn
+    {
+        margin-left: 10px;
     }
 </style>

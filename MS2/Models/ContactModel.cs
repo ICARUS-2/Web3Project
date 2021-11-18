@@ -35,7 +35,7 @@ namespace MS2.Models
 
         [Required]
         [MaxLength(300)]
-        [Display(Name = "Questions or Comments")]
+        [Display(Name = "Message")]
         public string Message { get; set; }
 
         public DateTime Timestamp { get; set; }
