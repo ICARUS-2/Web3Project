@@ -42,5 +42,32 @@ namespace MS2.Data
         {
             return _context.SaveChanges() > 0;
         }
+        // this is a temporary implementation for testing
+        public IEnumerable<OrderEntry> GetShoppingCartItems()
+        {
+            List<OrderEntry> orderEntries = new List<OrderEntry>()
+            {
+                new OrderEntry()
+                {
+                    Product = GetAllProducts().ToList()[1],
+                    Quantity = 1,
+                    Size = "Large"
+                },
+                new OrderEntry()
+                {
+                    Product = GetAllProducts().ToList()[5],
+                    Quantity = 2,
+                    Size = "Small"
+                },
+                new OrderEntry()
+                {
+                    Product = GetAllProducts().ToList()[14],
+                    Quantity = 1,
+                    Size = "Large"
+                },
+            };
+
+            return orderEntries;
+        }
     }
 }
