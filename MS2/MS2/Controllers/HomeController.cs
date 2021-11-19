@@ -58,7 +58,7 @@ namespace MS2.Controllers
         [HttpGet("/Careers")]
         public IActionResult Careers()
         {
-            return View();
+            return View(_repository.GetAllJobPostings());
         }
 
         [HttpGet("Contact")]

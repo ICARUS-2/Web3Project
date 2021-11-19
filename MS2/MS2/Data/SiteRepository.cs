@@ -69,5 +69,10 @@ namespace MS2.Data
 
             return orderEntries;
         }
+
+        public IEnumerable<JobPosting> GetAllJobPostings()
+        {
+            return _context.JobPostings;
+        }
     }
 }

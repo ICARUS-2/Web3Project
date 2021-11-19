@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Linq;
 
 namespace MS2.Data
 {
@@ -20,15 +19,15 @@ namespace MS2.Data
         {
             _context.Database.EnsureCreated();
 
-            //ClearDatabase();
+            ClearDatabase();
 
             if (!_context.Products.Any())
             {
                 List<Product> sampleData = new List<Product>();
-                
+
                 //Pizza
-                sampleData.Add(new Product() { ItemName = "Pepperoni Pizza", Category = "Pizzas", SmallPrice = 7.99, MediumPrice = 8.49, LargePrice = 8.99});
-                sampleData.Add(new Product() { ItemName = "Cheese Pizza", Category = "Pizzas", SmallPrice = 7.49, MediumPrice = 7.99, LargePrice = 8.49});
+                sampleData.Add(new Product() { ItemName = "Pepperoni Pizza", Category = "Pizzas", SmallPrice = 7.99, MediumPrice = 8.49, LargePrice = 8.99 });
+                sampleData.Add(new Product() { ItemName = "Cheese Pizza", Category = "Pizzas", SmallPrice = 7.49, MediumPrice = 7.99, LargePrice = 8.49 });
                 sampleData.Add(new Product() { ItemName = "All Dressed Pizza", Category = "Pizzas", SmallPrice = 8.49, MediumPrice = 8.99, LargePrice = 9.49 });
                 sampleData.Add(new Product() { ItemName = "Meat Lovers' Pizza", Category = "Pizzas", SmallPrice = 8.99, MediumPrice = 9.49, LargePrice = 9.99 });
                 sampleData.Add(new Product() { ItemName = "Vegetarian Pizza", Category = "Pizzas", SmallPrice = 7.49, MediumPrice = 7.99, LargePrice = 8.49 });
@@ -47,7 +46,7 @@ namespace MS2.Data
 
                 //Burgers
                 sampleData.Add(new Product() { ItemName = "Burger", Category = "Burgers", SmallPrice = 3.99, MediumPrice = 4.49, LargePrice = 4.79 });
-                sampleData.Add(new Product() { ItemName = "Chicken Burger", Category = "Burgers",SmallPrice = 3.99, MediumPrice = 4.49, LargePrice = 4.79 });
+                sampleData.Add(new Product() { ItemName = "Chicken Burger", Category = "Burgers", SmallPrice = 3.99, MediumPrice = 4.49, LargePrice = 4.79 });
                 sampleData.Add(new Product() { ItemName = "Veggie Burger", Category = "Burgers", SmallPrice = 4.99, MediumPrice = 5.49, LargePrice = 5.79 });
                 _context.Products.AddRange(sampleData);
 
@@ -66,12 +65,22 @@ namespace MS2.Data
                 };
                 _context.Orders.Add(order);
 
+                _context.JobPostings.Add(new JobPosting() { Title = "Cook", Wage = 17 });
+                _context.JobPostings.Add(new JobPosting() { Title = "Cashier", Wage = 16.50 });
+                _context.JobPostings.Add(new JobPosting() { Title = "Delivery Driver", Wage = 17 });
+                _context.JobPostings.Add(new JobPosting() { Title = "Supervisor", Wage = 22.50 });
+
                 _context.SaveChanges();
             }
         }
 
         public void ClearDatabase()
         {
+            foreach (JobPosting jp in _context.JobPostings)
+            {
+                _context.JobPostings.Remove(jp);
+            }
+
             foreach (OrderEntry oe in _context.OrderEntries)
             {
                 _context.OrderEntries.Remove(oe);
@@ -89,6 +98,5 @@ namespace MS2.Data
 
             _context.SaveChanges();
         }
-
     }
 }

@@ -1,4 +1,5 @@
-﻿@*
+﻿@model IEnumerable<MS2.Data.Entities.JobPosting>
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
@@ -20,10 +21,10 @@
             <div>
                 <h2>Positions Available</h2>
                 <ul>
-                    <li>Cook ($16/h Starting)</li>
-                    <li>Cashier ($15/h Starting)</li>
-                    <li>Delivery Driver ($16/h Starting)</li>
-                    <li>Assistant Manager ($21/h Starting)</li>
+                    @foreach(MS2.Data.Entities.JobPosting jp in Model)
+                    {
+                        <li>@jp.Title (@jp.Wage.ToString("c")/hr)</li>
+                    }
                 </ul>
             </div>
         </div>
@@ -33,21 +34,18 @@
     </div>
 
     <style>
-        .careerPageDiv
-        {
+        .careerPageDiv {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        .careerHeaderImg
-        {
+        .careerHeaderImg {
             max-width: 1000px;
             max-height: 500px;
         }
 
-        .careerPageLists
-        {
+        .careerPageLists {
             width: 100%;
             margin-top: 40px;
             display: flex;
@@ -55,8 +53,7 @@
             justify-content: space-around;
         }
 
-        .applyNowBtn
-        {
+        .applyNowBtn {
             margin-top: 30px;
             width: 100px;
             height: 50px;
