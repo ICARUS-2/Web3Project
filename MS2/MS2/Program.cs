@@ -27,6 +27,7 @@ namespace MS2
                     var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
                     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
                     await AuthSeeder.SeedRolesAsync(userManager, roleManager);
+                    await AuthSeeder.SeedUsersAsync(userManager, roleManager);
                 }
                 catch (Exception ex)
                 {
@@ -34,6 +35,7 @@ namespace MS2
                     logger.LogError(ex, "An error occurred seeding the DB.");
                 }
             }
+            RunSeeding(host);
             host.Run();
         }
 

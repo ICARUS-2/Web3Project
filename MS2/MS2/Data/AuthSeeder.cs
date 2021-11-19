@@ -16,5 +16,30 @@ namespace MS2.Data
             await roleManager.CreateAsync(new IdentityRole(Roles.Driver.ToString()));
             await roleManager.CreateAsync(new IdentityRole(Roles.Cook.ToString()));
         }
+
+        public static async Task SeedUsersAsync(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        {
+            const string DEFAULT_PASS = "123Pa$$word.";
+
+            IdentityUser ownerUser = new IdentityUser() { UserName = "owner@hgpizza.com", Email = "owner@hgpizza.com", EmailConfirmed = true, PhoneNumberConfirmed = true};
+            await userManager.CreateAsync(ownerUser, DEFAULT_PASS);
+            await userManager.AddToRoleAsync(ownerUser, Roles.Owner.ToString());
+
+            IdentityUser customerUser = new IdentityUser() { UserName = "customer@hgpizza.com", Email = "customer@hgpizza.com", EmailConfirmed = true, PhoneNumberConfirmed = true };
+            await userManager.CreateAsync(customerUser, DEFAULT_PASS);
+            await userManager.AddToRoleAsync(customerUser, Roles.Customer.ToString());
+
+            IdentityUser cashierUser = new IdentityUser() { UserName = "cashier@hgpizza.com", Email = "cashier@hgpizza.com", EmailConfirmed = true, PhoneNumberConfirmed = true };
+            await userManager.CreateAsync(cashierUser, DEFAULT_PASS);
+            await userManager.AddToRoleAsync(cashierUser, Roles.Cashier.ToString());
+
+            IdentityUser driverUser = new IdentityUser() { UserName = "driver@hgpizza.com", Email = "driver@hgpizza.com", EmailConfirmed = true, PhoneNumberConfirmed = true };
+            await userManager.CreateAsync(driverUser, DEFAULT_PASS);
+            await userManager.AddToRoleAsync(driverUser, Roles.Driver.ToString());
+
+            IdentityUser cookUser = new IdentityUser() { UserName = "cook@hgpizza.com", Email = "cook@hgpizza.com", EmailConfirmed = true, PhoneNumberConfirmed = true };
+            await userManager.CreateAsync(cookUser, DEFAULT_PASS);
+            await userManager.AddToRoleAsync(cookUser, Roles.Cook.ToString());
+        }
     }
 }

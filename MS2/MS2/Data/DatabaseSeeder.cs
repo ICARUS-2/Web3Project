@@ -8,9 +8,9 @@ namespace MS2.Data
 {
     public class DatabaseSeeder
     {
-        private readonly SiteContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public DatabaseSeeder(SiteContext ctx)
+        public DatabaseSeeder(ApplicationDbContext ctx)
         {
             _context = ctx;
         }
