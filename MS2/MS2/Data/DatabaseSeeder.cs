@@ -19,7 +19,7 @@ namespace MS2.Data
         {
             _context.Database.EnsureCreated();
 
-            ClearDatabase();
+            //ClearDatabase();
 
             if (!_context.Products.Any())
             {

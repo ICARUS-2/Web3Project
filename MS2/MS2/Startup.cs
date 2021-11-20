@@ -29,19 +29,17 @@ namespace MS2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            /*
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<AuthContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
-            */
+            
 
             services.AddDbContext<ApplicationDbContext>(opt =>
-            opt.UseSqlServer(Configuration.GetConnectionString("SiteConnectionStr"))
-            .EnableSensitiveDataLogging()
-            .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+            opt.UseSqlServer(Configuration.GetConnectionString("SiteConnectionStr")));
+
             services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddEntityFrameworkStores<AuthContext>()
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
 
