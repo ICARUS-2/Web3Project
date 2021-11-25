@@ -9,10 +9,10 @@ namespace MS2.Data
 {
     public class SiteRepository : ISiteRepository
     {
-        private readonly SiteContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly ILogger<SiteRepository> _logger;
 
-        public SiteRepository(SiteContext ctx, ILogger<SiteRepository> logger)
+        public SiteRepository(ApplicationDbContext ctx, ILogger<SiteRepository> logger)
         {
             _context = ctx;
             _logger = logger;
@@ -68,6 +68,11 @@ namespace MS2.Data
             };
 
             return orderEntries;
+        }
+
+        public IEnumerable<JobPosting> GetAllJobPostings()
+        {
+            return _context.JobPostings;
         }
     }
 }

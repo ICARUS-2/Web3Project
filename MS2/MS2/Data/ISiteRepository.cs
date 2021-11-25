@@ -9,5 +9,6 @@ namespace MS2.Data
         IEnumerable<Product> GetProductsByCategory(string category);
         bool SaveAll();
         public IEnumerable<OrderEntry> GetShoppingCartItems();
+        public IEnumerable<JobPosting> GetAllJobPostings();
     }
 }
