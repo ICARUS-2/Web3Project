@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MS2.Data;
+using MS2.Data.Entities;
 using MS2.Services;
 using System;
 using System.Collections.Generic;
@@ -38,7 +39,7 @@ namespace MS2
             services.AddDbContext<ApplicationDbContext>(opt =>
             opt.UseSqlServer(Configuration.GetConnectionString("SiteConnectionStr")));
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AuthContext>()
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();

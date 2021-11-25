@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MS2.Data.Entities;
 using MS2.Models;
 using System;
 using System.Collections.Generic;
@@ -12,9 +13,9 @@ namespace MS2.Controllers
 {
     public class UserRolesController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public UserRolesController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public UserRolesController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -25,7 +26,7 @@ namespace MS2.Controllers
         {
             var users = await _userManager.Users.ToListAsync();
             var userRolesViewModel = new List<UserRolesViewModel>();
-            foreach (IdentityUser user in users)
+            foreach (ApplicationUser user in users)
             {
                 var thisViewModel = new UserRolesViewModel();
                 thisViewModel.UserId = user.Id;
@@ -35,7 +36,7 @@ namespace MS2.Controllers
             }
             return View(userRolesViewModel);
         }
-        private async Task<List<string>> GetUserRoles(IdentityUser user)
+        private async Task<List<string>> GetUserRoles(ApplicationUser user)
         {
             return new List<string>(await _userManager.GetRolesAsync(user));
         }
