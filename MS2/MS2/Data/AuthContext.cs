@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using MS2.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MS2.Data
 {
-    public class AuthContext : IdentityDbContext
+    public class AuthContext : IdentityDbContext<ApplicationUser>
     { 
         public AuthContext(DbContextOptions<AuthContext> opt) : base(opt)
         {
