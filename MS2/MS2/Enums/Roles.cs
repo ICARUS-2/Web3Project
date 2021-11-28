@@ -4,5 +4,6 @@
     Customer,
     Cashier,
     Driver,
-    Cook
+    Cook,
+    Manager
 }

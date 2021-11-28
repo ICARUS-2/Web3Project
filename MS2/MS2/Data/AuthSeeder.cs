@@ -15,6 +15,7 @@ namespace MS2.Data
             await roleManager.CreateAsync(new IdentityRole(Roles.Cashier.ToString()));
             await roleManager.CreateAsync(new IdentityRole(Roles.Driver.ToString()));
             await roleManager.CreateAsync(new IdentityRole(Roles.Cook.ToString()));
+            await roleManager.CreateAsync(new IdentityRole(Roles.Manager.ToString()));
         }
 
         public static async Task SeedUsersAsync(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
