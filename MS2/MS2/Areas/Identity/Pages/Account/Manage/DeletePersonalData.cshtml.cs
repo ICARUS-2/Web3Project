@@ -65,13 +65,13 @@ namespace MS2.Areas.Identity.Pages.Account.Manage
                     return Page();
                 }
             }
-
-            var result = await _userManager.DeleteAsync(user);
+            await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.MaxValue);
+            //var result = await _userManager.DeleteAsync(user);
             var userId = await _userManager.GetUserIdAsync(user);
-            if (!result.Succeeded)
+            /*if (!result.Succeeded)
             {
                 throw new InvalidOperationException($"Unexpected error occurred deleting user with ID '{userId}'.");
-            }
+            }*/
 
             await _signInManager.SignOutAsync();
 
