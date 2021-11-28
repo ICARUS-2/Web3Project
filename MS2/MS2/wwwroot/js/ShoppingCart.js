@@ -6,14 +6,32 @@
     }
 
     static instance = null;
+    static URL = 'https://localhost:44354/api/Orders';
 
     static async getInstance() {
         if (ShoppingCart.instance === null) {
-            const url = 'https://localhost:44354/api/Orders'
-            let menuItems = await fetch(url).then((response) => response.json());
+
+            let menuItems = await fetch(ShoppingCart.URL).then((response) => response.json());
             ShoppingCart.instance = new ShoppingCart(menuItems);
         }
         return ShoppingCart.instance;
+    }
+
+    static async deserializeCartData(cartJson) {
+
+        const tempCart = JSON.parse(cartJson);
+
+        let menuItems = await fetch(ShoppingCart.URL).then((response) => response.json());
+        let newCart = new ShoppingCart(menuItems);
+
+        newCart.orderItems = tempCart.orderItems;
+        newCart.itemQuantity = tempCart.itemQuantity;
+
+        return newCart;
+    }
+
+    static async getCartFromLocalStorage() {
+        return await ShoppingCart.deserializeCartData(localStorage.getItem('cart'));
     }
 
     addItemToCart(item) {
@@ -22,22 +40,16 @@
             return;
         }
 
-        if (this.orderItems.length > 0) {
-            this.orderItems.forEach((currentItem) => {
+        if (this.orderItems.includes(item)) {
+            const index = this.orderItems.indexOf(item);
+            this.itemQuantity[index]++;
+            localStorage.setItem('cart', JSON.stringify(this));
+            return;
+        }
 
-                if (currentItem === item) {
-                    let index = this.orderItems.indexOf(item);
-                    this.itemQuantity[index]++;
-                    return;
-                }
-                this.orderItems.push(item);
-                this.itemQuantity.push(DefaultQty);
-            });
-        }
-        else {
-            this.orderItems.push(item);
-            this.itemQuantity.push(DefaultQty);
-        }
+        this.orderItems.push(item);
+        this.itemQuantity.push(DefaultQty);
+        localStorage.setItem('cart', JSON.stringify(this));
     }
 
     removeItemFromCart(item) {
