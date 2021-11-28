@@ -112,7 +112,7 @@ namespace MS2.Areas.Identity.Pages.Account
                         return RedirectToPage("./AccessDenied");
                     }
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                    return LocalRedirect(returnUrl + "Identity/Account/Manage");
                 }
                 if (result.RequiresTwoFactor)
                 {
