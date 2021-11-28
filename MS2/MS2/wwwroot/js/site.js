@@ -1,14 +1,14 @@
 ﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 
-document.addEventListener("DOMContentLoaded", () => {
-    let sendBtn = document.getElementById("sendBtn");
-    sendBtn.disabled = true;
+document.addeventlistener("domcontentloaded", () => {
+    let sendbtn = document.getelementbyid("sendbtn");
+    sendbtn.disabled = true;
 
-    let resetBtn = document.getElementById("resetBtn");
-    resetBtn.addEventListener("click", () => {
+    let resetbtn = document.getelementbyid("resetbtn");
+    resetbtn.addeventlistener("click", () => {
         grecaptcha.reset();
-        sendBtn.disabled = true;
+        sendbtn.disabled = true;
     });
 });
 
