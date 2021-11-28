@@ -16,6 +16,7 @@ namespace MS2.Data
             await roleManager.CreateAsync(new IdentityRole(Roles.Cashier.ToString()));
             await roleManager.CreateAsync(new IdentityRole(Roles.Driver.ToString()));
             await roleManager.CreateAsync(new IdentityRole(Roles.Cook.ToString()));
+            await roleManager.CreateAsync(new IdentityRole(Roles.Manager.ToString()));
         }
 
         public static async Task SeedUsersAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
@@ -25,6 +26,7 @@ namespace MS2.Data
             var ownerUser = new ApplicationUser() { UserName = "owner@hgpizza.com", Email = "owner@hgpizza.com", EmailConfirmed = true, PhoneNumberConfirmed = true, PhoneNumber = "5155142500", FirstName = "FirstName", LastName = "LastName", Address="1111"};
             await userManager.CreateAsync(ownerUser, DEFAULT_PASS);
             await userManager.AddToRoleAsync(ownerUser, Roles.Owner.ToString());
+            await userManager.AddToRoleAsync(ownerUser, Roles.Cook.ToString());
 
             var customerUser = new ApplicationUser() { UserName = "customer@hgpizza.com", Email = "customer@hgpizza.com", EmailConfirmed = true, PhoneNumberConfirmed = true, PhoneNumber = "5155142500", FirstName = "FirstName", LastName = "LastName", Address = "1111" };
             await userManager.CreateAsync(customerUser, DEFAULT_PASS);
@@ -41,6 +43,10 @@ namespace MS2.Data
             var cookUser = new ApplicationUser() { UserName = "cook@hgpizza.com", Email = "cook@hgpizza.com", EmailConfirmed = true, PhoneNumberConfirmed = true, PhoneNumber = "5155142500", FirstName = "FirstName", LastName = "LastName", Address = "1111" };
             await userManager.CreateAsync(cookUser, DEFAULT_PASS);
             await userManager.AddToRoleAsync(cookUser, Roles.Cook.ToString());
+
+            IdentityUser managerUser = new IdentityUser() { UserName = "manager@hgpizza.com", Email = "manager@hgpizza.com", EmailConfirmed = true, PhoneNumberConfirmed = true };
+            await userManager.CreateAsync(managerUser, DEFAULT_PASS);
+            await userManager.AddToRoleAsync(managerUser, Roles.Manager.ToString());
         }
     }
 }
