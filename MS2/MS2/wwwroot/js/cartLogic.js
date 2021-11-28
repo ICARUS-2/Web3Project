@@ -1,17 +1,17 @@
 ﻿import ShoppingCart from "./ShoppingCart.js";
 
-let tempCart = localStorage.getItem('cart');
+let userCart = localStorage.getItem(ShoppingCart.LOCAL_STORAGE_CART_NAME);
 
-if (tempCart == null) {
-    tempCart = await ShoppingCart.getInstance();
-    localStorage.setItem('cart', JSON.stringify(tempCart));
+if (userCart == null) {
+    userCart = await ShoppingCart.getInstance();
+    localStorage.setItem(ShoppingCart.LOCAL_STORAGE_CART_NAME, JSON.stringify(userCart));
 }
 else {
-    tempCart = await ShoppingCart.deserializeCartData(tempCart);
+    userCart = await ShoppingCart.deserializeCartData(userCart);
 }
 
-console.log(tempCart instanceof ShoppingCart);
-console.log(tempCart);
+console.log(userCart instanceof ShoppingCart);
+console.log(userCart);
 
 let addfunc = async function () {
     let id = this.getAttribute("data-id");

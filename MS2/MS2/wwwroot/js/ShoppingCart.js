@@ -7,10 +7,10 @@
 
     static instance = null;
     static URL = 'https://localhost:44354/api/Orders';
+    static LOCAL_STORAGE_CART_NAME = 'cart';
 
     static async getInstance() {
         if (ShoppingCart.instance === null) {
-
             let menuItems = await fetch(ShoppingCart.URL).then((response) => response.json());
             ShoppingCart.instance = new ShoppingCart(menuItems);
         }
@@ -31,7 +31,11 @@
     }
 
     static async getCartFromLocalStorage() {
-        return await ShoppingCart.deserializeCartData(localStorage.getItem('cart'));
+        return await ShoppingCart.deserializeCartData(
+            localStorage.getItem(
+                ShoppingCart.LOCAL_STORAGE_CART_NAME
+            )
+        );
     }
 
     addItemToCart(item) {
@@ -43,13 +47,14 @@
         if (this.orderItems.includes(item)) {
             const index = this.orderItems.indexOf(item);
             this.itemQuantity[index]++;
-            localStorage.setItem('cart', JSON.stringify(this));
+            this.updateLocalStorage();
             return;
         }
 
         this.orderItems.push(item);
         this.itemQuantity.push(DefaultQty);
-        localStorage.setItem('cart', JSON.stringify(this));
+        this.updateLocalStorage();
+        
     }
 
     removeItemFromCart(item) {
@@ -69,6 +74,10 @@
         }
 
         this.itemQuantity[index]--;
+    }
+
+    updateLocalStorage() {
+        localStorage.setItem(ShoppingCart.LOCAL_STORAGE_CART_NAME, JSON.stringify(this));
     }
 
 }
