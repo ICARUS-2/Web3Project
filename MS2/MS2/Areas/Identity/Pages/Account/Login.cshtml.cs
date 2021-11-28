@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using MS2.Models;
 
 namespace MS2.Areas.Identity.Pages.Account
 {
@@ -52,6 +53,9 @@ namespace MS2.Areas.Identity.Pages.Account
 
             [Display(Name = "Remember me?")]
             public bool RememberMe { get; set; }
+
+            [Display(Name = "Sign in as Employee")]
+            public bool AsEmployee { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -84,6 +88,29 @@ namespace MS2.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    if (Input.AsEmployee)
+                    {
+                        IdentityUser user = await _userManager.FindByEmailAsync(Input.Email);
+                        List<string> roles = (List<string>)await _userManager.GetRolesAsync(user);
+                        bool isEmployee = false;
+                        string userRole = string.Empty;
+                        foreach (string role in roles)
+                        {
+                            if (role != "Customer")
+                            {
+                                isEmployee = true;
+                                userRole = role;
+                                break;
+                            }
+                        }
+                        if (isEmployee)
+                        {
+                            _logger.LogInformation("Employee logged in.");
+                            return LocalRedirect(returnUrl);
+                        }
+                        _logger.LogInformation("User not an Employee.");
+                        return RedirectToPage("./AccessDenied");
+                    }
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }

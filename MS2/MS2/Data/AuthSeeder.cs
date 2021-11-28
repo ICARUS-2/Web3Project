@@ -24,6 +24,7 @@ namespace MS2.Data
             IdentityUser ownerUser = new IdentityUser() { UserName = "owner@hgpizza.com", Email = "owner@hgpizza.com", EmailConfirmed = true, PhoneNumberConfirmed = true};
             await userManager.CreateAsync(ownerUser, DEFAULT_PASS);
             await userManager.AddToRoleAsync(ownerUser, Roles.Owner.ToString());
+            await userManager.AddToRoleAsync(ownerUser, Roles.Cook.ToString());
 
             IdentityUser customerUser = new IdentityUser() { UserName = "customer@hgpizza.com", Email = "customer@hgpizza.com", EmailConfirmed = true, PhoneNumberConfirmed = true };
             await userManager.CreateAsync(customerUser, DEFAULT_PASS);
