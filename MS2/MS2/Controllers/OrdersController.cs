@@ -37,6 +37,9 @@ namespace MS2.Controllers
         [HttpPost]
         public void Post([FromBody] string value)
         {
+
+            bool val1 = User.Identity.IsAuthenticated;
+
         }
 
         // PUT api/<OrderController>/5

@@ -5,6 +5,8 @@
     ViewData["Title"] = "Shopping Cart";
 }
 
+<script type="module" src="~/js/cartLogic.js"></script>
+<script type="module" src="~/js/generateShoppingCart.js"></script>
 
 @if (Model.ToList().Count > 0)
 {
@@ -48,9 +50,11 @@ else
     h1 {
         margin-top: 150px;
     }
-    .cart-info{
+
+    .cart-info {
         font-size: 1.25em;
     }
+
     #cart-items-container {
         border-radius: .5em;
         border: solid grey 1px;
@@ -62,6 +66,10 @@ else
         margin: 1em;
     }
 
+    .Qty-btn-div > * {
+        margin: .25em;
+    }
+
     .cart-items {
         margin-left: 1em;
         margin-right: 1em;
@@ -71,10 +79,11 @@ else
         padding: 1em;
         display: flex;
         flex-direction: row;
-        justify-content:space-between;
+        justify-content: space-between;
         align-items: center;
     }
-    .cart-item-image{
+
+    .cart-item-image {
         width: 150px;
     }
 </style>
