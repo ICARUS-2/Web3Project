@@ -8,43 +8,8 @@
 <script type="module" src="~/js/cartLogic.js"></script>
 <script type="module" src="~/js/generateShoppingCart.js"></script>
 
-@if (Model.ToList().Count > 0)
-{
-    <h1>Shopping Cart</h1>
-    <div id="cart-items-container">
-        @{ double total = 0.0;}
+<h1 id="cart-header">Shopping Cart</h1>
 
-        @foreach (var item in Model)
-        {
-            <div class="cart-items">
-                <img src="~/img/@(item.Product.ItemName).jpg" class="cart-item-image" />
-                <h3>@item.Product.ItemName </h3>
-                <p class="cart-info"> @((item.EntryPrice / item.Quantity).ToString("c"))</p>
-                <p class="cart-info">Quantity: @item.Quantity</p>
-                <p class="cart-info">Sub Total: @item.EntryPrice.ToString("c")</p>
-
-
-                <div>
-                    <button class="btn btn-success">+</button>
-                    <button class="btn btn-success">-</button>
-                </div>
-
-            </div>
-            total += item.EntryPrice;
-        }
-
-        <div id="check-out">
-            <h2>Total: @total.ToString("c")</h2>
-            <button class="btn btn-success">Check out</button>
-        </div>
-
-    </div>
-}
-else
-{
-    <h1>Shopping Cart - Is Empty</h1>
-    <a class="btn btn-success" asp-area="" asp-controller="Home" asp-action="Order">Add items to Order</a>
-}
 
 <style>
     h1 {

@@ -1,20 +1,40 @@
 ﻿import ShoppingCart from "./ShoppingCart.js";
 await generateCartView();
+
+function showEmptyCartMessage() {
+    let container = document.getElementsByTagName('main')[0];
+    let header = document.getElementById('cart-header');
+    let linkToOderPage = document.createElement('a');
+
+    header.innerText = 'Shopping Cart - Is Empty';
+    linkToOderPage.classList.add('btn', 'btn-success');
+    linkToOderPage.innerText = 'Add items to Order';
+    linkToOderPage.setAttribute("href", "/Order");
+
+    container.appendChild(linkToOderPage);
+}
 async function generateCartView() {
 
     let userCart = localStorage.getItem(ShoppingCart.LOCAL_STORAGE_CART_NAME);
     let totalAmount = 0;
-    let container = document.getElementById("cart-items-container");
+    let container = document.createElement('div');
     let dollarCADFormat = Intl.NumberFormat('en-CA');
 
     if (userCart == null) {
-        userCart = await ShoppingCart.getInstance();
-        localStorage.setItem(ShoppingCart.LOCAL_STORAGE_CART_NAME, JSON.stringify(userCart));
-    }
-    else {
-        userCart = await ShoppingCart.deserializeCartData(userCart);
+        showEmptyCartMessage();
+        return;
     }
 
+    userCart = await ShoppingCart.deserializeCartData(userCart);
+
+    if (userCart.orderItems.length === 0) {
+        showEmptyCartMessage();
+        return;
+    }
+
+    container.setAttribute('id', 'cart-items-container');
+    document.getElementsByTagName('main')[0].appendChild(container);
+    
     for (let i = 0; i < userCart.orderItems.length; i++) {
 
         let div = document.createElement("div");
@@ -46,7 +66,6 @@ async function generateCartView() {
         });
 
         buttonDiv.classList.add("Qty-btn-div");
-
         addBtn.innerText = '+';
         addBtn.classList.add("btn", "btn-success");
         removeBtn.innerText = '-';
