@@ -110,7 +110,7 @@ namespace MS2.Areas.Identity.Pages.Account
                         if (isEmployee)
                         {
                             _logger.LogInformation("Employee logged in.");
-                            return LocalRedirect(returnUrl);
+                            return LocalRedirect(returnUrl + "UserRoles/Dashboard");
                         }
                         _logger.LogInformation("User not an Employee.");
                         return RedirectToPage("./AccessDenied");
