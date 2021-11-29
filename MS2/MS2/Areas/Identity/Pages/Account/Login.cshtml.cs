@@ -96,7 +96,7 @@ namespace MS2.Areas.Identity.Pages.Account
                 {
                     if (Input.AsEmployee)
                     {
-                        IdentityUser user = await _userManager.FindByEmailAsync(Input.Email);
+                        ApplicationUser user = await _userManager.FindByEmailAsync(Input.Email);
                         List<string> roles = (List<string>)await _userManager.GetRolesAsync(user);
                         bool isEmployee = false;
                         string userRole = string.Empty;
