@@ -4,7 +4,7 @@
     ViewData["Title"] = "Menu";
 }
 
-<h1 class="menu-header">Menu</h1>
+<h1 class="menu-header">@ViewData["Title"]</h1>
 
 <div>
     @foreach (IGrouping<string, MS2.Data.Entities.Product> ig in Model.GroupBy(p => p.Category).OrderByDescending(ig => ig.FirstOrDefault().Category))
@@ -41,7 +41,14 @@
                 @using (Html.BeginForm())
                 {
                     <input type="text" name="productID" value="@pr.Id" hidden />
-                    <input type="submit" value="FAVORITE" />
+                    @if ((ViewData["favs"] as List<MS2.Data.Entities.Favourite>).Where(f => int.Parse(f.ProductId) == pr.Id).Count() > 0)
+                    {
+                        <input type="submit" value="UNFAVORITE" />
+                    }
+                    else
+                    {
+                        <input type="submit" value="FAVORITE" />
+                    }
                 }
             </td>
             </tr>

@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using static MS2.Controllers.Captcha;
 using Microsoft.AspNetCore.Identity;
 using MS2.Data.Entities;
+using System.Collections;
 
 namespace MS2.Controllers
 {
@@ -57,9 +58,25 @@ namespace MS2.Controllers
         }
 
         [HttpGet("/Menu")]
-        public IActionResult Menu()
+        public async Task<IActionResult> Menu()
         {
-            return View(_repository.GetAllProducts());
+            if (_signInManager.IsSignedIn(User))
+            {
+                var user = await _userManager.GetUserAsync(User);
+
+                var favs = _repository.GetFavsById(user.Id).ToList();
+
+                var products = _repository.GetAllProducts();
+
+                ViewData["favs"] = favs;
+
+                return View(products);
+            }
+            else
+            {
+                ViewData["favs"] = new List<Favourite>();
+                return View(_repository.GetAllProducts());
+            }
         }
 
         [HttpGet("/Careers")]
@@ -120,8 +137,15 @@ namespace MS2.Controllers
                 var user = await _userManager.GetUserAsync(User);
 
                 _repository.AddFavorite(user.Id, productID);
-            }
 
+                var favs = _repository.GetFavsById(user.Id).ToList();
+
+                ViewData["favs"] = favs;
+            }
+            else
+            {
+                ViewData["favs"] = new List<Favourite>();
+            }
             return View(_repository.GetAllProducts());
         }
 
