@@ -99,13 +99,11 @@ namespace MS2.Areas.Identity.Pages.Account
                         ApplicationUser user = await _userManager.FindByEmailAsync(Input.Email);
                         List<string> roles = (List<string>)await _userManager.GetRolesAsync(user);
                         bool isEmployee = false;
-                        string userRole = string.Empty;
                         foreach (string role in roles)
                         {
                             if (role != "Customer")
                             {
                                 isEmployee = true;
-                                userRole = role;
                                 break;
                             }
                         }
