@@ -105,7 +105,8 @@ namespace MS2.Controllers
 
             if (roles.Contains("Owner"))
             {
-                return View("Owner");
+
+                return View("Owner", _userManager.Users.ToList());
             }
 
             if (roles.Contains("Manager"))
