@@ -21,23 +21,30 @@
         </tr>
         @foreach (MS2.Data.Entities.Product pr in ig)
         {
+            <tr>
+                <td><img src="~/img/@(pr.ItemName).jpg" class="img-fluid" alt="@pr.ItemName" width="100" height="100" /></td>
+                <td><h3>@pr.ItemName</h3></td>
+                @if (pr.LargePrice > 0)
+                {
+                    <td><h4>Small: @pr.SmallPrice.ToString("c"), Medium: @pr.MediumPrice.ToString("c"), Large: @pr.LargePrice.ToString("c")</h4></td>
+                }
+                else if (pr.MediumPrice < 0)
+                {
+                    <td><h4>Small: @pr.SmallPrice.ToString("c"), Medium: @pr.MediumPrice.ToString("c")</h4></td>
+                }
+                else
+                {
+                    <td><h4>Small: @pr.SmallPrice.ToString("c")</h4></td>
+                }
 
-<tr>
-    <td><img src="~/img/@(pr.ItemName).jpg" class="img-fluid" alt="@pr.ItemName" width="100" height="100" /></td>
-    <td><h3>@pr.ItemName</h3></td>
-    @if (pr.LargePrice > 0)
-    {
-        <td><h4>Small: @pr.SmallPrice.ToString("c"), Medium: @pr.MediumPrice.ToString("c"), Large: @pr.LargePrice.ToString("c")</h4></td>
-    }
-    else if (pr.MediumPrice < 0)
-    {
-        <td><h4>Small: @pr.SmallPrice.ToString("c"), Medium: @pr.MediumPrice.ToString("c")</h4></td>
-    }
-    else
-    {
-<td><h4>Small: @pr.SmallPrice.ToString("c")</h4></td>
-    }
-</tr>
+            <td>
+                @using (Html.BeginForm())
+                {
+                    <input type="text" name="productID" value="@pr.Id" hidden />
+                    <input type="submit" value="FAVORITE" />
+                }
+            </td>
+            </tr>
         }
     }
 </table>

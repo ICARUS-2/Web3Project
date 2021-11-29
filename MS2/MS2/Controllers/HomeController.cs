@@ -103,6 +103,12 @@ namespace MS2.Controllers
             return View();
         }
 
+        [HttpPost("/Menu")]
+        public IActionResult Menu(string productID)
+        {
+            return View(_repository.GetAllProducts());
+        }
+
         public IActionResult ShoppingCart()
         {
             return View(_repository.GetShoppingCartItems());
