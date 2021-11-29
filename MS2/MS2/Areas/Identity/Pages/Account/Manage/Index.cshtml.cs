@@ -17,7 +17,8 @@ namespace MS2.Areas.Identity.Pages.Account.Manage
 
         public IndexModel(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager
+           )
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -73,6 +74,8 @@ namespace MS2.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
+            List<string> roles = (await _userManager.GetRolesAsync(user)).ToList();
+            ViewData["roles"] = roles;
             await LoadAsync(user);
             return Page();
         }
