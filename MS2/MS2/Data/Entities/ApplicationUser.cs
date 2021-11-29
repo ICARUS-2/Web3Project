@@ -11,6 +11,6 @@ namespace MS2.Data.Entities
         public string Address { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public DateTime TimeStamp { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

@@ -23,27 +23,27 @@ namespace MS2.Data
         {
             const string DEFAULT_PASS = "123Pa$$word.";
 
-            var ownerUser = new ApplicationUser() { UserName = "owner@hgpizza.com", Email = "owner@hgpizza.com", EmailConfirmed = true, PhoneNumberConfirmed = true, PhoneNumber = "5155142500", FirstName = "FirstName", LastName = "LastName", Address="1111", TimeStamp = DateTime.Now};
+            var ownerUser = new ApplicationUser() { UserName = "owner@hgpizza.com", Email = "owner@hgpizza.com", EmailConfirmed = true, PhoneNumberConfirmed = true, PhoneNumber = "5155142500", FirstName = "FirstName", LastName = "LastName", Address="1111", CreatedAt = DateTime.Now};
             await userManager.CreateAsync(ownerUser, DEFAULT_PASS);
             await userManager.AddToRoleAsync(ownerUser, Roles.Owner.ToString());
 
-            var customerUser = new ApplicationUser() { UserName = "customer@hgpizza.com", Email = "customer@hgpizza.com", EmailConfirmed = true, PhoneNumberConfirmed = true, PhoneNumber = "5155142500", FirstName = "FirstName", LastName = "LastName", Address = "1111", TimeStamp = DateTime.Now };
+            var customerUser = new ApplicationUser() { UserName = "customer@hgpizza.com", Email = "customer@hgpizza.com", EmailConfirmed = true, PhoneNumberConfirmed = true, PhoneNumber = "5155142500", FirstName = "FirstName", LastName = "LastName", Address = "1111", CreatedAt = DateTime.Now };
             await userManager.CreateAsync(customerUser, DEFAULT_PASS);
             await userManager.AddToRoleAsync(customerUser, Roles.Customer.ToString());
 
-            var cashierUser = new ApplicationUser() { UserName = "cashier@hgpizza.com", Email = "cashier@hgpizza.com", EmailConfirmed = true, PhoneNumberConfirmed = true, PhoneNumber = "5155142500", FirstName = "FirstName", LastName = "LastName", Address = "1111", TimeStamp = DateTime.Now };
+            var cashierUser = new ApplicationUser() { UserName = "cashier@hgpizza.com", Email = "cashier@hgpizza.com", EmailConfirmed = true, PhoneNumberConfirmed = true, PhoneNumber = "5155142500", FirstName = "FirstName", LastName = "LastName", Address = "1111", CreatedAt = DateTime.Now };
             await userManager.CreateAsync(cashierUser, DEFAULT_PASS);
             await userManager.AddToRoleAsync(cashierUser, Roles.Cashier.ToString());
 
-            var driverUser = new ApplicationUser() { UserName = "driver@hgpizza.com", Email = "driver@hgpizza.com", EmailConfirmed = true, PhoneNumberConfirmed = true, PhoneNumber = "5155142500", FirstName = "FirstName", LastName = "LastName", Address = "1111", TimeStamp = DateTime.Now };
+            var driverUser = new ApplicationUser() { UserName = "driver@hgpizza.com", Email = "driver@hgpizza.com", EmailConfirmed = true, PhoneNumberConfirmed = true, PhoneNumber = "5155142500", FirstName = "FirstName", LastName = "LastName", Address = "1111", CreatedAt = DateTime.Now };
             await userManager.CreateAsync(driverUser, DEFAULT_PASS);
             await userManager.AddToRoleAsync(driverUser, Roles.Driver.ToString());
 
-            var cookUser = new ApplicationUser() { UserName = "cook@hgpizza.com", Email = "cook@hgpizza.com", EmailConfirmed = true, PhoneNumberConfirmed = true, PhoneNumber = "5155142500", FirstName = "FirstName", LastName = "LastName", Address = "1111", TimeStamp = DateTime.Now };
+            var cookUser = new ApplicationUser() { UserName = "cook@hgpizza.com", Email = "cook@hgpizza.com", EmailConfirmed = true, PhoneNumberConfirmed = true, PhoneNumber = "5155142500", FirstName = "FirstName", LastName = "LastName", Address = "1111", CreatedAt = DateTime.Now };
             await userManager.CreateAsync(cookUser, DEFAULT_PASS);
             await userManager.AddToRoleAsync(cookUser, Roles.Cook.ToString());
 
-            ApplicationUser managerUser = new ApplicationUser() { UserName = "manager@hgpizza.com", Email = "manager@hgpizza.com", EmailConfirmed = true, PhoneNumberConfirmed = true, PhoneNumber = "5155142500", FirstName = "FirstName", LastName = "LastName", Address = "1111", TimeStamp = DateTime.Now };
+            ApplicationUser managerUser = new ApplicationUser() { UserName = "manager@hgpizza.com", Email = "manager@hgpizza.com", EmailConfirmed = true, PhoneNumberConfirmed = true, PhoneNumber = "5155142500", FirstName = "FirstName", LastName = "LastName", Address = "1111", CreatedAt = DateTime.Now };
             await userManager.CreateAsync(managerUser, DEFAULT_PASS);
             await userManager.AddToRoleAsync(managerUser, Roles.Manager.ToString());
         }
