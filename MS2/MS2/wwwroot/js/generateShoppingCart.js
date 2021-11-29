@@ -30,6 +30,7 @@ async function increaseItemQty() {
 
     cart.addItemToCart(id);
 
+    await updateUI();
     console.log("incease");
     console.log(cart);
 }
@@ -40,8 +41,25 @@ async function decreaseItemQty() {
 
     cart.removeItemFromCart(id);
 
+    await updateUI();
     console.log("decease");
     console.log(cart);
+}
+async function updateUI() {
+    let cart = localStorage.getItem(ShoppingCart.LOCAL_STORAGE_CART_NAME);
+    let cartContainer = document.getElementById("cart-items-container");
+    let cartItems = document.getElementsByClassName('cart-items');
+    cart = await ShoppingCart.deserializeCartData(cart);
+
+    cartContainer.parentNode.removeChild(cartContainer);
+    //for (let i = 0; i < cartItems.length; i++) {
+    //    let id = cartItems[i].getAttribute('data-id');
+    //    if (cart.orderItems.indexOf(id) === -1) {
+
+    //        cartContainer.parentNode.removeChild(cartContainer);
+    //    }
+    //}
+    await generateCartView();
 }
 
 async function generateCartView() {
@@ -92,7 +110,7 @@ async function generateCartView() {
                 subTotal.classList.add("cart-info");
                 quantity.innerText = "Quantity: " + userCart.itemQuantity[i];
                 subTotal.innerText = "Sub Total: $" + dollarCADFormat.format(item.smallPrice * userCart.itemQuantity[i]);
-                totalAmount += item.smallPrice;
+                totalAmount += item.smallPrice * userCart.itemQuantity[i];;
                 div.setAttribute('data-id', userCart.orderItems[i]);
             }
         });
