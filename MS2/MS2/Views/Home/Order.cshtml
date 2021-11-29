@@ -18,27 +18,25 @@
         <tr>
             <td id="menu-item-header-@ig.FirstOrDefault().Category"><h2 id="menu-item-header-@ig.FirstOrDefault()Category">@ig.FirstOrDefault().Category</h2></td>
         </tr>
+        int groupNumber = 0;
         @foreach (MS2.Data.Entities.Product pr in ig)
         {
-
             <tr>
                 <td><img src="~/img/@(pr.ItemName).jpg" class="img-fluid" alt="@pr.ItemName" width="100" height="100" /></td>
                 <td><h3>@pr.ItemName</h3></td>
                 <td><h4>From @pr.SmallPrice.ToString("c")</h4></td>
-                @if (pr.LargePrice > 0)
-                {
-                    <td>Sizes: Small, Medium, Large</td>
-                }
-                else if (pr.MediumPrice < 0)
-                {
-                    <td>Sizes: Small, Medium</td>
-                }
-                else
-                {
-                    <td>Sizes: Small</td>
-                }
-                <td><button class="btn btn-success addToOrder" data-id="@pr.Id">Add To Order</button></td>
+               
+                <td class="selection-options">
+                    <select name="size-@groupNumber" class="size-selection">
+                        <option value="" selected disabled hidden>Choose Size</option>
+                        <option value="Small">Small</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Large">Large</option>
+                    </select>
+                    <button class="btn btn-success addToOrder" data-id="@pr.Id">Add To Order</button>
+                </td>
             </tr>
+            groupNumber++;
         }
     }
 </table>
@@ -47,6 +45,12 @@
 <style>
     .order-header {
         margin-top: 120px;
+    }
+
+    .selection-options{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
     }
 
     .jump-to-category {

@@ -31,8 +31,6 @@ async function increaseItemQty() {
     cart.addItemToCart(id);
 
     await updateUI();
-    console.log("incease");
-    console.log(cart);
 }
 async function decreaseItemQty() {
     // get the div that is two nodes up the dom tree.
@@ -42,8 +40,6 @@ async function decreaseItemQty() {
     cart.removeItemFromCart(id);
 
     await updateUI();
-    console.log("decease");
-    console.log(cart);
 }
 async function updateUI() {
     let cart = localStorage.getItem(ShoppingCart.LOCAL_STORAGE_CART_NAME);
@@ -99,6 +95,7 @@ async function generateCartView() {
         div.classList.add("cart-items");
    
         userCart.menuItems.forEach((item) => {
+
             if (item.id == userCart.orderItems[i]) {
 
                 img.src = '/img/' + item.itemName + '.jpg';
@@ -112,6 +109,7 @@ async function generateCartView() {
                 subTotal.innerText = "Sub Total: $" + dollarCADFormat.format(item.smallPrice * userCart.itemQuantity[i]);
                 totalAmount += item.smallPrice * userCart.itemQuantity[i];;
                 div.setAttribute('data-id', userCart.orderItems[i]);
+                div.setAttribute('data-size', userCart.orderItems[i]);
             }
         });
         

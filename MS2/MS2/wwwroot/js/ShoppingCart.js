@@ -3,6 +3,7 @@
         this.menuItems = menuItems;  // list of all possible items.
         this.orderItems = [];        // holds the id of the items.
         this.itemQuantity = [];      // holds qty of items.
+        this.itemSize = [];
     }
 
     static instance = null;
@@ -38,6 +39,7 @@
         );
     }
 
+    // add size to arguments
     addItemToCart(item) {
         const DefaultQty = 1;
         if (item === null) {
@@ -57,6 +59,7 @@
         
     }
 
+        // add size to arguments
     removeItemFromCart(item) {
         if (item === null) {
             return;

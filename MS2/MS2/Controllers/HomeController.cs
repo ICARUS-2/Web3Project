@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MS2.Data;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Http;
 using static MS2.Controllers.Captcha;
+using MS2.Data.Entities;
 
 namespace MS2.Controllers
 {
@@ -19,12 +21,14 @@ namespace MS2.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IEmailSender _emailSender;
         private readonly ISiteRepository _repository;
-       
-        public HomeController(ILogger<HomeController> logger, IEmailSender sender, ISiteRepository repo)
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public HomeController(ILogger<HomeController> logger, IEmailSender sender, ISiteRepository repo, UserManager<ApplicationUser> userManager)
         {
             _logger = logger;
             _emailSender = sender;
             _repository = repo;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -103,8 +107,11 @@ namespace MS2.Controllers
             return View();
         }
 
-        public IActionResult ShoppingCart()
+        async public Task<IActionResult> ShoppingCart()
         {
+            ApplicationUser user = await _userManager.GetUserAsync(User);
+            if(user != null)
+                ViewBag.UserAddress = user.Address;
             return View(_repository.GetShoppingCartItems());
         }
 

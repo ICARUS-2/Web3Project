@@ -9,46 +9,46 @@
 <script type="module" src="~/js/generateShoppingCart.js"></script>
 
 <h1 id="cart-header">Shopping Cart</h1>
+<p>@ViewBag.UserAddress</p>
 
+    <style>
+        h1 {
+            margin-top: 150px;
+        }
 
-<style>
-    h1 {
-        margin-top: 150px;
-    }
+        .cart-info {
+            font-size: 1.25em;
+        }
 
-    .cart-info {
-        font-size: 1.25em;
-    }
+        #cart-items-container {
+            border-radius: .5em;
+            border: solid grey 1px;
+            display: flex;
+            flex-direction: column;
+        }
 
-    #cart-items-container {
-        border-radius: .5em;
-        border: solid grey 1px;
-        display: flex;
-        flex-direction: column;
-    }
+        #check-out > * {
+            margin: 1em;
+        }
 
-    #check-out > * {
-        margin: 1em;
-    }
+        .Qty-btn-div > * {
+            margin: .25em;
+        }
 
-    .Qty-btn-div > * {
-        margin: .25em;
-    }
+        .cart-items {
+            margin-left: 1em;
+            margin-right: 1em;
+            margin-top: 1em;
+            border-radius: .5em;
+            border: solid grey 1px;
+            padding: 1em;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    .cart-items {
-        margin-left: 1em;
-        margin-right: 1em;
-        margin-top: 1em;
-        border-radius: .5em;
-        border: solid grey 1px;
-        padding: 1em;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .cart-item-image {
-        width: 150px;
-    }
-</style>
+        .cart-item-image {
+            width: 150px;
+        }
+    </style>
