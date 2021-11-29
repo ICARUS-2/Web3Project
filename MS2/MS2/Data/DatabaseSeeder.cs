@@ -60,8 +60,16 @@ namespace MS2.Data
                         {
                             Product = sampleData.First(),
                             Quantity = 4,
+                            Size = "Small"
                         }
-                    }
+                        ,new OrderEntry()
+                        {
+                            Product = sampleData.Last(),
+                            Quantity = 5,
+                            Size = "Large"
+                        }
+                    },
+                    Address = "Order sample address"
                 };
                 _context.Orders.Add(order);
 

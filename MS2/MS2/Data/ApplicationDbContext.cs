@@ -8,7 +8,7 @@ using System.Text;
 
 namespace MS2.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -21,6 +21,4 @@ namespace MS2.Data
         public DbSet<MS2.Models.ContactModel> ContactModel { get; set; }
         public DbSet<JobPosting> JobPostings { get; set; }
     }
-
-
 }
