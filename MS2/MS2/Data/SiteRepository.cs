@@ -81,5 +81,22 @@ namespace MS2.Data
             return _context.Orders.Include(o => o.Items)
                 .ThenInclude(oi => oi.Product);
         }
+
+        public IEnumerable<Favourite> GetAllFavourites()
+        {
+            return _context.Favourites;
+        }
+
+        public IEnumerable<Favourite> GetFavsById(string userId)
+        {
+            return _context.Favourites.Where(f => f.UserId == userId);
+        }
+
+        public void AddFavorite(string userID, string productID)
+        {
+            Favourite fav = new Favourite(userID, productID);
+            _context.Favourites.Add(fav);
+            _context.SaveChanges();
+        }
     }
 }

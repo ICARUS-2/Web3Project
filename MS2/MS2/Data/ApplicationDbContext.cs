@@ -20,5 +20,6 @@ namespace MS2.Data
         public DbSet<OrderEntry> OrderEntries { get; set; }
         public DbSet<MS2.Models.ContactModel> ContactModel { get; set; }
         public DbSet<JobPosting> JobPostings { get; set; }
+        public DbSet<Favourite> Favourites { get; set; }
     }
 }

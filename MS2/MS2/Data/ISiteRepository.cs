@@ -11,5 +11,11 @@ namespace MS2.Data
         bool SaveAll();
         public IEnumerable<OrderEntry> GetShoppingCartItems();
         public IEnumerable<JobPosting> GetAllJobPostings();
+
+        public IEnumerable<Favourite> GetAllFavourites();
+
+        public IEnumerable<Favourite> GetFavsById(string userId);
+
+        public void AddFavorite(string userID, string productID);
     }
 }
