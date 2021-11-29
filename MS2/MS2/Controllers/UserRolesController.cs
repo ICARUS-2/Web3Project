@@ -97,5 +97,33 @@ namespace MS2.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        public async Task<IActionResult> Dashboard()
+        {
+            ApplicationUser user = await _userManager.FindByNameAsync(User.Identity.Name);
+            List<string> roles = (List<string>)await _userManager.GetRolesAsync(user);
+
+            if (roles.Contains("Owner"))
+            {
+                return View("Owner");
+            }
+
+            if (roles.Contains("Manager"))
+            {
+                return View("Manager");
+            }
+
+            if (roles.Contains("Cashier"))
+            {
+                return View("Cashier");
+            }
+
+            if (roles.Contains("Cook"))
+            {
+                return View("Cook");
+            }
+
+            return View("Driver");
+        }
     }
 }
