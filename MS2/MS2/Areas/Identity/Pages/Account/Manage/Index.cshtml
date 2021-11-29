@@ -5,6 +5,9 @@
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
+<a class="btn-success" style="padding: 10px" asp-controller="UserData" asp-action="AllOrders">VIEW ALL ORDERS</a>
+<br />
+<br />
 <h4>@ViewData["Title"]</h4>
 <partial name="_StatusMessage" model="Model.StatusMessage" />
 <div class="row">

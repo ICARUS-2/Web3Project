@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using MS2.Data.Entities;
 using System;
 using System.Collections.Generic;
@@ -73,6 +74,12 @@ namespace MS2.Data
         public IEnumerable<JobPosting> GetAllJobPostings()
         {
             return _context.JobPostings;
+        }
+
+        public IEnumerable<Order> GetAllOrders()
+        {
+            return _context.Orders.Include(o => o.Items)
+                .ThenInclude(oi => oi.Product);
         }
     }
 }
