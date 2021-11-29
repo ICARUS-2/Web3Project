@@ -13,6 +13,37 @@ function showEmptyCartMessage() {
 
     container.appendChild(linkToOderPage);
 }
+function setQtyBtnListeners() {
+    let increaseBtns = document.getElementsByClassName('increase-btn');
+    let decreaseBtns = document.getElementsByClassName('decrease-btn');
+
+    for (let i = 0; i < increaseBtns.length; i++) {
+
+        increaseBtns[i].addEventListener('click', increaseItemQty, false);
+        decreaseBtns[i].addEventListener('click', decreaseItemQty, false);
+    }
+}
+async function increaseItemQty() {
+    // get the div that is two nodes up the dom tree.
+    let id = this.parentNode.parentNode.getAttribute("data-id");
+    let cart = await ShoppingCart.getCartFromLocalStorage();
+
+    cart.addItemToCart(id);
+
+    console.log("incease");
+    console.log(cart);
+}
+async function decreaseItemQty() {
+    // get the div that is two nodes up the dom tree.
+    let id = this.parentNode.parentNode.getAttribute("data-id");
+    let cart = await ShoppingCart.getCartFromLocalStorage();
+
+    cart.removeItemFromCart(id);
+
+    console.log("decease");
+    console.log(cart);
+}
+
 async function generateCartView() {
 
     let userCart = localStorage.getItem(ShoppingCart.LOCAL_STORAGE_CART_NAME);
@@ -48,7 +79,7 @@ async function generateCartView() {
         let removeBtn = document.createElement("button");
 
         div.classList.add("cart-items");
-
+   
         userCart.menuItems.forEach((item) => {
             if (item.id == userCart.orderItems[i]) {
 
@@ -62,14 +93,15 @@ async function generateCartView() {
                 quantity.innerText = "Quantity: " + userCart.itemQuantity[i];
                 subTotal.innerText = "Sub Total: $" + dollarCADFormat.format(item.smallPrice * userCart.itemQuantity[i]);
                 totalAmount += item.smallPrice;
+                div.setAttribute('data-id', userCart.orderItems[i]);
             }
         });
-
+        
         buttonDiv.classList.add("Qty-btn-div");
         addBtn.innerText = '+';
-        addBtn.classList.add("btn", "btn-success");
+        addBtn.classList.add("btn", "btn-success", "increase-btn");
         removeBtn.innerText = '-';
-        removeBtn.classList.add("btn", "btn-success");
+        removeBtn.classList.add("btn", "btn-success", "decrease-btn");
 
         buttonDiv.appendChild(addBtn);
         buttonDiv.appendChild(removeBtn);
@@ -82,6 +114,7 @@ async function generateCartView() {
         div.appendChild(buttonDiv);
         container.appendChild(div);
     }
+
     let checkOutDiv = document.createElement("div");
     let total = document.createElement('h2');
     let orderBtn = document.createElement('button');
@@ -94,4 +127,5 @@ async function generateCartView() {
     checkOutDiv.appendChild(total);
     checkOutDiv.appendChild(orderBtn);
     container.appendChild(checkOutDiv);
+    setQtyBtnListeners()
 }

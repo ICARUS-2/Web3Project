@@ -68,12 +68,15 @@
 
         const index = this.orderItems.indexOf(item);
 
-        if (this.itemQuantity === 1) {
+        if (this.itemQuantity[index] === 1) {
             this.orderItems.splice(index, 1);
+            this.itemQuantity.splice(index, 1);
+            this.updateLocalStorage();
             return;
         }
 
         this.itemQuantity[index]--;
+        this.updateLocalStorage();
     }
 
     updateLocalStorage() {
