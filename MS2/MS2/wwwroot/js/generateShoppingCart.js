@@ -13,6 +13,7 @@ function showEmptyCartMessage() {
 
     container.appendChild(linkToOderPage);
 }
+
 function setQtyBtnListeners() {
     let increaseBtns = document.getElementsByClassName('increase-btn');
     let decreaseBtns = document.getElementsByClassName('decrease-btn');
@@ -23,17 +24,17 @@ function setQtyBtnListeners() {
         decreaseBtns[i].addEventListener('click', decreaseItemQty, false);
     }
 }
+
 async function increaseItemQty() {
     // get the div that is two nodes up the dom tree.
     let id = this.parentNode.parentNode.getAttribute("data-id");
     let itemSize = this.parentNode.parentNode.getAttribute("data-size");
     let cart = await ShoppingCart.getCartFromLocalStorage();
 
-
     cart.addItemToCart(id,itemSize);
-
     await updateUI();
 }
+
 async function decreaseItemQty() {
     // get the div that is two nodes up the dom tree.
     let id = this.parentNode.parentNode.getAttribute("data-id");
@@ -44,24 +45,17 @@ async function decreaseItemQty() {
 
     await updateUI();
 }
+
 async function updateUI() {
     let cart = localStorage.getItem(ShoppingCart.LOCAL_STORAGE_CART_NAME);
     let cartContainer = document.getElementById("cart-items-container");
-    let cartItems = document.getElementsByClassName('cart-items');
     cart = await ShoppingCart.deserializeCartData(cart);
 
     cartContainer.parentNode.removeChild(cartContainer);
-
-    //for (let i = 0; i < cartItems.length; i++) {
-    //    let id = cartItems[i].getAttribute('data-id');
-    //    if (cart.orderItems.indexOf(id) === -1) {
-
-    //        cartContainer.parentNode.removeChild(cartContainer);
-    //    }
-    //}
     await generateCartView();
 }
 
+// TODO: break this up into multiple functions.
 async function generateCartView() {
 
     let userCart = localStorage.getItem(ShoppingCart.LOCAL_STORAGE_CART_NAME);
@@ -141,6 +135,7 @@ async function generateCartView() {
         div.appendChild(buttonDiv);
 
         container.appendChild(div);
+        
     }
 
     let checkOutDiv = document.createElement("div");
@@ -153,10 +148,52 @@ async function generateCartView() {
     orderBtn.innerText = "Check out";
 
     checkOutDiv.appendChild(total);
+    checkOutDiv.appendChild(makeAddressInput());
     checkOutDiv.appendChild(orderBtn);
     container.appendChild(checkOutDiv);
     setQtyBtnListeners()
+    makeAddressInput()
 }
+
+function makeAddressInput() {
+    let userAddress = document.getElementById("user-address").innerText;
+    let splitAddress = "";
+    let street = document.createElement('input');
+    let city = document.createElement('input');
+    let province = document.createElement('input');
+    let header = document.createElement('h4');
+    let addressDiv = document.createElement('div');
+
+    header.innerText = 'Delivery Address';
+    addressDiv.setAttribute('id', 'address-div');
+
+    street.setAttribute('type', 'street');
+    street.setAttribute('id', 'street');
+    street.setAttribute('placeholder', 'Street');
+
+    city.setAttribute('type', 'city');
+    city.setAttribute('id', 'city');
+    city.setAttribute('placeholder', 'City');
+
+    province.setAttribute('type', 'province');
+    province.setAttribute('id', 'province');
+    province.setAttribute('placeholder', 'Province');
+
+    addressDiv.appendChild(header);
+    addressDiv.appendChild(street);
+    addressDiv.appendChild(city);
+    addressDiv.appendChild(province);
+
+    if (userAddress) {
+        splitAddress = userAddress.split(',');
+        street.value = splitAddress[0];
+        city.value = splitAddress[1];
+        province.value = splitAddress[2];
+    }
+
+    return addressDiv;
+}
+
 function getItemPriceBySize(item, itemSize) {
     itemSize = itemSize.toLowerCase();
     switch (itemSize) {
@@ -164,5 +201,4 @@ function getItemPriceBySize(item, itemSize) {
         case 'medium': return item.mediumPrice;
         case 'large': return item.largePrice;
     }
-   
 }
