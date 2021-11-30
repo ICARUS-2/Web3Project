@@ -4,7 +4,9 @@ using MS2.Data;
 using MS2.Data.Entities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace MS2.Controllers
@@ -35,11 +37,16 @@ namespace MS2.Controllers
 
         // POST api/<OrderController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public  ActionResult<OrderEntry> Post(string entry)
         {
-
+            OrderEntry entry1 = new OrderEntry();
             bool val1 = User.Identity.IsAuthenticated;
-
+            //string jsonString;
+            //using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8))
+            //{
+            //    jsonString = await reader.ReadToEndAsync();
+            //}
+            return CreatedAtAction("GetSamurai", new { id = entry1.Id }, entry1);
         }
 
         // PUT api/<OrderController>/5

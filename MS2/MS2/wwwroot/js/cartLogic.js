@@ -20,15 +20,10 @@ let addfunc = async function () {
         alert('you must choose a size');
         return;
     }
-    console.log(sizeSelection);
 
     let cart = await ShoppingCart.getCartFromLocalStorage();
 
     cart.addItemToCart(id, sizeSelection);
-    console.log(cart);
-    //console.log( selectedSize);
-    //console.log(radioDiv);
-    //console.log(tableDataCell);
 }
 
 // for each "add to oder button" set the click listener.

@@ -1,6 +1,7 @@
 ﻿import ShoppingCart from "./ShoppingCart.js";
 await generateCartView();
 
+
 function showEmptyCartMessage() {
     let container = document.getElementsByTagName('main')[0];
     let header = document.getElementById('cart-header');
@@ -55,9 +56,8 @@ async function updateUI() {
     await generateCartView();
 }
 
-// TODO: break this up into multiple functions.
 async function generateCartView() {
-
+    // TODO: break this up into multiple functions.
     let userCart = localStorage.getItem(ShoppingCart.LOCAL_STORAGE_CART_NAME);
     let totalAmount = 0;
     let container = document.createElement('div');
@@ -147,6 +147,8 @@ async function generateCartView() {
     orderBtn.classList.add("btn","btn-success")
     orderBtn.innerText = "Check out";
 
+    orderBtn.addEventListener('click', submitOrder)
+
     checkOutDiv.appendChild(total);
     checkOutDiv.appendChild(makeAddressInput());
     checkOutDiv.appendChild(orderBtn);
@@ -201,4 +203,39 @@ function getItemPriceBySize(item, itemSize) {
         case 'medium': return item.mediumPrice;
         case 'large': return item.largePrice;
     }
+}
+
+async function submitOrder() {
+
+    let userCart = await ShoppingCart.getCartFromLocalStorage();
+    let street = document.getElementById('street').value;
+    let city = document.getElementById('city').value;
+    let province = document.getElementById('province').value;
+    let address = street + ',' + city + ',' + province;
+
+    let tempCartObject = {};
+
+    tempCartObject.address = address;
+    tempCartObject.itemQuantity = userCart.itemQuantity;
+    tempCartObject.itemSize = userCart.itemSize;
+    tempCartObject.orderItems = userCart.orderItems;
+
+
+    userCart.address = address;
+    console.log(userCart);
+    console.log(tempCartObject);
+
+
+    //await fetch(ShoppingCart.URL, {
+    //    method: 'POST',
+    //    headers: {
+    //        'Content-Type': 'application/json',
+    //    },
+    //    body: JSON.stringify(userCart),
+    //}).then((res) => {
+    //    console.log(res);
+    //}).catch((res) => {
+    //    console.log(res);
+    //})
+
 }
