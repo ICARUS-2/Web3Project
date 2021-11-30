@@ -173,5 +173,33 @@ namespace MS2.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        [HttpGet("/Favorites")]
+        async public Task<IActionResult> Favorites()
+        {
+            if (_signInManager.IsSignedIn(User))
+            {
+                var user = await _userManager.GetUserAsync(User);
+
+                var favs = _repository.GetFavsByUserId(user.Id).ToList();
+
+                List<Product> list = new List<Product>();
+
+                var prods = _repository.GetAllProducts().ToList();
+
+                foreach (Favourite f in favs)
+                {
+                    Product p = prods.Where(p => p.Id.ToString() == f.ProductId).ToList()[0];
+                    list.Add(p);
+                }
+
+                return View(list);
+            }
+            else
+            {
+                ViewData["favs"] = new List<Favourite>();
+                return View(_repository.GetAllProducts());
+            }
+        }
     }
 }
