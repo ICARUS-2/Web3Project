@@ -1,0 +1,58 @@
+﻿@model List<MS2.Data.Entities.Product>
+
+<h1>Favorites</h1>
+
+@if (Model.Count == 0)
+{
+    <p>Oops, looks like you have no favorites.</p>
+}
+else
+{
+    <div>
+        @foreach (IGrouping<string, MS2.Data.Entities.Product> ig in Model.GroupBy(p => p.Category).OrderByDescending(ig => ig.FirstOrDefault().Category))
+        {
+            <a href="#menu-item-header-@ig.FirstOrDefault().Category" class="btn-info jump-to-category">@ig.FirstOrDefault().Category</a>
+        }
+    </div>
+
+    <table class="table">
+        @foreach (IGrouping<string, MS2.Data.Entities.Product> ig in Model.GroupBy(p => p.Category).OrderByDescending(ig => ig.FirstOrDefault().Category))
+        {
+            <tr>
+                <td id="menu-item-header-@ig.FirstOrDefault().Category"><h2 id="menu-item-header-@ig.FirstOrDefault()Category">@ig.FirstOrDefault().Category</h2></td>
+            </tr>
+            @foreach (MS2.Data.Entities.Product pr in ig)
+            {
+
+                <tr>
+                    <td><img src="~/img/@(pr.ItemName).jpg" class="img-fluid" alt="@pr.ItemName" width="100" height="100" /></td>
+                    <td><h3>@pr.ItemName</h3></td>
+                    <td><h4>From @pr.SmallPrice.ToString("c")</h4></td>
+                    @if (pr.LargePrice > 0)
+                    {
+                        <td>Sizes: Small, Medium, Large</td>
+                    }
+                    else if (pr.MediumPrice < 0)
+                    {
+                        <td>Sizes: Small, Medium</td>
+                    }
+                    else
+                    {
+                        <td>Sizes: Small</td>
+                    }
+                    <td><button class="btn btn-success addToOrder">Add To Order</button></td>
+                </tr>
+            }
+        }
+    </table>
+}
+
+<style>
+    .jump-to-category {
+        padding-left: 25px;
+        padding-right: 25px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        border-radius: 10px;
+    }
+</style>
