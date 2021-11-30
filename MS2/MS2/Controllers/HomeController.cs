@@ -64,13 +64,17 @@ namespace MS2.Controllers
             {
                 var user = await _userManager.GetUserAsync(User);
 
-                var favs = _repository.GetFavsById(user.Id).ToList();
+                var favs = _repository.GetFavsByUserId(user.Id).ToList();
 
-                var products = _repository.GetAllProducts();
+                if (favs.Count == 0)
+                {
+                    favs.Add(new Favourite(user.Id, "NO FAVORITES"));
+                }
 
                 ViewData["favs"] = favs;
 
-                return View(products);
+
+                return View(_repository.GetAllProducts());
             }
             else
             {
@@ -136,9 +140,19 @@ namespace MS2.Controllers
             {
                 var user = await _userManager.GetUserAsync(User);
 
-                _repository.AddFavorite(user.Id, productID);
+                // DID USER FAVORITE?
+                var fav = _repository.DidUserFavorite(user.Id, productID);
 
-                var favs = _repository.GetFavsById(user.Id).ToList();
+                // If not, add fav. If so, remove fav.
+                if (fav.Count() == 0) _repository.AddFavorite(user.Id, productID);
+                else _repository.RemoveFav(fav.First());
+
+                var favs = _repository.GetFavsByUserId(user.Id).ToList();
+
+                if (favs.Count == 0)
+                {
+                    favs.Add(new Favourite(user.Id, "NO FAVORITES"));
+                }
 
                 ViewData["favs"] = favs;
             }

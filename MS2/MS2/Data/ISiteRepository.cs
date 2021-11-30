@@ -14,8 +14,10 @@ namespace MS2.Data
 
         public IEnumerable<Favourite> GetAllFavourites();
 
-        public IEnumerable<Favourite> GetFavsById(string userId);
+        public IEnumerable<Favourite> GetFavsByUserId(string userId);
 
         public void AddFavorite(string userID, string productID);
+        public IEnumerable<Favourite> DidUserFavorite(string id, string productID);
+        void RemoveFav(Favourite fav);
     }
 }

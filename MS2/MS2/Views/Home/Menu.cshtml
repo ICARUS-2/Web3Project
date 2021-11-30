@@ -8,10 +8,10 @@
 
 <div>
     @foreach (IGrouping<string, MS2.Data.Entities.Product> ig in Model.GroupBy(p => p.Category).OrderByDescending(ig => ig.FirstOrDefault().Category))
-            {
-                <a href="#menu-item-header-@ig.FirstOrDefault().Category" class="btn-info jump-to-category">@ig.FirstOrDefault().Category</a>
-            }
-    </div>
+    {
+        <a href="#menu-item-header-@ig.FirstOrDefault().Category" class="btn-info jump-to-category">@ig.FirstOrDefault().Category</a>
+    }
+</div>
 
 <table class="table">
     @foreach (IGrouping<string, MS2.Data.Entities.Product> ig in Model.GroupBy(p => p.Category).OrderByDescending(ig => ig.FirstOrDefault().Category))
@@ -37,20 +37,36 @@
                     <td><h4>Small: @pr.SmallPrice.ToString("c")</h4></td>
                 }
 
-            <td>
-                @using (Html.BeginForm())
+                @if ((ViewData["favs"] as List<MS2.Data.Entities.Favourite>).Count > 0)
                 {
-                    <input type="text" name="productID" value="@pr.Id" hidden />
-                    @if ((ViewData["favs"] as List<MS2.Data.Entities.Favourite>).Where(f => int.Parse(f.ProductId) == pr.Id).Count() > 0)
+                    if ((ViewData["favs"] as List<MS2.Data.Entities.Favourite>)[0].ProductId != "NO FAVORITES")
                     {
-                        <input type="submit" value="UNFAVORITE" />
+                        <td>
+                        @using (Html.BeginForm())
+                        {
+                            <input type="text" name="productID" value="@pr.Id" hidden />
+                            @if ((ViewData["favs"] as List<MS2.Data.Entities.Favourite>).Where(f => int.Parse(f.ProductId) == pr.Id).Count() > 0)
+                            {
+                                <input type="submit" value="UNFAVORITE" />
+                            }
+                            else
+                            {
+                                <input type="submit" value="FAVORITE" />
+                            }
+                        }
+                        </td>
                     }
                     else
                     {
-                        <input type="submit" value="FAVORITE" />
+                        <td>
+                        @using (Html.BeginForm())
+                        {
+                            <input type="text" name="productID" value="@pr.Id" hidden />
+                            <input type="submit" value="FAVORITE" />
+                        }
+                        </td>
                     }
                 }
-            </td>
             </tr>
         }
     }

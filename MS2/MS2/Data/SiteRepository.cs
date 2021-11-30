@@ -87,7 +87,7 @@ namespace MS2.Data
             return _context.Favourites;
         }
 
-        public IEnumerable<Favourite> GetFavsById(string userId)
+        public IEnumerable<Favourite> GetFavsByUserId(string userId)
         {
             return _context.Favourites.Where(f => f.UserId == userId);
         }
@@ -96,6 +96,17 @@ namespace MS2.Data
         {
             Favourite fav = new Favourite(userID, productID);
             _context.Favourites.Add(fav);
+            _context.SaveChanges();
+        }
+
+        public IEnumerable<Favourite> DidUserFavorite(string id, string productID)
+        {
+            return GetAllFavourites().Where(f => f.UserId.ToString() == id && f.ProductId == productID).ToList();
+        }
+
+        public void RemoveFav(Favourite fav)
+        {
+            _context.Favourites.Remove(fav);
             _context.SaveChanges();
         }
     }
