@@ -26,18 +26,21 @@ function setQtyBtnListeners() {
 async function increaseItemQty() {
     // get the div that is two nodes up the dom tree.
     let id = this.parentNode.parentNode.getAttribute("data-id");
+    let itemSize = this.parentNode.parentNode.getAttribute("data-size");
     let cart = await ShoppingCart.getCartFromLocalStorage();
 
-    cart.addItemToCart(id);
+
+    cart.addItemToCart(id,itemSize);
 
     await updateUI();
 }
 async function decreaseItemQty() {
     // get the div that is two nodes up the dom tree.
     let id = this.parentNode.parentNode.getAttribute("data-id");
+    let itemSize = this.parentNode.parentNode.getAttribute("data-size");
     let cart = await ShoppingCart.getCartFromLocalStorage();
 
-    cart.removeItemFromCart(id);
+    cart.removeItemFromCart(id,itemSize);
 
     await updateUI();
 }
@@ -48,6 +51,7 @@ async function updateUI() {
     cart = await ShoppingCart.deserializeCartData(cart);
 
     cartContainer.parentNode.removeChild(cartContainer);
+
     //for (let i = 0; i < cartItems.length; i++) {
     //    let id = cartItems[i].getAttribute('data-id');
     //    if (cart.orderItems.indexOf(id) === -1) {
@@ -92,6 +96,8 @@ async function generateCartView() {
         let addBtn = document.createElement("button");
         let removeBtn = document.createElement("button");
 
+        let itemSize = document.createElement("p");
+
         div.classList.add("cart-items");
    
         userCart.menuItems.forEach((item) => {
@@ -101,15 +107,19 @@ async function generateCartView() {
                 img.src = '/img/' + item.itemName + '.jpg';
                 img.classList.add("cart-item-image");
                 itemHeader.innerText = item.itemName;
-                itemPrice.innerText = "$" + item.smallPrice;
+                itemPrice.innerText = "$" + getItemPriceBySize(item, userCart.itemSize[i]);
                 itemPrice.classList.add("cart-info");
                 quantity.classList.add("cart-info");
                 subTotal.classList.add("cart-info");
+
+                itemSize.classList.add("cart-info");
+                itemSize.innerText = userCart.itemSize[i];
+
                 quantity.innerText = "Quantity: " + userCart.itemQuantity[i];
-                subTotal.innerText = "Sub Total: $" + dollarCADFormat.format(item.smallPrice * userCart.itemQuantity[i]);
-                totalAmount += item.smallPrice * userCart.itemQuantity[i];;
+                subTotal.innerText = "Sub Total: $" + dollarCADFormat.format(getItemPriceBySize(item, userCart.itemSize[i]) * userCart.itemQuantity[i]);
+                totalAmount += getItemPriceBySize(item, userCart.itemSize[i]) * userCart.itemQuantity[i];;
                 div.setAttribute('data-id', userCart.orderItems[i]);
-                div.setAttribute('data-size', userCart.orderItems[i]);
+                div.setAttribute('data-size', userCart.itemSize[i]);
             }
         });
         
@@ -124,10 +134,12 @@ async function generateCartView() {
 
         div.appendChild(img);
         div.appendChild(itemHeader);
+        div.appendChild(itemSize);
         div.appendChild(itemPrice);
         div.appendChild(quantity);
         div.appendChild(subTotal);
         div.appendChild(buttonDiv);
+
         container.appendChild(div);
     }
 
@@ -144,4 +156,13 @@ async function generateCartView() {
     checkOutDiv.appendChild(orderBtn);
     container.appendChild(checkOutDiv);
     setQtyBtnListeners()
+}
+function getItemPriceBySize(item, itemSize) {
+    itemSize = itemSize.toLowerCase();
+    switch (itemSize) {
+        case 'small': return item.smallPrice;
+        case 'medium': return item.mediumPrice;
+        case 'large': return item.largePrice;
+    }
+   
 }

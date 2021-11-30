@@ -1,4 +1,5 @@
-﻿export default class ShoppingCart {
+﻿
+export default class ShoppingCart {
     constructor(menuItems) {
         this.menuItems = menuItems;  // list of all possible items.
         this.orderItems = [];        // holds the id of the items.
@@ -27,6 +28,7 @@
 
         newCart.orderItems = tempCart.orderItems;
         newCart.itemQuantity = tempCart.itemQuantity;
+        newCart.itemSize = tempCart.itemSize;
 
         return newCart;
     }
@@ -39,51 +41,70 @@
         );
     }
 
-    // add size to arguments
-    addItemToCart(item) {
+    addItemToCart(item, size) {
         const DefaultQty = 1;
         if (item === null) {
             return;
         }
 
-        if (this.orderItems.includes(item)) {
-            const index = this.orderItems.indexOf(item);
-            this.itemQuantity[index]++;
-            this.updateLocalStorage();
-            return;
+        let occurrencesOfItem = this.getOccurrencesOfItem(item);
+
+        for (let i = 0; i < occurrencesOfItem.length; i++) {
+
+            let index = occurrencesOfItem[i];
+            if (this.orderItems[index] == item && this.itemSize[index] == size) {
+                this.itemQuantity[index]++;
+                this.updateLocalStorage();
+                return;
+            }
         }
 
         this.orderItems.push(item);
         this.itemQuantity.push(DefaultQty);
-        this.updateLocalStorage();
-        
+        this.itemSize.push(size);
+        this.updateLocalStorage();   
     }
 
-        // add size to arguments
-    removeItemFromCart(item) {
+    removeItemFromCart(item,size) {
         if (item === null) {
             return;
         }
 
-        if (!this.orderItems.includes(item)) {
-            return;
+        let occurrencesOfItem = this.getOccurrencesOfItem(item);
+
+        for (let i = 0; i < occurrencesOfItem.length; i++) {
+            let index = occurrencesOfItem[i];
+
+            if (this.orderItems[index] == item && this.itemSize[index] == size && this.itemQuantity[index] === 1)
+            {
+                this.orderItems.splice(index, 1);
+                this.itemQuantity.splice(index, 1);
+                this.itemSize.splice(index, 1);
+                this.updateLocalStorage();
+                return;
+            }
+
+            else if (this.orderItems[index] == item && this.itemSize[index] == size) {
+                this.itemQuantity[index]--;
+                this.updateLocalStorage();
+                return;
+            }
         }
-
-        const index = this.orderItems.indexOf(item);
-
-        if (this.itemQuantity[index] === 1) {
-            this.orderItems.splice(index, 1);
-            this.itemQuantity.splice(index, 1);
-            this.updateLocalStorage();
-            return;
-        }
-
-        this.itemQuantity[index]--;
-        this.updateLocalStorage();
     }
 
     updateLocalStorage() {
         localStorage.setItem(ShoppingCart.LOCAL_STORAGE_CART_NAME, JSON.stringify(this));
+    }
+
+    // find indexs of all occurrences of an item regardless of size.
+    getOccurrencesOfItem(item) {
+        let occurrencesOfItem = []; 
+        for (let i = 0; i < this.orderItems.length; i++) {
+            if (this.orderItems[i] == item) {
+                occurrencesOfItem.push(i);
+            }
+        }
+        return occurrencesOfItem;
     }
 
 }

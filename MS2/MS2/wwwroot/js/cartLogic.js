@@ -24,7 +24,7 @@ let addfunc = async function () {
 
     let cart = await ShoppingCart.getCartFromLocalStorage();
 
-    cart.addItemToCart(id);
+    cart.addItemToCart(id, sizeSelection);
     console.log(cart);
     //console.log( selectedSize);
     //console.log(radioDiv);
