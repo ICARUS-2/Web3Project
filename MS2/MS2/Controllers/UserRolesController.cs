@@ -129,6 +129,19 @@ namespace MS2.Controllers
             return View("CreateEmployeeFailure");
         }
 
+        [Authorize(Roles = "Owner")]
+        [HttpPost]
+        public async Task<IActionResult> Terminate(IFormCollection form)
+        {
+            ApplicationUser user = await _userManager.FindByIdAsync(form["id"]);
+            foreach (string role in await _userManager.GetRolesAsync(user))
+            {
+                if (role != "Customer")
+                    await _userManager.RemoveFromRoleAsync(user, role);
+            }
+            return await Dashboard();
+        }
+
         public async Task<IActionResult> Dashboard()
         {
             ApplicationUser user = await _userManager.FindByNameAsync(User.Identity.Name);

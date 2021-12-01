@@ -26,6 +26,7 @@
                 foreach (var user in Model)
                 {
                     List<String> roles = await UserManager.GetRolesAsync(user);
+                    var id = user.Id;
                     <tr>
                         <td>@user.Email</td>
 
@@ -34,7 +35,10 @@
                             <a class="btn btn-primary" asp-controller="UserRoles" asp-action="Manage" asp-route-userId="@user.Id">Manage Roles</a>
                         </td>
                         <td>
-                            <button class="btn btn-secondary">Terminate Employee</button>
+                            <form asp-controller="UserRoles" asp-action="Terminate" method="post">
+                                <input name="id" hidden value="@id" />
+                                <button type="submit" class="btn btn-secondary" asp-controller="UserRoles" asp-action="Terminate">Terminate Employee</button>
+                            </form>
                         </td>
                     </tr>
                 }
