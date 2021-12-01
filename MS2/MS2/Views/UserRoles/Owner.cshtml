@@ -11,12 +11,14 @@
 
 <div class="container">
     <h1>Hello Owner</h1>
+    <button class="btn btn-primary"> <a asp-controller="UserRoles" asp-action="CreateEmployee">Create Employee</a></button>
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>Email</th>
                 <th>Roles</th>
-                <th>Action</th>
+                <th>Manage Roles</th>
+                <th>Terminate</th>
             </tr>
         </thead>
         <tbody>
@@ -30,6 +32,9 @@
                         <td>@string.Join(" , ", roles)</td>
                         <td>
                             <a class="btn btn-primary" asp-controller="UserRoles" asp-action="Manage" asp-route-userId="@user.Id">Manage Roles</a>
+                        </td>
+                        <td>
+                            <button class="btn btn-secondary">Terminate Employee</button>
                         </td>
                     </tr>
                 }

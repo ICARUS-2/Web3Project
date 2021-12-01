@@ -98,6 +98,36 @@ namespace MS2.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Owner")]
+        public IActionResult CreateEmployee()
+        {
+            return View();
+        }
+        /*[Authorize(Roles = "Owner")]
+        [HttpPost]
+        public async Task<IActionResult> Create()
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return View();
+            }
+            var roles = await _userManager.GetRolesAsync(user);
+            var result = await _userManager.RemoveFromRolesAsync(user, roles);
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", "Cannot remove user existing roles");
+                return View(model);
+            }
+            result = await _userManager.AddToRolesAsync(user, model.Where(x => x.Selected).Select(y => y.RoleName));
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", "Cannot add selected roles to user");
+                return View(model);
+            }
+            return RedirectToAction("Index");
+        }*/
+
         public async Task<IActionResult> Dashboard()
         {
             ApplicationUser user = await _userManager.FindByNameAsync(User.Identity.Name);
