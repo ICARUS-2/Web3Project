@@ -133,12 +133,13 @@ namespace MS2.Controllers
         [HttpPost]
         public async Task<IActionResult> Terminate(IFormCollection form)
         {
-            ApplicationUser user = await _userManager.FindByIdAsync(form["id"]);
+            ApplicationUser user = await _userManager.FindByIdAsync(form["Id"]);
             foreach (string role in await _userManager.GetRolesAsync(user))
             {
                 if (role != "Customer")
                     await _userManager.RemoveFromRoleAsync(user, role);
             }
+            user.Status = "Employee Termination. Reason: " + form["Reason"];
             return await Dashboard();
         }
 
