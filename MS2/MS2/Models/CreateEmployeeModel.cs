@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MS2.Models
 {
-    public class CreateUserModel
+    public class CreateEmployeeModel
     {
         [Required]
         [MinLength(2, ErrorMessage = "The field First Name must be a string with a minimum length of 1 and a maximum length of 50.")]

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,7 @@ using MS2.Data.Entities;
 using MS2.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -103,30 +105,29 @@ namespace MS2.Controllers
         {
             return View();
         }
-        /*[Authorize(Roles = "Owner")]
+        [Authorize(Roles = "Owner")]
         [HttpPost]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> CreateEmployee(IFormCollection form)
         {
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
+            ApplicationUser user = new ApplicationUser()
             {
-                return View();
-            }
-            var roles = await _userManager.GetRolesAsync(user);
-            var result = await _userManager.RemoveFromRolesAsync(user, roles);
-            if (!result.Succeeded)
+                UserName = form["Email"],
+                Email = form["Email"],
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = false,
+                FirstName = form["FirstName"],
+                LastName = form["LastName"],
+                CreatedAt = DateTime.Now
+            };
+            IdentityResult createdUser = await _userManager.CreateAsync(user);
+            if (createdUser.Succeeded)
             {
-                ModelState.AddModelError("", "Cannot remove user existing roles");
-                return View(model);
+                IdentityResult createdRole = await _userManager.AddToRoleAsync(user, form["Role"]);
+                if (createdRole.Succeeded)
+                    return await Dashboard();
             }
-            result = await _userManager.AddToRolesAsync(user, model.Where(x => x.Selected).Select(y => y.RoleName));
-            if (!result.Succeeded)
-            {
-                ModelState.AddModelError("", "Cannot add selected roles to user");
-                return View(model);
-            }
-            return RedirectToAction("Index");
-        }*/
+            return View("CreateEmployeeFailure");
+        }
 
         public async Task<IActionResult> Dashboard()
         {
