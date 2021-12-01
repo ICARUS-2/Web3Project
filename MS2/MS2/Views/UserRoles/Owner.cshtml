@@ -36,7 +36,11 @@
                         </td>
                         <td>
                             <form asp-controller="UserRoles" asp-action="Terminate" method="post">
-                                <input name="id" hidden value="@id" />
+                                <div class="form-group">
+                                    <label>Reason</label>
+                                    <input name="reason" type="text" />
+                                </div>
+                                <input name="Id" hidden value="@id" />
                                 <button type="submit" class="btn btn-secondary" asp-controller="UserRoles" asp-action="Terminate">Terminate Employee</button>
                             </form>
                         </td>

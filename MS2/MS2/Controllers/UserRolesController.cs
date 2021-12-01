@@ -77,9 +77,9 @@ namespace MS2.Controllers
 
         [Authorize(Roles="Owner")]
         [HttpPost]
-        public async Task<IActionResult> Manage(List<ManageUserRolesViewModel> model, string userId)
+        public async Task<IActionResult> Manage(List<ManageUserRolesViewModel> model, IFormCollection form)
         {
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByIdAsync(form["UserId"]);
             if (user == null)
             {
                 return View();
@@ -133,12 +133,13 @@ namespace MS2.Controllers
         [HttpPost]
         public async Task<IActionResult> Terminate(IFormCollection form)
         {
-            ApplicationUser user = await _userManager.FindByIdAsync(form["id"]);
+            ApplicationUser user = await _userManager.FindByIdAsync(form["Id"]);
             foreach (string role in await _userManager.GetRolesAsync(user))
             {
                 if (role != "Customer")
                     await _userManager.RemoveFromRoleAsync(user, role);
             }
+            user.Status = "Employee Termination. Reason: " + form["Reason"];
             return await Dashboard();
         }
 
