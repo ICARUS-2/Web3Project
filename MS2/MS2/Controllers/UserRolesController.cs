@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,7 @@ using MS2.Data.Entities;
 using MS2.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -98,6 +100,48 @@ namespace MS2.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Owner")]
+        public IActionResult CreateEmployee()
+        {
+            return View();
+        }
+        [Authorize(Roles = "Owner")]
+        [HttpPost]
+        public async Task<IActionResult> CreateEmployee(IFormCollection form)
+        {
+            ApplicationUser user = new ApplicationUser()
+            {
+                UserName = form["Email"],
+                Email = form["Email"],
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = false,
+                FirstName = form["FirstName"],
+                LastName = form["LastName"],
+                CreatedAt = DateTime.Now
+            };
+            IdentityResult createdUser = await _userManager.CreateAsync(user);
+            if (createdUser.Succeeded)
+            {
+                IdentityResult createdRole = await _userManager.AddToRoleAsync(user, form["Role"]);
+                if (createdRole.Succeeded)
+                    return await Dashboard();
+            }
+            return View("CreateEmployeeFailure");
+        }
+
+        [Authorize(Roles = "Owner")]
+        [HttpPost]
+        public async Task<IActionResult> Terminate(IFormCollection form)
+        {
+            ApplicationUser user = await _userManager.FindByIdAsync(form["id"]);
+            foreach (string role in await _userManager.GetRolesAsync(user))
+            {
+                if (role != "Customer")
+                    await _userManager.RemoveFromRoleAsync(user, role);
+            }
+            return await Dashboard();
+        }
+
         public async Task<IActionResult> Dashboard()
         {
             ApplicationUser user = await _userManager.FindByNameAsync(User.Identity.Name);
@@ -105,7 +149,8 @@ namespace MS2.Controllers
 
             if (roles.Contains("Owner"))
             {
-                return View("Owner");
+
+                return View("Owner", _userManager.Users.ToList());
             }
 
             if (roles.Contains("Manager"))
