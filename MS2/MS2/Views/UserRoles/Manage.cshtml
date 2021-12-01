@@ -3,7 +3,7 @@
     ViewData["Title"] = "Manage";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<form method="post">
+<form asp-controller="UserRoles" asp-action="Manage" asp-route-id="@ViewBag.userId" method="post">
     <div class="card">
         <div class="card-header">
             <h2>Manage User Roles</h2>
@@ -24,7 +24,8 @@
             <div asp-validation-summary="All" class="text-danger"></div>
         </div>
         <div class="card-footer">
-            <input asp-controller="UserRoles" asp-action="Dashboard" type="submit" value="Update" class="btn btn-primary"
+            <input type="hidden" name="UserId" value="@ViewBag.userId"></input>
+            <input asp-controller="UserRoles" asp-route-id="@ViewBag.userId" asp-action="Manage" type="submit" value="Update" class="btn btn-primary"
                    style="width:auto" />
             <a asp-action="EditUser" asp-route-id="@ViewBag.userId"
                class="btn btn-primary" style="width:auto">Cancel</a>

@@ -77,9 +77,9 @@ namespace MS2.Controllers
 
         [Authorize(Roles="Owner")]
         [HttpPost]
-        public async Task<IActionResult> Manage(List<ManageUserRolesViewModel> model, string userId)
+        public async Task<IActionResult> Manage(List<ManageUserRolesViewModel> model, IFormCollection form)
         {
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByIdAsync(form["UserId"]);
             if (user == null)
             {
                 return View();
