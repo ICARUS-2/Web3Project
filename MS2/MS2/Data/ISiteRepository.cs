@@ -8,7 +8,7 @@ namespace MS2.Data
         IEnumerable<Product> GetAllProducts();
         IEnumerable<Product> GetProductsByCategory(string category);
         IEnumerable<Order> GetAllOrders();
-        //IEnumerable<Order> GetOrdersByUserId(string uId);
+        IEnumerable<Order> GetOrdersByUserId(string uId);
         bool SaveAll();
         public IEnumerable<JobPosting> GetAllJobPostings();
         public void InsertOrder(Order order);
