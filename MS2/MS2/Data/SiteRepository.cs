@@ -84,6 +84,7 @@ namespace MS2.Data
         public void InsertOrderEntry(OrderEntry orderEntry)
         {
             _context.OrderEntries.Add(orderEntry);
+        }
         public IEnumerable<Order> GetAllOrders()
         {
             return _context.Orders.Include(o => o.Items)

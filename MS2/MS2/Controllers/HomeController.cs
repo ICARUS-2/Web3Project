@@ -164,7 +164,7 @@ namespace MS2.Controllers
             return View(_repository.GetAllProducts());
         }
 
-        public IActionResult ShoppingCart()
+        public async Task<IActionResult> ShoppingCartAsync()
         {
             ApplicationUser user = await _userManager.GetUserAsync(User);
             if(user != null)

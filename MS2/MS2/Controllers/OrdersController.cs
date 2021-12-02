@@ -34,13 +34,6 @@ namespace MS2.Controllers
             return _repository.GetAllProducts();
         }
 
-        // GET api/<OrderController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
         // POST api/<OrderController>
         [HttpPost]
         [Consumes("application/json")]
@@ -56,16 +49,5 @@ namespace MS2.Controllers
             return CreatedAtAction("GetSamurai", new { id = order.OrderNumber }, order);
         }
 
-        // PUT api/<OrderController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<OrderController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }
