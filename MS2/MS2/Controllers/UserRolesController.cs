@@ -150,7 +150,6 @@ namespace MS2.Controllers
 
             if (roles.Contains("Owner"))
             {
-
                 return View("Owner", _userManager.Users.ToList());
             }
 
@@ -168,8 +167,11 @@ namespace MS2.Controllers
             {
                 return View("Cook");
             }
-
-            return View("Driver");
+            if (roles.Contains("Driver"))
+            {
+                return View("Driver");
+            }
+            return Redirect("~/");
         }
     }
 }
