@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MS2.Data;
@@ -11,6 +12,9 @@ using System.Threading.Tasks;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Http;
 using static MS2.Controllers.Captcha;
+using Microsoft.AspNetCore.Identity;
+using MS2.Data.Entities;
+using System.Collections;
 
 namespace MS2.Controllers
 {
@@ -19,12 +23,17 @@ namespace MS2.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IEmailSender _emailSender;
         private readonly ISiteRepository _repository;
-       
-        public HomeController(ILogger<HomeController> logger, IEmailSender sender, ISiteRepository repo)
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+
+
+        public HomeController(ILogger<HomeController> logger, IEmailSender sender, ISiteRepository repo, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _logger = logger;
             _emailSender = sender;
             _repository = repo;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         public IActionResult Index()
@@ -50,9 +59,29 @@ namespace MS2.Controllers
         }
 
         [HttpGet("/Menu")]
-        public IActionResult Menu()
+        public async Task<IActionResult> Menu()
         {
-            return View(_repository.GetAllProducts());
+            if (_signInManager.IsSignedIn(User))
+            {
+                var user = await _userManager.GetUserAsync(User);
+
+                var favs = _repository.GetFavsByUserId(user.Id).ToList();
+
+                if (favs.Count == 0)
+                {
+                    favs.Add(new Favourite(user.Id, "NO FAVORITES"));
+                }
+
+                ViewData["favs"] = favs;
+
+
+                return View(_repository.GetAllProducts());
+            }
+            else
+            {
+                ViewData["favs"] = new List<Favourite>();
+                return View(_repository.GetAllProducts());
+            }
         }
 
         [HttpGet("/Careers")]
@@ -103,15 +132,79 @@ namespace MS2.Controllers
             return View();
         }
 
-        public IActionResult ShoppingCart()
+        [HttpPost("/Menu")]
+        public async Task<IActionResult> Menu(string productID)
         {
-            return View(_repository.GetShoppingCartItems());
+            bool isLoggedIn = _signInManager.IsSignedIn(User);
+
+            if (isLoggedIn)
+            {
+                var user = await _userManager.GetUserAsync(User);
+
+                // DID USER FAVORITE?
+                var fav = _repository.DidUserFavorite(user.Id, productID);
+
+                // If not, add fav. If so, remove fav.
+                if (fav.Count() == 0) _repository.AddFavorite(user.Id, productID);
+                else _repository.RemoveFav(fav.First());
+
+                var favs = _repository.GetFavsByUserId(user.Id).ToList();
+
+                if (favs.Count == 0)
+                {
+                    favs.Add(new Favourite(user.Id, "NO FAVORITES"));
+                }
+
+                ViewData["favs"] = favs;
+            }
+            else
+            {
+                ViewData["favs"] = new List<Favourite>();
+            }
+            return View(_repository.GetAllProducts());
+        }
+
+        public async Task<IActionResult> ShoppingCartAsync()
+        {
+            ApplicationUser user = await _userManager.GetUserAsync(User);
+            if(user != null)
+                ViewBag.UserAddress = user.Address;
+            //return View(_repository.GetShoppingCartItems());
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [HttpGet("/Favorites")]
+        async public Task<IActionResult> Favorites()
+        {
+            if (_signInManager.IsSignedIn(User))
+            {
+                var user = await _userManager.GetUserAsync(User);
+
+                var favs = _repository.GetFavsByUserId(user.Id).ToList();
+
+                List<Product> list = new List<Product>();
+
+                var prods = _repository.GetAllProducts().ToList();
+
+                foreach (Favourite f in favs)
+                {
+                    Product p = prods.Where(p => p.Id.ToString() == f.ProductId).ToList()[0];
+                    list.Add(p);
+                }
+
+                return View(list);
+            }
+            else
+            {
+                ViewData["favs"] = new List<Favourite>();
+                return View(_repository.GetAllProducts());
+            }
         }
     }
 }

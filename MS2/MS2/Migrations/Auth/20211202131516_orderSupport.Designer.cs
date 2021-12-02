@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MS2.Migrations.Auth
 {
     [DbContext(typeof(AuthContext))]
-    [Migration("20211129194316_tsNameChange")]
-    partial class tsNameChange
+    [Migration("20211202131516_orderSupport")]
+    partial class orderSupport
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -77,6 +77,9 @@ namespace MS2.Migrations.Auth
                         .HasColumnType("bit");
 
                     b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")

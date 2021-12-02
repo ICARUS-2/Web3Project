@@ -43,43 +43,60 @@ namespace MS2.Data
         {
             return _context.SaveChanges() > 0;
         }
-        // this is a temporary implementation for testing
-        public IEnumerable<OrderEntry> GetShoppingCartItems()
-        {
-            List<OrderEntry> orderEntries = new List<OrderEntry>()
-            {
-                new OrderEntry()
-                {
-                    Product = GetAllProducts().ToList()[1],
-                    Quantity = 1,
-                    Size = "Large"
-                },
-                new OrderEntry()
-                {
-                    Product = GetAllProducts().ToList()[5],
-                    Quantity = 2,
-                    Size = "Small"
-                },
-                new OrderEntry()
-                {
-                    Product = GetAllProducts().ToList()[14],
-                    Quantity = 1,
-                    Size = "Large"
-                },
-            };
-
-            return orderEntries;
-        }
 
         public IEnumerable<JobPosting> GetAllJobPostings()
         {
             return _context.JobPostings;
         }
 
+        public void InsertOrder(Order order)
+        {
+            _context.Orders.Add(order);
+        }
+
+        public void InsertOrderEntry(OrderEntry orderEntry)
+        {
+            _context.OrderEntries.Add(orderEntry);
+        }
         public IEnumerable<Order> GetAllOrders()
         {
             return _context.Orders.Include(o => o.Items)
                 .ThenInclude(oi => oi.Product);
+        }
+
+        public IEnumerable<Order> GetOrdersByUserId(string uId)
+        {
+            return _context.Orders.Where(o => o.UserId == uId)
+                .Include(o => o.Items)
+                .ThenInclude(oi => oi.Product);
+        }
+
+        public IEnumerable<Favourite> GetAllFavourites()
+        {
+            return _context.Favourites;
+        }
+
+        public IEnumerable<Favourite> GetFavsByUserId(string userId)
+        {
+            return _context.Favourites.Where(f => f.UserId == userId);
+        }
+
+        public void AddFavorite(string userID, string productID)
+        {
+            Favourite fav = new Favourite(userID, productID);
+            _context.Favourites.Add(fav);
+            _context.SaveChanges();
+        }
+
+        public IEnumerable<Favourite> DidUserFavorite(string id, string productID)
+        {
+            return GetAllFavourites().Where(f => f.UserId.ToString() == id && f.ProductId == productID).ToList();
+        }
+
+        public void RemoveFav(Favourite fav)
+        {
+            _context.Favourites.Remove(fav);
+            _context.SaveChanges();
         }
     }
 }

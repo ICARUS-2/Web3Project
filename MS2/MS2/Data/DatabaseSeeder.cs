@@ -69,7 +69,7 @@ namespace MS2.Data
                             Size = "Large"
                         }
                     },
-                    Address = "Order sample address"
+                    DeliveryAddress = "Order sample address"
                 };
                 _context.Orders.Add(order);
 
