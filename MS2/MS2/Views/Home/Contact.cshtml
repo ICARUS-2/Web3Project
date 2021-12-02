@@ -6,8 +6,8 @@
 
 <h1>Contact Us</h1>
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="row pageMain">
+    <div class="col-md-4 splitUp">
         <div id="ContactInfo">
             <div>
                 <h3>SERVICE HOURS</h3>
@@ -23,7 +23,7 @@
                 <p>Phone number: <a href="tel:+15144575036">(514) 457-5036</a></p>
                 <p>Email: <a href="mailto:placeholder@email.com">placeholder@email.com</a></p>
             </div>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2801.145383763798!2d-73.9439169!3d45.4064078!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4cc938500caad3a7%3A0xd807d74a59dcffcf!2sJohn%20Abbott%20College!5e0!3m2!1sen!2sca!4v1637248351473!5m2!1sen!2sca" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2801.145383763798!2d-73.9439169!3d45.4064078!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4cc938500caad3a7%3A0xd807d74a59dcffcf!2sJohn%20Abbott%20College!5e0!3m2!1sen!2sca!4v1637248351473!5m2!1sen!2sca" width="400" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
         </div>
         <form asp-action="Contact">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -86,6 +86,7 @@
     #ContactInfo
     {
         margin-bottom: 2em;
+        margin-right: 2em;
     }
 
     #btns
@@ -102,5 +103,18 @@
     #resetBtn
     {
         margin-left: 10px;
+    }
+
+    .splitUp
+    {
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    .pageMain
+    {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
     }
 </style>
