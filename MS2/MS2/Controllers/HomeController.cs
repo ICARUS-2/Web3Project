@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MS2.Data;
@@ -163,8 +164,11 @@ namespace MS2.Controllers
             return View(_repository.GetAllProducts());
         }
 
-        public IActionResult ShoppingCart()
+        public async Task<IActionResult> ShoppingCartAsync()
         {
+            ApplicationUser user = await _userManager.GetUserAsync(User);
+            if(user != null)
+                ViewBag.UserAddress = user.Address;
             return View(_repository.GetShoppingCartItems());
         }
 

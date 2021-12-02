@@ -1,0 +1,59 @@
+﻿@model IEnumerable<MS2.Data.Entities.OrderEntry>
+
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+
+
+@if (Model.ToList().Count > 0)
+{
+    <h1>Shopping Cart</h1>
+    <div id="cart-items-container">
+        @{ double total = 0.0;}
+
+        @foreach (var item in Model)
+        {
+            <div class="cart-items">
+                <img />
+                <h3>@item.Product.ItemName </h3>
+                <h4>@item.EntryPrice.ToString("c")</h4>
+                <h4>Quantity: @item.Quantity</h4>
+                <button>+</button>
+                <button>-</button>
+            </div>
+            total += item.EntryPrice;
+        }
+
+        <h2>Total: @total.ToString("c")</h2>
+        <button>Check out</button>
+    </div>
+}
+else
+{
+    <h1>Shopping Cart - Is Empty</h1>
+    <a asp-area="" asp-controller="Home" asp-action="Order">Add items to Order</a>
+}
+
+<style>
+    h1 {
+        margin-top: 150px;
+    }
+
+    #cart-items-container {
+        border-radius: .5em;
+        border: solid grey 1px;
+        display: flex;
+        flex-direction: column;
+    }
+
+        #cart-items-container > * {
+            margin: 1em;
+        }
+
+    .cart-items {
+        border-radius: .5em;
+        border: solid grey 1px;
+        padding: 1em;
+    }
+</style>
