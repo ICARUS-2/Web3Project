@@ -63,7 +63,7 @@ namespace MS2.Controllers
         {
             if (_signInManager.IsSignedIn(User))
             {
-                var user = await _userManager.GetUserAsync(User);
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
 
                 var favs = _repository.GetFavsByUserId(user.Id).ToList();
 
