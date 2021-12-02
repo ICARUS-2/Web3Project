@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace MS2.Data.Migrations
+namespace MS2.Migrations
 {
-    public partial class ContextMerge : Migration
+    public partial class changedInhertiance : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

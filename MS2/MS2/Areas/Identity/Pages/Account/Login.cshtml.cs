@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using MS2.Data.Entities;
+using MS2.Models;
 
 namespace MS2.Areas.Identity.Pages.Account
 {
@@ -53,6 +54,9 @@ namespace MS2.Areas.Identity.Pages.Account
 
             [Display(Name = "Remember me?")]
             public bool RememberMe { get; set; }
+
+            [Display(Name = "Sign in as Employee")]
+            public bool AsEmployee { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -83,19 +87,40 @@ namespace MS2.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                if (await _userManager.IsLockedOutAsync(_userManager.Users.Where(u => u.Email == Input.Email).ToList()[0]))
+                {
+                    _logger.LogWarning("User account locked out.");
+                    return RedirectToPage("./Lockout");
+                }
                 if (result.Succeeded)
                 {
+                    if (Input.AsEmployee)
+                    {
+                        ApplicationUser user = await _userManager.FindByEmailAsync(Input.Email);
+                        List<string> roles = (List<string>)await _userManager.GetRolesAsync(user);
+                        bool isEmployee = false;
+                        foreach (string role in roles)
+                        {
+                            if (role != "Customer")
+                            {
+                                isEmployee = true;
+                                break;
+                            }
+                        }
+                        if (isEmployee)
+                        {
+                            _logger.LogInformation("Employee logged in.");
+                            return LocalRedirect(returnUrl + "UserRoles/Dashboard");
+                        }
+                        _logger.LogInformation("User not an Employee.");
+                        return RedirectToPage("./AccessDenied");
+                    }
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                    return LocalRedirect(returnUrl + "Identity/Account/Manage");
                 }
                 if (result.RequiresTwoFactor)
                 {
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToPage("./Lockout");
                 }
                 else
                 {

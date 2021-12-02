@@ -3,6 +3,7 @@
     Owner,
     Customer,
     Cashier,
-    Driver, 
-    Cook
+    Driver,
+    Cook,
+    Manager
 }

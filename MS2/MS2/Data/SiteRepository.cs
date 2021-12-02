@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using MS2.Data.Entities;
 using System;
 using System.Collections.Generic;
@@ -83,6 +84,38 @@ namespace MS2.Data
         public void InsertOrderEntry(OrderEntry orderEntry)
         {
             _context.OrderEntries.Add(orderEntry);
+        public IEnumerable<Order> GetAllOrders()
+        {
+            return _context.Orders.Include(o => o.Items)
+                .ThenInclude(oi => oi.Product);
+        }
+
+        public IEnumerable<Favourite> GetAllFavourites()
+        {
+            return _context.Favourites;
+        }
+
+        public IEnumerable<Favourite> GetFavsByUserId(string userId)
+        {
+            return _context.Favourites.Where(f => f.UserId == userId);
+        }
+
+        public void AddFavorite(string userID, string productID)
+        {
+            Favourite fav = new Favourite(userID, productID);
+            _context.Favourites.Add(fav);
+            _context.SaveChanges();
+        }
+
+        public IEnumerable<Favourite> DidUserFavorite(string id, string productID)
+        {
+            return GetAllFavourites().Where(f => f.UserId.ToString() == id && f.ProductId == productID).ToList();
+        }
+
+        public void RemoveFav(Favourite fav)
+        {
+            _context.Favourites.Remove(fav);
+            _context.SaveChanges();
         }
     }
 }
