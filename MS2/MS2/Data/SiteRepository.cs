@@ -64,6 +64,13 @@ namespace MS2.Data
                 .ThenInclude(oi => oi.Product);
         }
 
+        public IEnumerable<Order> GetOrdersByUserId(string uId)
+        {
+            return _context.Orders.Where(o => o.UserId == uId)
+                .Include(o => o.Items)
+                .ThenInclude(oi => oi.Product);
+        }
+
         public IEnumerable<Favourite> GetAllFavourites()
         {
             return _context.Favourites;

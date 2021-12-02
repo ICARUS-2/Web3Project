@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MS2.Migrations
 {
-    public partial class changedInhertiance : Migration
+    public partial class orderSupport : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -23,6 +23,20 @@ namespace MS2.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ContactModel", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Favourites",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Favourites", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -46,7 +60,9 @@ namespace MS2.Migrations
                     OrderNumber = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DeliveryAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -113,6 +129,9 @@ namespace MS2.Migrations
         {
             migrationBuilder.DropTable(
                 name: "ContactModel");
+
+            migrationBuilder.DropTable(
+                name: "Favourites");
 
             migrationBuilder.DropTable(
                 name: "JobPostings");

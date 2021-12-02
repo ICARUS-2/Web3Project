@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.UI.Services;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MS2.Data;
@@ -15,16 +16,19 @@ namespace MS2.Controllers
         private readonly ILogger<UserDataController> _logger;
         private readonly IEmailSender _emailSender;
         private readonly ISiteRepository _repository;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public UserDataController(ILogger<UserDataController> logger, IEmailSender sender, ISiteRepository repo)
+        public UserDataController(ILogger<UserDataController> logger, IEmailSender sender, ISiteRepository repo, UserManager<ApplicationUser> userManager)
         {
             _logger = logger;
             _emailSender = sender;
             _repository = repo;
+            _userManager = userManager;
         }
-        public IActionResult AllOrders()
+        public async Task<IActionResult> AllOrders()
         {
-            IEnumerable<Order> ordersByUser = _repository.GetAllOrders();
+            var user = await _userManager.GetUserAsync(User);
+            IEnumerable<Order> ordersByUser = _repository.GetOrdersByUserId(user.Id);
 
             return View(ordersByUser);
         }
