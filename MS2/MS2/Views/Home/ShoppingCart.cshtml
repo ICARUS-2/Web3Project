@@ -5,52 +5,50 @@
     ViewData["Title"] = "Shopping Cart";
 }
 
+<script type="module" src="~/js/cartLogic.js"></script>
+<script type="module" src="~/js/generateShoppingCart.js"></script>
 
-@if (Model.ToList().Count > 0)
-{
-    <h1>Shopping Cart</h1>
-    <div id="cart-items-container">
-        @{ double total = 0.0;}
+<h1 id="cart-header">Shopping Cart</h1>
+<p id="user-address">@ViewBag.UserAddress</p>
 
-        @foreach (var item in Model)
-        {
-            <div class="cart-items">
-                <img src="~/img/@(item.Product.ItemName).jpg" class="cart-item-image" />
-                <h3>@item.Product.ItemName </h3>
-                <p class="cart-info"> @((item.EntryPrice / item.Quantity).ToString("c"))</p>
-                <p class="cart-info">Quantity: @item.Quantity</p>
-                <p class="cart-info">Sub Total: @item.EntryPrice.ToString("c")</p>
-
-
-                <div>
-                    <button class="btn btn-success">+</button>
-                    <button class="btn btn-success">-</button>
-                </div>
-
-            </div>
-            total += item.EntryPrice;
-        }
-
-        <div id="check-out">
-            <h2>Total: @total.ToString("c")</h2>
-            <button class="btn btn-success">Check out</button>
-        </div>
-
+<div class="modal-container" id="modal-container">
+    <div class="modal1">
+        <h2>Order Placed Successfully!</h2>
+        <p>more text goes here</p>
+        <button class="btn btn-success addToOrder" id="modal-button">Okay</button>
     </div>
-}
-else
-{
-    <h1>Shopping Cart - Is Empty</h1>
-    <a class="btn btn-success" asp-area="" asp-controller="Home" asp-action="Order">Add items to Order</a>
-}
+</div>
 
 <style>
+    .modal-container {
+        visibility: hidden;
+        background-color: rgba(0,0,0,0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+    }
+    .modal1{
+        background-color:#ffffff;
+        width:600px;
+        max-width:100%;
+        padding: 1.5em;
+        border-radius:5px;
+        text-align:center;
+
+    }
     h1 {
         margin-top: 150px;
     }
-    .cart-info{
+
+    .cart-info {
         font-size: 1.25em;
     }
+
     #cart-items-container {
         border-radius: .5em;
         border: solid grey 1px;
@@ -62,6 +60,10 @@ else
         margin: 1em;
     }
 
+    .Qty-btn-div > * {
+        margin: .25em;
+    }
+
     .cart-items {
         margin-left: 1em;
         margin-right: 1em;
@@ -71,10 +73,18 @@ else
         padding: 1em;
         display: flex;
         flex-direction: row;
-        justify-content:space-between;
+        justify-content: space-between;
         align-items: center;
     }
-    .cart-item-image{
+
+    .cart-item-image {
         width: 150px;
+    }
+    #address-div{
+        height:10em;
+        width:250px;
+        display:flex;
+        flex-direction: column;
+        justify-content:space-between;
     }
 </style>

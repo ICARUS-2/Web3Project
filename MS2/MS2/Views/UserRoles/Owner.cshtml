@@ -1,9 +1,52 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+@using Microsoft.AspNetCore.Identity
+@using MS2.Data.Entities;
+@inject UserManager<ApplicationUser> UserManager
 @{
+    ViewData["Title"] = "Manage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="container">
     <h1>Hello Owner</h1>
+    <button class="btn btn-primary"> <a style="color:white;" asp-controller="UserRoles" asp-action="CreateEmployee">Create Employee</a></button>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>Manage Roles</th>
+                <th>Terminate</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (var user in Model)
+                {
+                    List<String> roles = await UserManager.GetRolesAsync(user);
+                    var id = user.Id;
+                    <tr>
+                        <td>@user.Email</td>
+
+                        <td>@string.Join(" , ", roles)</td>
+                        <td>
+                            <a class="btn btn-primary" asp-controller="UserRoles" asp-action="Manage" asp-route-userId="@user.Id">Manage Roles</a>
+                        </td>
+                        <td>
+                            <form asp-controller="UserRoles" asp-action="Terminate" method="post">
+                                <div class="form-group">
+                                    <label>Reason</label>
+                                    <input name="reason" type="text" />
+                                </div>
+                                <input name="Id" hidden value="@id" />
+                                <button type="submit" class="btn btn-secondary" asp-controller="UserRoles" asp-action="Terminate">Terminate Employee</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
 </div>

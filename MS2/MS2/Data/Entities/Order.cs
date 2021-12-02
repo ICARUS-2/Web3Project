@@ -14,6 +14,8 @@ namespace MS2.Data.Entities
         public DateTime OrderDate { get; set; }
         public List<OrderEntry> Items { get; set; }
         public string Status { get; set; }
+        public string DeliveryAddress { get; set; }
+        public string UserId { get; set; } 
         public string Address { get; set; }
 
         [NotMapped]
