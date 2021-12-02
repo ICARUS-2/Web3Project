@@ -205,6 +205,18 @@ function getItemPriceBySize(item, itemSize) {
     }
 }
 
+function makeOrderPlacedSuccessfully() {
+
+    let modal = document.getElementById("modal-container");
+    let okayButton = document.getElementById("modal-button");
+
+    modal.style.visibility = 'visible';
+
+    okayButton.addEventListener('click', () => {
+        modal.style.visibility = 'hidden';
+    });
+}
+
 async function submitOrder() {
 
     let userCart = await ShoppingCart.getCartFromLocalStorage();
@@ -221,21 +233,23 @@ async function submitOrder() {
     tempCartObject.orderItems = userCart.orderItems;
 
 
-    userCart.address = address;
     console.log(userCart);
     console.log(tempCartObject);
 
 
-    //await fetch(ShoppingCart.URL, {
-    //    method: 'POST',
-    //    headers: {
-    //        'Content-Type': 'application/json',
-    //    },
-    //    body: JSON.stringify(userCart),
-    //}).then((res) => {
-    //    console.log(res);
-    //}).catch((res) => {
-    //    console.log(res);
-    //})
+    const response = await fetch(ShoppingCart.URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', },
+        body: JSON.stringify(tempCartObject),
+    });
 
+    if (response.status === 201) {
+        console.log(response);
+        
+        ShoppingCart.clearCart();
+        userCart = await ShoppingCart.getInstance();
+        localStorage.setItem(ShoppingCart.LOCAL_STORAGE_CART_NAME, JSON.stringify(userCart));
+        await updateUI();
+        makeOrderPlacedSuccessfully();
+    }
 }

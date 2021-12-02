@@ -11,7 +11,36 @@
 <h1 id="cart-header">Shopping Cart</h1>
 <p id="user-address">@ViewBag.UserAddress</p>
 
+<div class="modal-container" id="modal-container">
+    <div class="modal1">
+        <h2>Order Placed Successfully!</h2>
+        <p>more text goes here</p>
+        <button class="btn btn-success addToOrder" id="modal-button">Okay</button>
+    </div>
+</div>
+
 <style>
+    .modal-container {
+        visibility: hidden;
+        background-color: rgba(0,0,0,0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+    }
+    .modal1{
+        background-color:#ffffff;
+        width:600px;
+        max-width:100%;
+        padding: 1.5em;
+        border-radius:5px;
+        text-align:center;
+
+    }
     h1 {
         margin-top: 150px;
     }

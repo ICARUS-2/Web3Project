@@ -10,5 +10,7 @@ namespace MS2.Data
         bool SaveAll();
         public IEnumerable<OrderEntry> GetShoppingCartItems();
         public IEnumerable<JobPosting> GetAllJobPostings();
+        public void InsertOrder(Order order);
+        public void InsertOrderEntry(OrderEntry orderEntry);
     }
 }

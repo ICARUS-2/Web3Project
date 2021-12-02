@@ -74,5 +74,15 @@ namespace MS2.Data
         {
             return _context.JobPostings;
         }
+
+        public void InsertOrder(Order order)
+        {
+            _context.Orders.Add(order);
+        }
+
+        public void InsertOrderEntry(OrderEntry orderEntry)
+        {
+            _context.OrderEntries.Add(orderEntry);
+        }
     }
 }

@@ -107,4 +107,8 @@ export default class ShoppingCart {
         return occurrencesOfItem;
     }
 
+    static clearCart() {
+        localStorage.removeItem(ShoppingCart.LOCAL_STORAGE_CART_NAME);
+    }
+
 }
