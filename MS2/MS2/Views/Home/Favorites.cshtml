@@ -32,17 +32,17 @@ else
                         <select name="size" class="size-selection">
                             <option value="" selected disabled hidden>Choose Size</option>
                             @if (pr.LargePrice > 0)
-                            {
+                             {
                                 <option value="Small">Small</option>
-                            }
+                             }
                             @if (pr.MediumPrice > 0)
-                            {
+                             {
                                 <option value="Medium">Medium</option>
-                            }
+                             }
                             @if (pr.SmallPrice > 0)
-                            {
+                             {
                                 <option value="Large">Large</option>
-                            }
+                             }
                         </select>
                         <button class="btn btn-success addToOrder" data-id="@pr.Id">Add To Order</button>
                     </td>
