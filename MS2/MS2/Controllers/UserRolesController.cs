@@ -128,7 +128,7 @@ namespace MS2.Controllers
         {
             if (!User.IsInRole("Manager") && !User.IsInRole("Owner"))
                 return View("AccessDenied");
-
+            const string DEFAULT_PASS = "123Pa$$word.";
             ApplicationUser user = new ApplicationUser()
             {
                 UserName = form["Email"],
@@ -139,7 +139,7 @@ namespace MS2.Controllers
                 LastName = form["LastName"],
                 CreatedAt = DateTime.Now
             };
-            IdentityResult createdUser = await _userManager.CreateAsync(user);
+            IdentityResult createdUser = await _userManager.CreateAsync(user, DEFAULT_PASS);
             if (createdUser.Succeeded)
             {
                 IdentityResult createdRole = await _userManager.AddToRoleAsync(user, form["Role"]);
