@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MS2.Data;
 using MS2.Data.Entities;
 using MS2.Models;
 using System;
@@ -17,10 +18,12 @@ namespace MS2.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public UserRolesController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        private readonly ISiteRepository _repository;
+        public UserRolesController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, ISiteRepository repo)
         {
             _roleManager = roleManager;
             _userManager = userManager;
+            _repository = repo;
         }
 
         [Authorize(Roles="Owner")]
@@ -169,7 +172,8 @@ namespace MS2.Controllers
             }
             if (roles.Contains("Driver"))
             {
-                return View("Driver");
+                var driversOrders = _repository.GetOrdersByDriverId(user.Id);
+                return View("Driver", driversOrders.Where(o=> o.Status == OrderStatus.OutForDelivery.ToString()).OrderBy(o => o.OrderDate));
             }
             return Redirect("~/");
         }

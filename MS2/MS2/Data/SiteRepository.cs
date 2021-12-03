@@ -98,5 +98,26 @@ namespace MS2.Data
             _context.Favourites.Remove(fav);
             _context.SaveChanges();
         }
+
+        public IEnumerable<Order> GetOrdersByStatus(string status)
+        {
+            return _context.Orders.Where(o => o.Status == status)
+                .Include(o => o.Items)
+                .ThenInclude(oi => oi.Product);
+        }
+
+        public IEnumerable<Order> GetOrdersByDriverId(string driverId)
+        {
+            return _context.Orders.Where(o => o.DeliveryDriverId == driverId)
+                 .Include(o => o.Items)
+                .ThenInclude(oi => oi.Product); 
+        }
+
+        public Order GetOrderByOrderNumber(int orderNum)
+        {
+            return _context.Orders.Where(o => o.OrderNumber == orderNum)
+                .Include(o => o.Items)
+               .ThenInclude(oi => oi.Product).FirstOrDefault();
+        }
     }
 }

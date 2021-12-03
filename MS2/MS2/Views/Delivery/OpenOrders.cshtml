@@ -1,0 +1,60 @@
+﻿@model IEnumerable<MS2.Data.Entities.Order>
+
+@{
+    ViewData["Title"] = "OpenOrders";
+}
+
+<h1>Your Orders</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>Products</th>
+            <th>Total Price</th>
+            <th>Delivery Address</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (MS2.Data.Entities.Order item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @foreach (MS2.Data.Entities.OrderEntry entry in item.Items)
+                    {
+                        <p>@entry.Quantity x @entry.Size @entry.Product.ItemName (@entry.EntryPrice.ToString("c"))</p>
+                    }
+                </td>
+                <td>
+                    @item.Price.ToString("c")
+                </td>
+                <td>
+                    @item.DeliveryAddress
+                </td>
+                <td>
+                    <form method="post" asp-controller="Delivery" asp-action="AssignOrder">
+                        <input name="OrderNumber" hidden value="@item.OrderNumber" />
+                        <button type="submit" class="btn-success" style="padding : 5px">Assign to Me</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

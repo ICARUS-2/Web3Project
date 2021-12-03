@@ -1,8 +1,64 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<MS2.Data.Entities.Order>
+
 @{
+    ViewData["Title"] = "Your Assigned Orders";
 }
+
 <div class="container">
-    <h1>Hello Driver</h1>
+    <h1>Assigned Deliveries</h1>
+    <br />
+    <a class="btn-info" asp-controller="Delivery" asp-action="OpenOrders" style="padding : 10px">See Available Orders</a>
+    <a class="btn-success" asp-controller="Delivery" asp-action="CompletedOrders" style="padding : 10px">Your Completed Orders</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrderNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrderDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th>Products</th>
+                <th>Total Price</th>
+                <th>Delivery Address</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (MS2.Data.Entities.Order item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @foreach (MS2.Data.Entities.OrderEntry entry in item.Items)
+                        {
+                            <p>@entry.Quantity x @entry.Size @entry.Product.ItemName (@entry.EntryPrice.ToString("c"))</p>
+                        }
+                    </td>
+                    <td>
+                        @item.Price.ToString("c")
+                    </td>
+                    <td>
+                        @item.DeliveryAddress
+                    </td>
+                    <td>
+                        <form method="post" asp-controller="Delivery" asp-action="MarkAsComplete">
+                            <input name="OrderNumber" hidden value="@item.OrderNumber" />
+                            <button type="submit" class="btn-success" style="padding : 5px">Mark as Delivered</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
