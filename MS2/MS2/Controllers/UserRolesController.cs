@@ -153,7 +153,7 @@ namespace MS2.Controllers
 
             if (roles.Contains("Owner"))
             {
-                return View("Owner", _userManager.Users.ToList());
+                return View("Owner", _userManager.Users.Where(u => u.Id != user.Id));
             }
 
             if (roles.Contains("Manager"))
