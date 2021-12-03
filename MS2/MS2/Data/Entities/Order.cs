@@ -16,6 +16,7 @@ namespace MS2.Data.Entities
         public string Status { get; set; }
         public string DeliveryAddress { get; set; }
         public string UserId { get; set; } 
+        public string DeliveryDriverId { get; set; }
 
         [NotMapped]
         public double Price

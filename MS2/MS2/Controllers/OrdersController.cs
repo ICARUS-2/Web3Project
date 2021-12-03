@@ -48,6 +48,5 @@ namespace MS2.Controllers
 
             return CreatedAtAction("GetSamurai", new { id = order.OrderNumber }, order);
         }
-
     }
 }
