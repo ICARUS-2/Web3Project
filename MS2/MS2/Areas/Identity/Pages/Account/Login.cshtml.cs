@@ -87,7 +87,20 @@ namespace MS2.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-                if (await _userManager.IsLockedOutAsync(_userManager.Users.Where(u => u.Email == Input.Email).ToList()[0]))
+
+                bool isBanned = false;
+
+                try
+                {
+                    isBanned = await _userManager.IsLockedOutAsync(_userManager.Users.Where(u => u.Email == Input.Email).FirstOrDefault());
+                }
+                catch(Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    return Page();
+                }
+
+                if (isBanned)
                 {
                     _logger.LogWarning("User account locked out.");
                     return RedirectToPage("./Lockout");
@@ -97,6 +110,8 @@ namespace MS2.Areas.Identity.Pages.Account
                     if (Input.AsEmployee)
                     {
                         ApplicationUser user = await _userManager.FindByEmailAsync(Input.Email);
+
+
                         List<string> roles = (List<string>)await _userManager.GetRolesAsync(user);
                         bool isEmployee = false;
                         foreach (string role in roles)

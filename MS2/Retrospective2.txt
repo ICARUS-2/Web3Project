@@ -1,0 +1,68 @@
+SPRINT 2 REVIEW
+
+GROUP CONSENSUS: GROUP EFFORT/INDIVIDUAL EFFORT
+
+Good: 
+	- Were a lot better with branching
+	- Productive use of lab time.
+	- Better communication this time around.
+
+Bad: 
+	- Sometimes unfinished features pushed to main.
+	- Sprint planning could have gone better.
+	- Sometimes accidentally implementing other people's features happened.
+
+
+---
+Ethan (SM)
+Good:
+	- Got everything done right away.
+	- Took on a large portion of the work (auth and user subclassing)
+Bad:
+	- Could have named branches after features.
+	- Could have read the auth requirements a little bit clearer.
+
+Phil
+Good: 	
+	- Was always on top of managing the boards.
+	- Communicated very clearly with every group member on a daily basis
+Bad: 
+	- Didn't finish all stories
+	- Poor estimation of task difficulty.
+
+Aidan
+Good:
+	- Took on a large portion of the work (order/cart system)
+	- Named branches appropriately
+Bad:
+	- Should have documented what he did, as it was somewhat complex.
+	- Commit messages could have been slightly clearer at times.
+
+Tarik
+Good:
+	- Started tasks in a timely manner, well-estimated his workload.
+	- Came up with clever solutions involving working with what we had.
+Bad:
+	- Solutions can be a bit hacky
+	- Branch names could have been clearer.
+
+
+INDIVIDUAL EVALUATIONS OF SELF AND TEAMMATE (scale on 10)
+
+	- Self: I believe I contributed a lot to this sprint, since my feature was probably the
+	most difficult one to do this sprint. I also believe that I implemented my features on time
+	and rolled out every fix necessary. Although I feel that maybe I could have read the auth
+	requirements a little bit more. (9.5/10)
+
+	- Tarik: Always got started on everything the moment he was able to when the auth was finished.
+	Features pushed to main were always very polished and bug-free. His solutions could have 
+	been a little bit less hacky though. (9.5/10)
+
+	- Phil: The features he was able to implement worked quite well, although I wish he 
+	could have started a little bit earlier as he would have been able to get all of his
+	stories finished. (8/10)
+
+	Aidan: Contributed a lot of work to the stories, as he took on the massively difficult task
+	of handling the order system on his own. His features were very well-polished and worked
+	well and bug-free. He also named his branches after his features which made the git
+	repo easier to visualize. (10/10)

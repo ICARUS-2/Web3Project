@@ -9,6 +9,9 @@ namespace MS2.Data
         IEnumerable<Product> GetProductsByCategory(string category);
         IEnumerable<Order> GetAllOrders();
         IEnumerable<Order> GetOrdersByUserId(string uId);
+        IEnumerable<Order> GetOrdersByStatus(string status);
+        IEnumerable<Order> GetOrdersByDriverId(string driverId);
+        Order GetOrderByOrderNumber(int orderNum);
         bool SaveAll();
         public IEnumerable<JobPosting> GetAllJobPostings();
         public void InsertOrder(Order order);
