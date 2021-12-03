@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MS2.Data;
@@ -26,9 +27,11 @@ namespace MS2.Controllers
             _repository = repo;
         }
 
-        [Authorize(Roles="Owner")]
         public async Task<IActionResult> Index()
         {
+            if (!User.IsInRole("Manager") && !User.IsInRole("Owner"))
+                return View("AccessDenied");
+
             var users = await _userManager.Users.ToListAsync();
             var userRolesViewModel = new List<UserRolesViewModel>();
             foreach (ApplicationUser user in users)
@@ -46,9 +49,11 @@ namespace MS2.Controllers
             return new List<string>(await _userManager.GetRolesAsync(user));
         }
 
-        [Authorize(Roles="Owner")]
         public async Task<IActionResult> Manage(string userId)
         {
+            if (!User.IsInRole("Manager") && !User.IsInRole("Owner"))
+                return View("AccessDenied");
+
             ViewBag.userId = userId;
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
@@ -60,6 +65,12 @@ namespace MS2.Controllers
             var model = new List<ManageUserRolesViewModel>();
             foreach (var role in _roleManager.Roles.ToList())
             {
+                if (User.IsInRole("Manager") && !User.IsInRole("Owner"))
+                {
+                    if (role.Name == "Owner" || role.Name == "Manager" || role.Name == "Customer")
+                        continue;
+                }
+
                 var userRolesViewModel = new ManageUserRolesViewModel
                 {
                     RoleId = role.Id,
@@ -78,10 +89,11 @@ namespace MS2.Controllers
             return View(model);
         }
 
-        [Authorize(Roles="Owner")]
         [HttpPost]
         public async Task<IActionResult> Manage(List<ManageUserRolesViewModel> model, IFormCollection form)
         {
+
+
             var user = await _userManager.FindByIdAsync(form["UserId"]);
             if (user == null)
             {
@@ -103,15 +115,20 @@ namespace MS2.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = "Owner")]
         public IActionResult CreateEmployee()
         {
+            if (!User.IsInRole("Manager") && !User.IsInRole("Owner"))
+                return View("AccessDenied");
+
             return View();
         }
-        [Authorize(Roles = "Owner")]
+
         [HttpPost]
         public async Task<IActionResult> CreateEmployee(IFormCollection form)
         {
+            if (!User.IsInRole("Manager") && !User.IsInRole("Owner"))
+                return View("AccessDenied");
+
             ApplicationUser user = new ApplicationUser()
             {
                 UserName = form["Email"],
@@ -132,10 +149,12 @@ namespace MS2.Controllers
             return View("CreateEmployeeFailure");
         }
 
-        [Authorize(Roles = "Owner")]
         [HttpPost]
         public async Task<IActionResult> Terminate(IFormCollection form)
         {
+            if (!User.IsInRole("Manager") && !User.IsInRole("Owner"))
+                return View("AccessDenied");
+
             ApplicationUser user = await _userManager.FindByIdAsync(form["Id"]);
             foreach (string role in await _userManager.GetRolesAsync(user))
             {
@@ -158,7 +177,7 @@ namespace MS2.Controllers
 
             if (roles.Contains("Manager"))
             {
-                return View("Manager");
+                return View("Manager", _userManager.Users.Where(u => u.Id != user.Id));
             }
 
             if (roles.Contains("Cashier"))

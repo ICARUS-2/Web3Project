@@ -27,7 +27,7 @@
             <input type="hidden" name="UserId" value="@ViewBag.userId"></input>
             <input asp-controller="UserRoles" asp-route-id="@ViewBag.userId" asp-action="Manage" type="submit" value="Update" class="btn btn-primary"
                    style="width:auto" />
-            <a asp-action="EditUser" asp-route-id="@ViewBag.userId"
+            <a asp-controller="UserRoles" asp-action="Dashboard"
                class="btn btn-primary" style="width:auto">Cancel</a>
         </div>
     </div>
