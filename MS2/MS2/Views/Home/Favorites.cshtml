@@ -28,26 +28,38 @@ else
                     <td><img src="~/img/@(pr.ItemName).jpg" class="img-fluid" alt="@pr.ItemName" width="100" height="100" /></td>
                     <td><h3>@pr.ItemName</h3></td>
                     <td><h4>From @pr.SmallPrice.ToString("c")</h4></td>
-                    @if (pr.LargePrice > 0)
-                    {
-                        <td>Sizes: Small, Medium, Large</td>
-                    }
-                    else if (pr.MediumPrice < 0)
-                    {
-                        <td>Sizes: Small, Medium</td>
-                    }
-                    else
-                    {
-                        <td>Sizes: Small</td>
-                    }
-                    <td><button class="btn btn-success addToOrder">Add To Order</button></td>
+                    <td class="selection-options">
+                        <select name="size" class="size-selection">
+                            <option value="" selected disabled hidden>Choose Size</option>
+                            @if (pr.LargePrice > 0)
+                            {
+                                <option value="Small">Small</option>
+                            }
+                            @if (pr.MediumPrice > 0)
+                            {
+                                <option value="Medium">Medium</option>
+                            }
+                            @if (pr.SmallPrice > 0)
+                            {
+                                <option value="Large">Large</option>
+                            }
+                        </select>
+                        <button class="btn btn-success addToOrder" data-id="@pr.Id">Add To Order</button>
+                    </td>
                 </tr>
             }
         }
     </table>
+    <script type="module" src="~/js/cartLogic.js"></script>
 }
 
 <style>
+    .selection-options {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
     .jump-to-category {
         padding-left: 25px;
         padding-right: 25px;
