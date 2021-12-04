@@ -312,6 +312,7 @@ async function submitOrder() {
     tempCartObject.itemQuantity = userCart.itemQuantity;
     tempCartObject.itemSize = userCart.itemSize;
     tempCartObject.orderItems = userCart.orderItems;
+    tempCartObject.isDelivery = userCart.isDelivery;
 
     const response = await fetch(ShoppingCart.URL, {
         method: 'POST',
