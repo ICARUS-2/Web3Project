@@ -161,8 +161,8 @@ async function generateCartView() {
    
 
     checkOutDiv.appendChild(makeAddressInput());
-    checkOutDiv.appendChild(orderBtn);
     checkOutDiv.appendChild(orderTypeDelivery);
+    checkOutDiv.appendChild(orderBtn);
     container.appendChild(checkOutDiv);
     setQtyBtnListeners();
     makeAddressInput();
@@ -197,7 +197,7 @@ function deliveryAndPickUpLogic() {
     pickupButton.addEventListener('click', async () => {
         let cart = await ShoppingCart.getCartFromLocalStorage();
         document.getElementById('address-div').style.display = 'none';
-        document.getElementById('orderTypeDelivery').style.display = 'unset';
+        document.getElementById('orderTypeDelivery').style.display = 'flex';
         cart.setIsDelivery(false);
     });
 

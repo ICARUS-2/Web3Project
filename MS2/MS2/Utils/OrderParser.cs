@@ -25,7 +25,7 @@ namespace MS2.Utils
             Order order = new Order();
             order.Items = new List<OrderEntry>();
 
-            for(int i = 0; i< this.OrderItems.Count; i++)
+            for(int i = 0; i < this.OrderItems.Count; i++)
             {
                 Product newProduct = new Product();
                 OrderEntry newEntry = new OrderEntry();
