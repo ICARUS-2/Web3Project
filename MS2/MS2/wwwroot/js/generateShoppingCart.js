@@ -63,6 +63,7 @@ async function generateCartView() {
     let container = document.createElement('div');
     let dollarCADFormat = Intl.NumberFormat('en-CA');
 
+
     if (userCart == null) {
         showEmptyCartMessage();
         return;
@@ -141,6 +142,11 @@ async function generateCartView() {
     let checkOutDiv = document.createElement("div");
     let total = document.createElement('h2');
     let orderBtn = document.createElement('button');
+    let orderTypeDelivery = document.createElement('h4');
+
+    orderTypeDelivery.innerText = 'Order Type: Pick Up';
+    orderTypeDelivery.setAttribute('id', 'orderTypeDelivery');
+    orderTypeDelivery.style.display = 'none';
 
     checkOutDiv.setAttribute('id', 'check-out');
     total.innerText = "Total: $" + dollarCADFormat.format(totalAmount);
@@ -150,21 +156,101 @@ async function generateCartView() {
     orderBtn.addEventListener('click', submitOrder)
 
     checkOutDiv.appendChild(total);
+    checkOutDiv.appendChild(makeDeliveryOptions());
+
+   
+
     checkOutDiv.appendChild(makeAddressInput());
     checkOutDiv.appendChild(orderBtn);
+    checkOutDiv.appendChild(orderTypeDelivery);
     container.appendChild(checkOutDiv);
-    setQtyBtnListeners()
-    makeAddressInput()
+    setQtyBtnListeners();
+    makeAddressInput();
+    deliveryAndPickUpLogic();
+}
+
+function makeDeliveryOptions() {
+    let deliveryOptionDiv = document.createElement('div');
+    let pickupButton = document.createElement('button');
+    let deliveryButton = document.createElement('button');
+
+    deliveryButton.style.margin = '1em';
+
+    pickupButton.setAttribute('id', 'pick-up-button');
+    deliveryButton.setAttribute('id', 'delivery-button');
+
+    pickupButton.classList.add("btn", "btn-success");
+    deliveryButton.classList.add("btn", "btn-success");
+    deliveryOptionDiv.appendChild(pickupButton);
+    deliveryOptionDiv.appendChild(deliveryButton);
+
+    pickupButton.innerText = 'Pick Up';
+    deliveryButton.innerText ='Delivery'
+
+    return deliveryOptionDiv;
+}
+
+function deliveryAndPickUpLogic() {
+    let pickupButton = document.getElementById('pick-up-button');
+    let deliveryButton = document.getElementById('delivery-button');
+
+    pickupButton.addEventListener('click', async () => {
+        let cart = await ShoppingCart.getCartFromLocalStorage();
+        document.getElementById('address-div').style.display = 'none';
+        document.getElementById('orderTypeDelivery').style.display = 'unset';
+        cart.setIsDelivery(false);
+    });
+
+    deliveryButton.addEventListener('click', async () => {
+        let cart = await ShoppingCart.getCartFromLocalStorage();
+        document.getElementById('address-div').style.display = 'flex';
+        document.getElementById('orderTypeDelivery').style.display = 'none';
+        cart.setIsDelivery(true);
+    })
+}
+
+function makeCitySelection() {
+    let citySelection = document.createElement('select');
+    citySelection.setAttribute('id', 'city-selection');
+
+    let cities = [
+        "Sainte-Anne-De-Bellevue",
+        "Baie-D'Urfé",
+        "Senneville",
+        "Kirkland Dollard-Des-Ormeaux",
+        "Beaconsfield Pierrefonds and Roxboro",
+        "L'Île-Bizard–Sainte-Geneviève",
+        "Pointe-Claire",
+        "Dorval"
+    ];
+
+    let defaultOption = document.createElement('option');
+    defaultOption.innerText = 'Choose City';
+    defaultOption.setAttribute('selected','');
+    defaultOption.setAttribute('disabled','');
+    defaultOption.setAttribute('hidden','');
+    citySelection.appendChild(defaultOption);
+
+    for (let i = 0; i < cities.length; i++) {
+        let tempOption = document.createElement('option');
+        tempOption.value = cities[i];
+        tempOption.text = cities[i];
+        citySelection.appendChild(tempOption);
+    }
+
+    return citySelection;
 }
 
 function makeAddressInput() {
     let userAddress = document.getElementById("user-address").innerText;
-    let splitAddress = "";
     let street = document.createElement('input');
-    let city = document.createElement('input');
-    let province = document.createElement('input');
     let header = document.createElement('h4');
     let addressDiv = document.createElement('div');
+    let postalCode = document.createElement('input');
+
+    addressDiv.style.display = 'none';
+
+    let citySelection = makeCitySelection();
 
     header.innerText = 'Delivery Address';
     addressDiv.setAttribute('id', 'address-div');
@@ -173,24 +259,18 @@ function makeAddressInput() {
     street.setAttribute('id', 'street');
     street.setAttribute('placeholder', 'Street');
 
-    city.setAttribute('type', 'city');
-    city.setAttribute('id', 'city');
-    city.setAttribute('placeholder', 'City');
-
-    province.setAttribute('type', 'province');
-    province.setAttribute('id', 'province');
-    province.setAttribute('placeholder', 'Province');
+    postalCode.setAttribute('type', 'postalCode');
+    postalCode.setAttribute('id', 'postalCode');
+    postalCode.setAttribute('placeholder', 'Postal Code');
 
     addressDiv.appendChild(header);
     addressDiv.appendChild(street);
-    addressDiv.appendChild(city);
-    addressDiv.appendChild(province);
+    addressDiv.appendChild(postalCode);
+    addressDiv.appendChild(citySelection);
+
 
     if (userAddress) {
-        splitAddress = userAddress.split(',');
-        street.value = splitAddress[0];
-        city.value = splitAddress[1];
-        province.value = splitAddress[2];
+
     }
 
     return addressDiv;
@@ -221,9 +301,10 @@ async function submitOrder() {
 
     let userCart = await ShoppingCart.getCartFromLocalStorage();
     let street = document.getElementById('street').value;
-    let city = document.getElementById('city').value;
-    let province = document.getElementById('province').value;
-    let address = street + ',' + city + ',' + province;
+    let postalCode = document.getElementById('postalCode').value;
+    let selectedCity = document.getElementById('city-selection').value;
+
+    let address = street + ',' + selectedCity + ',' + postalCode;
 
     let tempCartObject = {};
 
@@ -232,11 +313,6 @@ async function submitOrder() {
     tempCartObject.itemSize = userCart.itemSize;
     tempCartObject.orderItems = userCart.orderItems;
 
-
-    console.log(userCart);
-    console.log(tempCartObject);
-
-
     const response = await fetch(ShoppingCart.URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', },
@@ -244,8 +320,6 @@ async function submitOrder() {
     });
 
     if (response.status === 201) {
-        console.log(response);
-        
         ShoppingCart.clearCart();
         userCart = await ShoppingCart.getInstance();
         localStorage.setItem(ShoppingCart.LOCAL_STORAGE_CART_NAME, JSON.stringify(userCart));

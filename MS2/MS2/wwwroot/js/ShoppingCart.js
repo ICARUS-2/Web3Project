@@ -5,6 +5,7 @@ export default class ShoppingCart {
         this.orderItems = [];        // holds the id of the items.
         this.itemQuantity = [];      // holds qty of items.
         this.itemSize = [];
+        this.isDelivery = true;
     }
 
     static instance = null;
@@ -39,6 +40,11 @@ export default class ShoppingCart {
                 ShoppingCart.LOCAL_STORAGE_CART_NAME
             )
         );
+    }
+
+    setIsDelivery(isDelivery) {
+        this.isDelivery = isDelivery;
+        this.updateLocalStorage();
     }
 
     addItemToCart(item, size) {
