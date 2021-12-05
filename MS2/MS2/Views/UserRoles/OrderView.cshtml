@@ -4,24 +4,31 @@
 @{
 }
 @using MS2.Data.Entities
-@model List<Order>
+@model Order
 
 <div class="container">
-    <h1>Hello Cook</h1>
+    <h1>Order #@Model.OrderNumber items</h1>
+    <a class="btn btn-primary" asp-controller="UserRoles" asp-action="Dashboard">Return to dashboard</a>
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Order #</th>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Size</th>
                 <th>Preparing</th>
                 <th>Complete</th>
             </tr>
         </thead>
         <tbody>
             @{
-                foreach (var order in Model)
+                foreach (var item in Model.Items)
                 {
                         <tr>
-                            <td><a class="btn btn-primary" asp-controller="UserRoles" asp-action="OrderView" asp-route-id="@order.OrderNumber.ToString()">@order.OrderNumber.ToString()</a></td>
+                            <td>@item.Product.ItemName</td>
+
+                            <td>@item.Quantity</td>
+
+                            <td>@item.Size</td>
 
                             <td><input type="checkbox" /></td>
 

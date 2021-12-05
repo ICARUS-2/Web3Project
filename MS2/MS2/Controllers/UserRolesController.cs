@@ -187,7 +187,7 @@ namespace MS2.Controllers
 
             if (roles.Contains("Cook"))
             {
-                return View("Cook");
+                return View("Cook", _repository.GetOrdersByStatus("Ordered").ToList());
             }
             if (roles.Contains("Driver"))
             {
@@ -195,6 +195,14 @@ namespace MS2.Controllers
                 return View("Driver", driversOrders.Where(o=> o.Status == OrderStatus.OutForDelivery.ToString()).OrderBy(o => o.OrderDate));
             }
             return Redirect("~/");
+        }
+
+        [HttpGet]
+        [Route("/UserRoles/OrderView/{orderNumber}")]
+        public IActionResult OrderView(int orderNumber)
+        {
+            Order order = _repository.GetOrderByOrderNumber(orderNumber);
+            return View(order);
         }
     }
 }
