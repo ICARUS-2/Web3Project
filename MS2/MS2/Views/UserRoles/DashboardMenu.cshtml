@@ -1,0 +1,25 @@
+﻿<h1 style="text-align:center">@ViewData["Title"]</h1>
+
+<div id="container">
+    <a class="link-btn" asp-controller="UserRoles" asp-action="Dashboard">Users</a>
+    <a class="link-btn" asp-controller="UserRoles" asp-action="OrdersDashboard">Orders</a>
+</div>
+
+
+<style>
+    .link-btn
+    {
+        background-color: forestgreen;
+        color: white;
+        padding: 20px;
+        margin: 10px;
+        border-radius: 5px;
+    }
+
+    #container
+    {
+        display: flex;
+        align-content: space-between;
+        justify-content: center;
+    }
+</style>

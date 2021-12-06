@@ -165,6 +165,18 @@ namespace MS2.Controllers
             return await Dashboard();
         }
 
+        public IActionResult DashboardMenu()
+        {
+            ViewData["Title"] = "DASHBOARD";
+            return View("DashboardMenu");
+        }
+
+        public IActionResult OrdersDashboard()
+        {
+            ViewData["Title"] = "ORDERS DASHBOARD";
+            return View("OrdersDashboard");
+        }
+
         public async Task<IActionResult> Dashboard()
         {
             ApplicationUser user = await _userManager.FindByNameAsync(User.Identity.Name);
