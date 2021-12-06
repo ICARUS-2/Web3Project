@@ -22,10 +22,39 @@
                 {
                         <tr>
                             <td><a class="btn btn-primary" asp-controller="UserRoles" asp-action="OrderView" asp-route-id="@order.OrderNumber.ToString()">@order.OrderNumber.ToString()</a></td>
+                            @{
+                                bool allPreparing = true;
+                                foreach (OrderEntry item in order.Items)
+                                {
+                                    if (item.PreparingTS == null)
+                                        allPreparing = false;
+                                }
+                                if (allPreparing)
+                                {
+                                    <td><input checked type="checkbox" /></td>
+                                }
+                                else
+                                {
+                                    <td><input type="checkbox" /></td>
+                                }
+                            }
 
-                            <td><input type="checkbox" /></td>
-
-                            <td><input type="checkbox" /></td>
+                            @{
+                                bool allCompleted = true;
+                                foreach (OrderEntry item in order.Items)
+                                {
+                                    if (item.CompletedTS == null)
+                                        allCompleted = false;
+                                }
+                                if (allCompleted)
+                                {
+                                    <td><input checked type="checkbox" /></td>
+                                }
+                                else
+                                {
+                                    <td><input type="checkbox" /></td>
+                                }
+                            }
                         </tr>
                 }
             }
