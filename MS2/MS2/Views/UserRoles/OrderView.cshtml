@@ -1,0 +1,75 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@using MS2.Data.Entities
+@model Order
+
+<div class="container">
+    <h1>Order #@Model.OrderNumber items</h1>
+    <a class="btn btn-primary" asp-controller="UserRoles" asp-action="Dashboard">Return to dashboard</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Size</th>
+                <th>Preparing</th>
+                <th>Complete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (var item in Model.Items)
+                {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.Product.ItemName</td>
+                            <td>@item.Quantity</td>
+                            <td>@item.Size</td>
+
+
+                            @if (item.PreparingTS != null)
+                            {
+                                <td>
+                                    <form asp-controller="UserRoles" asp-action="OnPrepClick" asp-route-id="@Model.OrderNumber">
+                                        <input hidden name="ItemId" value="@Model.Items.IndexOf(item)" />
+                                        <input checked onchange="this.form.submit()" name="preparing" type="checkbox" />
+                                    </form>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <form asp-controller="UserRoles" asp-action="OnPrepClick" asp-route-id="@Model.OrderNumber">
+                                        <input hidden name="ItemId" value="@Model.Items.IndexOf(item)" />
+                                        <input onchange="this.form.submit()" name="preparing" type="checkbox" />
+                                    </form>
+                                </td>
+                            }
+                            @if (item.CompletedTS != null)
+                            {
+                                <td>
+                                    <form asp-controller="UserRoles" asp-action="OnCompleteClick" asp-route-id="@Model.OrderNumber">
+                                        <input hidden name="ItemId" value="@Model.Items.IndexOf(item)" />
+                                        <input checked onchange="this.form.submit()" name="complete" type="checkbox" />
+                                    </form>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <form asp-controller="UserRoles" asp-action="OnCompleteClick" asp-route-id="@Model.OrderNumber">
+                                        <input hidden name="ItemId" value="@Model.Items.IndexOf(item)" />
+                                        <input onchange="this.form.submit()" name="complete" type="checkbox" />
+                                    </form>
+                                </td>
+                            }
+                            </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

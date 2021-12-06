@@ -3,6 +3,78 @@
 *@
 @{
 }
+@using MS2.Data.Entities
+@model List<Order>
+
 <div class="container">
     <h1>Hello Cook</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Order #</th>
+                <th>Preparing All</th>
+                <th>Complete All</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (var order in Model)
+                {
+                        <tr>
+                            <td><a class="btn btn-primary" asp-controller="UserRoles" asp-action="OrderView" asp-route-id="@order.OrderNumber">@order.OrderNumber</a></td>
+                            @{
+                                bool allPreparing = true;
+                                foreach (OrderEntry item in order.Items)
+                                {
+                                    if (item.PreparingTS == null)
+                                        allPreparing = false;
+                                }
+                                if (allPreparing)
+                                {
+                                    <td>
+                                        <form asp-controller="UserRoles" asp-action="OnPrepClickAll" asp-route-id="@order.OrderNumber">
+                                            <input checked onchange="this.form.submit()" name="preparing" type="checkbox" />
+                                        </form>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <form asp-controller="UserRoles" asp-action="OnPrepClickAll" asp-route-id="@order.OrderNumber">
+                                            <input onchange="this.form.submit()" name="preparing" type="checkbox" />
+                                        </form>
+
+                                    </td>
+                                }
+                            }
+
+                            @{
+                                bool allCompleted = true;
+                                foreach (OrderEntry item in order.Items)
+                                {
+                                    if (item.CompletedTS == null)
+                                        allCompleted = false;
+                                }
+                                if (allCompleted)
+                                {
+                                    <td>
+                                        <form asp-controller="UserRoles" asp-action="OnCompleteClickAll" asp-route-id="@order.OrderNumber">
+                                            <input checked onchange="this.form.submit()" name="complete" type="checkbox" />
+                                        </form>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <form asp-controller="UserRoles" asp-action="OnCompleteClickAll" asp-route-id="@order.OrderNumber">
+                                            <input onchange="this.form.submit()" name="complete" type="checkbox" />
+                                        </form>
+                                    </td>
+                                }
+                            }
+                        </tr>
+                }
+            }
+        </tbody>
+    </table>
 </div>

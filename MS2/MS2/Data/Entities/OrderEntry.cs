@@ -32,5 +32,8 @@ namespace MS2.Data.Entities
                 return 0;
             }
         }
+
+        public DateTime? PreparingTS { get; set; }
+        public DateTime? CompletedTS { get; set; }
     }
 }

@@ -128,7 +128,7 @@ namespace MS2.Controllers
         {
             if (!User.IsInRole("Manager") && !User.IsInRole("Owner"))
                 return View("AccessDenied");
-
+            const string DEFAULT_PASS = "123Pa$$word.";
             ApplicationUser user = new ApplicationUser()
             {
                 UserName = form["Email"],
@@ -139,7 +139,7 @@ namespace MS2.Controllers
                 LastName = form["LastName"],
                 CreatedAt = DateTime.Now
             };
-            IdentityResult createdUser = await _userManager.CreateAsync(user);
+            IdentityResult createdUser = await _userManager.CreateAsync(user, DEFAULT_PASS);
             if (createdUser.Succeeded)
             {
                 IdentityResult createdRole = await _userManager.AddToRoleAsync(user, form["Role"]);
@@ -187,7 +187,7 @@ namespace MS2.Controllers
 
             if (roles.Contains("Cook"))
             {
-                return View("Cook");
+                return View("Cook", _repository.GetOrdersByStatus("Ordered").ToList());
             }
             if (roles.Contains("Driver"))
             {
@@ -195,6 +195,94 @@ namespace MS2.Controllers
                 return View("Driver", driversOrders.Where(o=> o.Status == OrderStatus.OutForDelivery.ToString()).OrderBy(o => o.OrderDate));
             }
             return Redirect("~/");
+        }
+
+        [HttpGet]
+        [Route("/UserRoles/OrderView/{orderNumber}")]
+        public IActionResult OrderView(int orderNumber)
+        {
+            Order order = _repository.GetOrderByOrderNumber(orderNumber);
+            return View(order);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Cook")]
+        [Route("/UserRoles/OnPrepClick/{orderNumber}")]
+        public IActionResult OnPrepClick(int orderNumber, IFormCollection form)
+        {
+            string prep = form["preparing"];
+
+            int itemIndex = int.Parse(form["ItemId"]);
+            Order order = _repository.GetOrderByOrderNumber(orderNumber);
+            OrderEntry entry = order.Items[itemIndex];
+
+            if (prep != null)
+                entry.PreparingTS = DateTime.Now;
+            else
+                entry.PreparingTS = null;
+
+            _repository.SaveAll();
+            return Redirect($"~/UserRoles/OrderView/{orderNumber}");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Cook")]
+        [Route("/UserRoles/OnCompleteClick/{orderNumber}")]
+        public IActionResult OnCompleteClick(int orderNumber, IFormCollection form)
+        {
+            string prep = form["complete"];
+
+            int itemIndex = int.Parse(form["ItemId"]);
+            Order order = _repository.GetOrderByOrderNumber(orderNumber);
+            OrderEntry entry = order.Items[itemIndex];
+
+            if (prep != null)
+                entry.CompletedTS = DateTime.Now;
+            else
+                entry.CompletedTS = null;
+
+            _repository.SaveAll();
+            return Redirect($"~/UserRoles/OrderView/{orderNumber}");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Cook")]
+        [Route("/UserRoles/OnPrepClickAll/{orderNumber}")]
+        public IActionResult OnPrepClickAll(int orderNumber, IFormCollection form)
+        {
+            string prep = form["preparing"];
+
+            Order order = _repository.GetOrderByOrderNumber(orderNumber);
+
+            if (prep != null)
+                foreach (OrderEntry entry in order.Items)
+                    entry.PreparingTS = DateTime.Now;
+            else
+                foreach (OrderEntry entry in order.Items)
+                    entry.PreparingTS = null;
+
+            _repository.SaveAll();
+            return Redirect($"~/UserRoles/Dashboard");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Cook")]
+        [Route("/UserRoles/OnCompleteClickAll/{orderNumber}")]
+        public IActionResult OnCompleteClickAll(int orderNumber, IFormCollection form)
+        {
+            string prep = form["complete"];
+
+            Order order = _repository.GetOrderByOrderNumber(orderNumber);
+
+            if (prep != null)
+                foreach (OrderEntry entry in order.Items)
+                    entry.CompletedTS = DateTime.Now;
+            else
+                foreach (OrderEntry entry in order.Items)
+                    entry.CompletedTS = null;
+
+            _repository.SaveAll();
+            return Redirect($"~/UserRoles/Dashboard");
         }
     }
 }

@@ -12,6 +12,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace MS2.Controllers
 {
@@ -21,10 +22,12 @@ namespace MS2.Controllers
     {
         private readonly ISiteRepository _repository;
         private readonly UserManager<ApplicationUser> _userManager;
-        public OrdersController(ISiteRepository repository, UserManager<ApplicationUser> userManager)
+        private readonly IEmailSender _emailSender;
+        public OrdersController(ISiteRepository repository, UserManager<ApplicationUser> userManager, IEmailSender emailSender)
         {
             _repository = repository;
             _userManager = userManager;
+            _emailSender = emailSender;
         }
 
         // GET: api/<OrderController>
@@ -45,6 +48,13 @@ namespace MS2.Controllers
 
             _repository.InsertOrder(order);
             _repository.SaveAll();
+
+
+            ApplicationUser user = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            string message = order.ToHtmlText();
+
+            await _emailSender.SendEmailAsync(user.Email, $"Order Report", message);
 
             return CreatedAtAction("CreateOrder", new { id = order.OrderNumber }, order);
         }
