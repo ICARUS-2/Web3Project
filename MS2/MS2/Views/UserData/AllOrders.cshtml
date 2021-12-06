@@ -20,6 +20,7 @@
             </th>
             <th>Products</th>
             <th>Total Price</th>
+            <th>Type</th>
             <th>Delivery Address</th>
         </tr>
     </thead>
@@ -43,6 +44,9 @@
             </td>
             <td>
                 @item.Price.ToString("c")
+            </td>
+            <td>
+                @item.OrderType
             </td>
             <td>
                 @item.DeliveryAddress
