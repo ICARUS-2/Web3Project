@@ -24,6 +24,7 @@ namespace MS2.Utils
 
             Order order = new Order();
             order.Items = new List<OrderEntry>();
+            string[] orderTypes = { "Pick Up", "Delivery" };
 
             for(int i = 0; i < this.OrderItems.Count; i++)
             {
@@ -39,6 +40,7 @@ namespace MS2.Utils
                 order.Items.Add(newEntry);
             }
             order.DeliveryAddress = this.IsDelivery ? this.Address : string.Empty;
+            order.OrderType = this.IsDelivery ? orderTypes[1] : orderTypes[0];
             order.OrderDate = DateTime.Now;
             order.Status = OrderStatus.Ordered.ToString();
 

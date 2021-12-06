@@ -30,6 +30,7 @@ export default class ShoppingCart {
         newCart.orderItems = tempCart.orderItems;
         newCart.itemQuantity = tempCart.itemQuantity;
         newCart.itemSize = tempCart.itemSize;
+        newCart.isDelivery = tempCart.isDelivery;
 
         return newCart;
     }

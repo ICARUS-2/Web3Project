@@ -217,7 +217,8 @@ function makeCitySelection() {
         "Sainte-Anne-De-Bellevue",
         "Baie-D'Urfé",
         "Senneville",
-        "Kirkland Dollard-Des-Ormeaux",
+        "Kirkland",
+        "Dollard-Des-Ormeaux",
         "Beaconsfield Pierrefonds and Roxboro",
         "L'Île-Bizard–Sainte-Geneviève",
         "Pointe-Claire",
@@ -230,6 +231,7 @@ function makeCitySelection() {
     defaultOption.setAttribute('disabled','');
     defaultOption.setAttribute('hidden','');
     citySelection.appendChild(defaultOption);
+    citySelection.setAttribute('type', 'City');
 
     for (let i = 0; i < cities.length; i++) {
         let tempOption = document.createElement('option');
