@@ -26,7 +26,7 @@ namespace MS2.Controllers
         {
             var allOrders = _repository.GetOrdersByStatus(OrderStatus.Ordered.ToString());
 
-            return View(allOrders);
+            return View(allOrders.Where(o => o.OrderType == "Delivery"));
         }
 
         [Authorize(Roles = "Driver")]

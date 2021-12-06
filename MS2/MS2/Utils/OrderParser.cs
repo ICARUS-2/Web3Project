@@ -14,6 +14,7 @@ namespace MS2.Utils
         public List<int> ItemQuantity { get; set; }
         public List<string> ItemSize { get; set; }
         public List<string> OrderItems { get; set; }
+        public bool IsDelivery { get; set; }
 
 
         public Order ParseOrder(ISiteRepository repository)
@@ -23,8 +24,9 @@ namespace MS2.Utils
 
             Order order = new Order();
             order.Items = new List<OrderEntry>();
+            string[] orderTypes = { "Pick Up", "Delivery" };
 
-            for(int i = 0; i< this.OrderItems.Count; i++)
+            for(int i = 0; i < this.OrderItems.Count; i++)
             {
                 Product newProduct = new Product();
                 OrderEntry newEntry = new OrderEntry();
@@ -37,7 +39,8 @@ namespace MS2.Utils
 
                 order.Items.Add(newEntry);
             }
-            order.DeliveryAddress = this.Address;
+            order.DeliveryAddress = this.IsDelivery ? this.Address : string.Empty;
+            order.OrderType = this.IsDelivery ? orderTypes[1] : orderTypes[0];
             order.OrderDate = DateTime.Now;
             order.Status = OrderStatus.Ordered.ToString();
 
