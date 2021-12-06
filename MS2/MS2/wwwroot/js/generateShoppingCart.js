@@ -299,12 +299,26 @@ function makeOrderPlacedSuccessfully() {
     });
 }
 
+function validateAddress(street, selectedCity, postalCode) {
+
+    if (street == "" || postalCode == "" || selectedCity == "Choose City") {
+        return false;
+    }
+
+    return true;
+}
+
 async function submitOrder() {
 
     let userCart = await ShoppingCart.getCartFromLocalStorage();
     let street = document.getElementById('street').value;
     let postalCode = document.getElementById('postalCode').value;
     let selectedCity = document.getElementById('city-selection').value;
+
+    if (!validateAddress(street, selectedCity, postalCode) && userCart.isDelivery) {
+        alert("Invalid Delivery Address");
+        return;
+    }
 
     let address = street + ',' + selectedCity + ',' + postalCode;
 

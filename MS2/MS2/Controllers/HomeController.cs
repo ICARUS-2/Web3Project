@@ -169,7 +169,7 @@ namespace MS2.Controllers
             ApplicationUser user = await _userManager.GetUserAsync(User);
             if(user != null)
                 ViewBag.UserAddress = user.Address;
-            //return View(_repository.GetShoppingCartItems());
+
             return View();
         }
 

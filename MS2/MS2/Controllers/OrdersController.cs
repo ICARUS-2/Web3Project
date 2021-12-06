@@ -46,7 +46,7 @@ namespace MS2.Controllers
             _repository.InsertOrder(order);
             _repository.SaveAll();
 
-            return CreatedAtAction("GetSamurai", new { id = order.OrderNumber }, order);
+            return CreatedAtAction("CreateOrder", new { id = order.OrderNumber }, order);
         }
     }
 }
