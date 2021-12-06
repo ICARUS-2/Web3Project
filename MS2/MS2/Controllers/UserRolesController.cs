@@ -204,5 +204,45 @@ namespace MS2.Controllers
             Order order = _repository.GetOrderByOrderNumber(orderNumber);
             return View(order);
         }
+
+        [HttpPost]
+        [Authorize(Roles = "Cook")]
+        [Route("/UserRoles/OnPrepClick/{orderNumber}")]
+        public IActionResult OnPrepClick(int orderNumber, IFormCollection form)
+        {
+            string prep = form["preparing"];
+
+            int itemIndex = int.Parse(form["ItemId"]);
+            Order order = _repository.GetOrderByOrderNumber(orderNumber);
+            OrderEntry entry = order.Items[itemIndex];
+
+            if (prep != null)
+                entry.PreparingTS = DateTime.Now;
+            else
+                entry.PreparingTS = null;
+
+            _repository.SaveAll();
+            return Redirect($"~/UserRoles/OrderView/{orderNumber}");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Cook")]
+        [Route("/UserRoles/OnCompleteClick/{orderNumber}")]
+        public IActionResult OnCompleteClick(int orderNumber, IFormCollection form)
+        {
+            string prep = form["complete"];
+
+            int itemIndex = int.Parse(form["ItemId"]);
+            Order order = _repository.GetOrderByOrderNumber(orderNumber);
+            OrderEntry entry = order.Items[itemIndex];
+
+            if (prep != null)
+                entry.CompletedTS = DateTime.Now;
+            else
+                entry.CompletedTS = null;
+
+            _repository.SaveAll();
+            return Redirect($"~/UserRoles/OrderView/{orderNumber}");
+        }
     }
 }
