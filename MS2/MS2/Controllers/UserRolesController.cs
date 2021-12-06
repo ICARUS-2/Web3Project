@@ -172,12 +172,14 @@ namespace MS2.Controllers
 
             if (roles.Contains("Owner"))
             {
+                //return View("Owner", _userManager.Users);
                 return View("Owner", _userManager.Users.Where(u => u.Id != user.Id));
             }
 
             if (roles.Contains("Manager"))
             {
                 return View("Manager", _userManager.Users.Where(u => u.Id != user.Id));
+                //return View("Manager", _userManager.Users);
             }
 
             if (roles.Contains("Cashier"))
