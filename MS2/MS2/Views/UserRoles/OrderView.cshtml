@@ -30,39 +30,44 @@
                             <td>@item.Quantity</td>
                             <td>@item.Size</td>
 
-                            <td>
-                                @if (item.PreparingTS != null)
-                                {
+
+                            @if (item.PreparingTS != null)
+                            {
+                                <td>
                                     <form asp-controller="UserRoles" asp-action="OnPrepClick" asp-route-id="@Model.OrderNumber">
                                         <input hidden name="ItemId" value="@Model.Items.IndexOf(item)" />
                                         <input checked onchange="this.form.submit()" name="preparing" type="checkbox" />
                                     </form>
-                                }
-                                else
-                                {
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
                                     <form asp-controller="UserRoles" asp-action="OnPrepClick" asp-route-id="@Model.OrderNumber">
                                         <input hidden name="ItemId" value="@Model.Items.IndexOf(item)" />
                                         <input onchange="this.form.submit()" name="preparing" type="checkbox" />
                                     </form>
-                                }
-                            </td>
-                            <td>
-                                @if (item.CompletedTS != null)
-                                {
+                                </td>
+                            }
+                            @if (item.CompletedTS != null)
+                            {
+                                <td>
                                     <form asp-controller="UserRoles" asp-action="OnCompleteClick" asp-route-id="@Model.OrderNumber">
                                         <input hidden name="ItemId" value="@Model.Items.IndexOf(item)" />
                                         <input checked onchange="this.form.submit()" name="complete" type="checkbox" />
                                     </form>
-                                }
-                                else
-                                {
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
                                     <form asp-controller="UserRoles" asp-action="OnCompleteClick" asp-route-id="@Model.OrderNumber">
                                         <input hidden name="ItemId" value="@Model.Items.IndexOf(item)" />
                                         <input onchange="this.form.submit()" name="complete" type="checkbox" />
                                     </form>
-                                }
-                            </td>
-                        </tr>
+                                </td>
+                            }
+                            </tr>
                 }
             }
         </tbody>

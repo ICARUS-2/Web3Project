@@ -244,5 +244,45 @@ namespace MS2.Controllers
             _repository.SaveAll();
             return Redirect($"~/UserRoles/OrderView/{orderNumber}");
         }
+
+        [HttpPost]
+        [Authorize(Roles = "Cook")]
+        [Route("/UserRoles/OnPrepClickAll/{orderNumber}")]
+        public IActionResult OnPrepClickAll(int orderNumber, IFormCollection form)
+        {
+            string prep = form["preparing"];
+
+            Order order = _repository.GetOrderByOrderNumber(orderNumber);
+
+            if (prep != null)
+                foreach (OrderEntry entry in order.Items)
+                    entry.PreparingTS = DateTime.Now;
+            else
+                foreach (OrderEntry entry in order.Items)
+                    entry.PreparingTS = null;
+
+            _repository.SaveAll();
+            return Redirect($"~/UserRoles/Dashboard");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Cook")]
+        [Route("/UserRoles/OnCompleteClickAll/{orderNumber}")]
+        public IActionResult OnCompleteClickAll(int orderNumber, IFormCollection form)
+        {
+            string prep = form["complete"];
+
+            Order order = _repository.GetOrderByOrderNumber(orderNumber);
+
+            if (prep != null)
+                foreach (OrderEntry entry in order.Items)
+                    entry.CompletedTS = DateTime.Now;
+            else
+                foreach (OrderEntry entry in order.Items)
+                    entry.CompletedTS = null;
+
+            _repository.SaveAll();
+            return Redirect($"~/UserRoles/Dashboard");
+        }
     }
 }

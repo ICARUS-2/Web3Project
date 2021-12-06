@@ -12,8 +12,8 @@
         <thead>
             <tr>
                 <th>Order #</th>
-                <th>Preparing</th>
-                <th>Complete</th>
+                <th>Preparing All</th>
+                <th>Complete All</th>
             </tr>
         </thead>
         <tbody>
@@ -21,7 +21,7 @@
                 foreach (var order in Model)
                 {
                         <tr>
-                            <td><a class="btn btn-primary" asp-controller="UserRoles" asp-action="OrderView" asp-route-id="@order.OrderNumber.ToString()">@order.OrderNumber.ToString()</a></td>
+                            <td><a class="btn btn-primary" asp-controller="UserRoles" asp-action="OrderView" asp-route-id="@order.OrderNumber">@order.OrderNumber</a></td>
                             @{
                                 bool allPreparing = true;
                                 foreach (OrderEntry item in order.Items)
@@ -31,11 +31,20 @@
                                 }
                                 if (allPreparing)
                                 {
-                                    <td><input checked type="checkbox" /></td>
+                                    <td>
+                                        <form asp-controller="UserRoles" asp-action="OnPrepClickAll" asp-route-id="@order.OrderNumber">
+                                            <input checked onchange="this.form.submit()" name="preparing" type="checkbox" />
+                                        </form>
+                                    </td>
                                 }
                                 else
                                 {
-                                    <td><input type="checkbox" /></td>
+                                    <td>
+                                        <form asp-controller="UserRoles" asp-action="OnPrepClickAll" asp-route-id="@order.OrderNumber">
+                                            <input onchange="this.form.submit()" name="preparing" type="checkbox" />
+                                        </form>
+
+                                    </td>
                                 }
                             }
 
@@ -48,11 +57,19 @@
                                 }
                                 if (allCompleted)
                                 {
-                                    <td><input checked type="checkbox" /></td>
+                                    <td>
+                                        <form asp-controller="UserRoles" asp-action="OnCompleteClickAll" asp-route-id="@order.OrderNumber">
+                                            <input checked onchange="this.form.submit()" name="complete" type="checkbox" />
+                                        </form>
+                                    </td>
                                 }
                                 else
                                 {
-                                    <td><input type="checkbox" /></td>
+                                    <td>
+                                        <form asp-controller="UserRoles" asp-action="OnCompleteClickAll" asp-route-id="@order.OrderNumber">
+                                            <input onchange="this.form.submit()" name="complete" type="checkbox" />
+                                        </form>
+                                    </td>
                                 }
                             }
                         </tr>
