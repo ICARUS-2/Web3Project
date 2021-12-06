@@ -1,10 +1,11 @@
-﻿<h1 style="text-align:center">@ViewData["Title"]</h1>
+﻿<h1>Hello, @ViewData["Role"]!</h1>
+
+<h2 style="text-align:center">@ViewData["Title"]</h2>
 
 <div id="container">
     <a class="link-btn" asp-controller="UserRoles" asp-action="Dashboard">Users</a>
     <a class="link-btn" asp-controller="UserRoles" asp-action="OrdersDashboard">Orders</a>
 </div>
-
 
 <style>
     .link-btn
