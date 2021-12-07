@@ -221,7 +221,10 @@ namespace MS2.Controllers
             if (prep != null)
                 entry.PreparingTS = DateTime.Now;
             else
+            {
                 entry.PreparingTS = null;
+                entry.CompletedTS = null;
+            }
 
             _repository.SaveAll();
             return Redirect($"~/UserRoles/OrderView/{orderNumber}");
@@ -261,7 +264,10 @@ namespace MS2.Controllers
                     entry.PreparingTS = DateTime.Now;
             else
                 foreach (OrderEntry entry in order.Items)
+                {
                     entry.PreparingTS = null;
+                    entry.CompletedTS = null;
+                }
 
             _repository.SaveAll();
             return Redirect($"~/UserRoles/Dashboard");
