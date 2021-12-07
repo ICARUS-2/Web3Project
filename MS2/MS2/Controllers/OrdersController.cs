@@ -49,14 +49,16 @@ namespace MS2.Controllers
             _repository.InsertOrder(order);
             _repository.SaveAll();
 
-
             ApplicationUser user = await _userManager.FindByNameAsync(User.Identity.Name);
 
-            string message = order.ToHtmlText();
+            if (user != null)
+            {
+                string message = order.ToHtmlText();
 
-            await _emailSender.SendEmailAsync(user.Email, $"Order Report", message);
+                await _emailSender.SendEmailAsync(user.Email, $"Order Report", message);
+            }
 
-            return CreatedAtAction("CreateOrder", new { id = order.OrderNumber }, order);
+            return CreatedAtAction("GetSamurai", new { id = order.OrderNumber }, order);
         }
     }
 }
