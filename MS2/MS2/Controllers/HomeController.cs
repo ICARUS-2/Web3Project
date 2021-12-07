@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Http;
 using static MS2.Controllers.Captcha;
-using Microsoft.AspNetCore.Identity;
 using MS2.Data.Entities;
 using System.Collections;
 

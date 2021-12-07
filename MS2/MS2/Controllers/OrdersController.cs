@@ -49,10 +49,9 @@ namespace MS2.Controllers
             _repository.InsertOrder(order);
             _repository.SaveAll();
 
-            ApplicationUser user = await _userManager.FindByNameAsync(User.Identity.Name);
-
-            if (user != null)
+            if (User.Identity.Name != null)
             {
+                ApplicationUser user = await _userManager.FindByNameAsync(User.Identity.Name);
                 string message = order.ToHtmlText();
 
                 await _emailSender.SendEmailAsync(user.Email, $"Order Report", message);
