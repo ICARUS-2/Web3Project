@@ -65,11 +65,22 @@
                                 }
                                 else
                                 {
-                                    <td>
-                                        <form asp-controller="UserRoles" asp-action="OnCompleteClickAll" asp-route-id="@order.OrderNumber">
-                                            <input onchange="this.form.submit()" name="complete" type="checkbox" />
-                                        </form>
-                                    </td>
+                                    if (allPreparing)
+                                    {
+                                        <td>
+                                            <form asp-controller="UserRoles" asp-action="OnCompleteClickAll" asp-route-id="@order.OrderNumber">
+                                                <input onchange="this.form.submit()" name="complete" type="checkbox" />
+                                            </form>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <form asp-controller="UserRoles" asp-action="OnCompleteClickAll" asp-route-id="@order.OrderNumber">
+                                                <input disabled onchange="this.form.submit()" name="complete" type="checkbox" />
+                                            </form>
+                                        </td>
+                                    }
                                 }
                             }
                         </tr>
