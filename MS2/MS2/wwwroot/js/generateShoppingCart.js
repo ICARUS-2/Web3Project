@@ -273,7 +273,7 @@ function makeAddressInput() {
 
 
     if (userAddress) {
-
+        street.value = userAddress;
     }
 
     return addressDiv;
@@ -392,8 +392,6 @@ function validateCardInput() {
         return false;
     }
 }
-
-
 
 async function submitOrder() {
 
