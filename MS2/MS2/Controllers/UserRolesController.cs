@@ -189,10 +189,12 @@ namespace MS2.Controllers
                 OrderDashboardViewModel vm = new OrderDashboardViewModel();
                 vm.Period = group.Key;
 
-                vm.TotalAmount = 0;
                 foreach (Order o in group)
                 {
-
+                    foreach (OrderEntry entry in o.Items)
+                    {
+                        vm.TotalAmount += entry.EntryPrice * entry.Quantity;
+                    }
                 }
 
                 vm.Orders = new List<Order>(group);

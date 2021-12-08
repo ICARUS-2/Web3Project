@@ -119,5 +119,17 @@ namespace MS2.Data
                 .Include(o => o.Items)
                .ThenInclude(oi => oi.Product).FirstOrDefault();
         }
+
+        // Per specific day.
+        public IEnumerable<Order> GetOrdersByDate(DateTime day)
+        {
+            return _context.Orders.Where((o) => o.OrderDate.ToShortDateString() == day.ToShortDateString());
+        }
+
+        // Inclusive.
+        public IEnumerable<Order> GetOrdersByDateRange(DateTime start, DateTime end)
+        {
+            return _context.Orders.Where((o) => o.OrderDate >= start && o.OrderDate <= end);
+        }
     }
 }
