@@ -180,7 +180,27 @@ namespace MS2.Controllers
         public IActionResult OrdersDashboard()
         {
             ViewData["Title"] = "ORDERS DASHBOARD";
-            return View("OrdersDashboard");
+            var ordersByDay = _repository.GetAllOrders().GroupBy((o) => o.OrderDate.ToShortDateString()).ToList();
+
+            List<OrderDashboardViewModel> list = new List<OrderDashboardViewModel>();
+
+            foreach (IGrouping<string, Order> group in ordersByDay)
+            {
+                OrderDashboardViewModel vm = new OrderDashboardViewModel();
+                vm.Period = group.Key;
+
+                vm.TotalAmount = 0;
+                foreach (Order o in group)
+                {
+
+                }
+
+                vm.Orders = new List<Order>(group);
+
+                list.Add(vm);
+            }
+
+            return View("OrdersDashboard", list);
         }
 
         public async Task<IActionResult> Dashboard()

@@ -1,4 +1,7 @@
-﻿<h1>@ViewData["Title"]</h1>
+﻿@using MS2.Data.Entities
+@model List<OrderDashboardViewModel>
+
+<h1>@ViewData["Title"]</h1>
 
 <div id="groupby">
     <h2>Group by</h2>
@@ -18,19 +21,15 @@
         <th>Orders made</th>
     </tr>
 
-    <tr>
-        <td>2021/11/11 - 2021/12/11</td>
-        <td>$420.00</td>
-        <td><a asp-controller="Placeholder" asp-action="Placeholder" class="dashboardBtn">View sales</a></td>
-        <td><a asp-controller="Placeholder" asp-action="Placeholder" class="dashboardBtn">View orders (69)</a></td>
-    </tr>
-
-    <tr>
-        <td>2021/11/11 - 2021/12/11</td>
-        <td>$69.00</td>
-        <td><a asp-controller="Placeholder" asp-action="Placeholder" class="dashboardBtn">View sales</a></td>
-        <td><a asp-controller="Placeholder" asp-action="Placeholder" class="dashboardBtn">View orders (420)</a></td>
-    </tr>
+    @foreach (OrderDashboardViewModel group in Model)
+    {
+        <tr>
+            <td>@group.Period</td>
+            <td>@group.TotalAmount.ToString("c")</td>
+            <td><a asp-controller="Placeholder" asp-action="Placeholder" class="dashboardBtn">View sales</a></td>
+            <td><a asp-controller="Placeholder" asp-action="Placeholder" class="dashboardBtn">View orders (@group.Orders.Count)</a></td>
+        </tr>
+    }
 </table>
 
 <style>
@@ -41,8 +40,7 @@
         padding: 10px;
     }
 
-    #groupby
-    {
+    #groupby {
         margin-top: 20px;
         margin-bottom: 20px;
         width: 15em;
