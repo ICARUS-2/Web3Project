@@ -55,7 +55,7 @@ namespace MS2.Controllers
                 string message = order.ToHtmlText();
 
                 await _emailSender.SendEmailAsync(user.Email, $"Order Report", message);
-            }
+            } 
 
             return CreatedAtAction("GetSamurai", new { id = order.OrderNumber }, order);
         }

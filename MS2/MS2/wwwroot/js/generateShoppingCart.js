@@ -162,6 +162,7 @@ async function generateCartView() {
 
     checkOutDiv.appendChild(makeAddressInput());
     checkOutDiv.appendChild(orderTypeDelivery);
+    checkOutDiv.appendChild(makeCardInput());
     checkOutDiv.appendChild(orderBtn);
     container.appendChild(checkOutDiv);
     setQtyBtnListeners();
@@ -308,6 +309,33 @@ function validateAddress(street, selectedCity, postalCode) {
     return true;
 }
 
+function makeCardInput() {
+
+    let cardDiv = document.createElement('div');
+    let creditCardInput = document.createElement('input');
+    let cvcInput = document.createElement('input');
+    let expirationDate = document.createElement('input');
+    let header = document.createElement('h4');
+
+    header.innerText = 'Credit Card';
+    creditCardInput.setAttribute('maxlength', '19');
+    creditCardInput.setAttribute('placeholder', 'Card Number');
+
+    expirationDate.setAttribute('placeholder', 'MM/YY');
+    expirationDate.setAttribute('maxlength', '7');
+
+    cvcInput.setAttribute('placeholder', 'CVC');
+    cvcInput.setAttribute('maxlength',  '3');
+
+    cardDiv.appendChild(header);
+    cardDiv.appendChild(creditCardInput);
+    cardDiv.appendChild(expirationDate);
+    cardDiv.appendChild(cvcInput);
+    cardDiv.setAttribute('id','card-div')
+
+    return cardDiv;
+}
+
 async function submitOrder() {
 
     let userCart = await ShoppingCart.getCartFromLocalStorage();
@@ -319,6 +347,7 @@ async function submitOrder() {
         alert("Invalid Delivery Address");
         return;
     }
+
 
     let address = street + ',' + selectedCity + ',' + postalCode;
 
