@@ -60,14 +60,26 @@
                             }
                             else
                             {
-                                <td>
-                                    <form asp-controller="UserRoles" asp-action="OnCompleteClick" asp-route-id="@Model.OrderNumber">
-                                        <input hidden name="ItemId" value="@Model.Items.IndexOf(item)" />
-                                        <input onchange="this.form.submit()" name="complete" type="checkbox" />
-                                    </form>
-                                </td>
+                                if (item.PreparingTS != null)
+                                {
+                                    <td>
+                                        <form asp-controller="UserRoles" asp-action="OnCompleteClick" asp-route-id="@Model.OrderNumber">
+                                            <input hidden name="ItemId" value="@Model.Items.IndexOf(item)" />
+                                            <input onchange="this.form.submit()" name="complete" type="checkbox" />
+                                        </form>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <form asp-controller="UserRoles" asp-action="OnCompleteClick" asp-route-id="@Model.OrderNumber">
+                                            <input hidden name="ItemId" value="@Model.Items.IndexOf(item)" />
+                                            <input disabled onchange="this.form.submit()" name="complete" type="checkbox" />
+                                        </form>
+                                    </td>
+                                }
                             }
-                            </tr>
+                        </tr>
                 }
             }
         </tbody>
