@@ -19,6 +19,7 @@ namespace MS2.Data.Entities
         public string UserId { get; set; } 
         public string DeliveryDriverId { get; set; }
         public string OrderType{ get; set; }
+        public string CardInfo { get; set; }
 
         [NotMapped]
         public double Price

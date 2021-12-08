@@ -162,6 +162,7 @@ async function generateCartView() {
 
     checkOutDiv.appendChild(makeAddressInput());
     checkOutDiv.appendChild(orderTypeDelivery);
+    checkOutDiv.appendChild(makeCardInput());
     checkOutDiv.appendChild(orderBtn);
     container.appendChild(checkOutDiv);
     setQtyBtnListeners();
@@ -272,7 +273,7 @@ function makeAddressInput() {
 
 
     if (userAddress) {
-
+        street.value = userAddress;
     }
 
     return addressDiv;
@@ -308,6 +309,90 @@ function validateAddress(street, selectedCity, postalCode) {
     return true;
 }
 
+function makeCardInput() {
+
+    let cardDiv = document.createElement('div');
+    let creditCardInput = document.createElement('input');
+    let cvcInput = document.createElement('input');
+    let expirationDate = document.createElement('input');
+    let header = document.createElement('h4');
+
+    header.innerText = 'Credit Card';
+    creditCardInput.setAttribute('maxlength', '19');
+    creditCardInput.setAttribute('placeholder', 'Card Number');
+    creditCardInput.setAttribute('id', 'card-number');
+
+
+    expirationDate.setAttribute('placeholder', 'MM/YY');
+    expirationDate.setAttribute('maxlength', '7');
+    expirationDate.setAttribute('id', 'expiration-date');
+
+    cvcInput.setAttribute('placeholder', 'CVC');
+    cvcInput.setAttribute('maxlength', '3');
+    cvcInput.setAttribute('id', 'cvc');
+
+    cardDiv.appendChild(header);
+    cardDiv.appendChild(creditCardInput);
+    cardDiv.appendChild(expirationDate);
+    cardDiv.appendChild(cvcInput);
+    cardDiv.setAttribute('id','card-div')
+
+    return cardDiv;
+}
+
+function validateExpirationDate() {
+    let date = document.getElementById('expiration-date').value;
+
+    var dateRegex = new RegExp('^(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})$');
+
+    if (date.length === 0) {
+        alert('Please enter a expiration date');
+        return false;
+    }
+    else if (date.match(dateRegex)) {
+        return true;
+    }
+    else {
+        alert('invalid expiration date');
+        return false;
+    }
+}
+
+function validateCvcInput() {
+    let cvc = document.getElementById('cvc').value;
+
+    var cvcNo = new RegExp('^\\d{3}$');
+
+    if (cvc.length === 0) {
+        alert('please enter CVC');
+        return false;
+    }
+    else if (cvc.match(cvcNo)) {
+        return true;
+    }
+    else {
+        alert('invalid CVC number')
+        return false;
+    }
+}
+
+function validateCardInput() {
+    let cardNumber = document.getElementById('card-number').value;
+
+    var cardno = new RegExp('\\b\\d{4}[ -]?\\d{4}[ -]?\\d{4}[ -]?\\d{4}\\b');
+    if (cardNumber.length === 0) {
+        alert('Please enter a credit card');
+        return false;
+    }
+    else if (cardNumber.match(cardno)) {
+        return true;
+    }
+    else {
+        alert("Not a valid credit card number!");
+        return false;
+    }
+}
+
 async function submitOrder() {
 
     let userCart = await ShoppingCart.getCartFromLocalStorage();
@@ -315,11 +400,20 @@ async function submitOrder() {
     let postalCode = document.getElementById('postalCode').value;
     let selectedCity = document.getElementById('city-selection').value;
 
+
     if (!validateAddress(street, selectedCity, postalCode) && userCart.isDelivery) {
         alert("Invalid Delivery Address");
         return;
     }
+    else if (!validateCardInput() || !validateCvcInput() || !validateExpirationDate()) {
+        return;
+    }
 
+    let cardNumber = document.getElementById('card-number').value;
+    let cvc = document.getElementById('cvc').value;
+    let date = document.getElementById('expiration-date').value;
+
+    let cardInfo = cardNumber + ' ' + cvc + ' ' + date;
     let address = street + ',' + selectedCity + ',' + postalCode;
 
     let tempCartObject = {};
@@ -329,6 +423,7 @@ async function submitOrder() {
     tempCartObject.itemSize = userCart.itemSize;
     tempCartObject.orderItems = userCart.orderItems;
     tempCartObject.isDelivery = userCart.isDelivery;
+    tempCartObject.cardInfo = cardInfo;
 
     const response = await fetch(ShoppingCart.URL, {
         method: 'POST',
