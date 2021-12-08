@@ -15,6 +15,7 @@ namespace MS2.Utils
         public List<string> ItemSize { get; set; }
         public List<string> OrderItems { get; set; }
         public bool IsDelivery { get; set; }
+        public string CardInfo { get; set; }
 
 
         public Order ParseOrder(ISiteRepository repository)
@@ -43,6 +44,7 @@ namespace MS2.Utils
             order.OrderType = this.IsDelivery ? orderTypes[1] : orderTypes[0];
             order.OrderDate = DateTime.Now;
             order.Status = OrderStatus.Ordered.ToString();
+            order.CardInfo = this.CardInfo;
 
             return order;
         }

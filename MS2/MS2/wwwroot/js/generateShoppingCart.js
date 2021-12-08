@@ -402,9 +402,6 @@ async function submitOrder() {
     let postalCode = document.getElementById('postalCode').value;
     let selectedCity = document.getElementById('city-selection').value;
 
-    validateCardInput()
-    validateCvcInput()
-    validateExpirationDate()
 
     if (!validateAddress(street, selectedCity, postalCode) && userCart.isDelivery) {
         alert("Invalid Delivery Address");
@@ -414,7 +411,11 @@ async function submitOrder() {
         return;
     }
 
+    let cardNumber = document.getElementById('card-number').value;
+    let cvc = document.getElementById('cvc').value;
+    let date = document.getElementById('expiration-date').value;
 
+    let cardInfo = cardNumber + ' ' + cvc + ' ' + date;
     let address = street + ',' + selectedCity + ',' + postalCode;
 
     let tempCartObject = {};
@@ -424,6 +425,7 @@ async function submitOrder() {
     tempCartObject.itemSize = userCart.itemSize;
     tempCartObject.orderItems = userCart.orderItems;
     tempCartObject.isDelivery = userCart.isDelivery;
+    tempCartObject.cardInfo = cardInfo;
 
     const response = await fetch(ShoppingCart.URL, {
         method: 'POST',
