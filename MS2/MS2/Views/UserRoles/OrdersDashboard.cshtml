@@ -1,1 +1,53 @@
 ﻿<h1>@ViewData["Title"]</h1>
+
+<div id="groupby">
+    <h2>Group by</h2>
+    <select>
+        <option value="Day">Day</option>
+        <option value="Week">Week</option>
+        <option value="Month">Month</option>
+        <option value="Year">Year</option>
+    </select>
+</div>
+
+<table class="table table-striped">
+    <tr>
+        <th>Period</th>
+        <th>Total earnings</th>
+        <th>Sales breakdown</th>
+        <th>Orders made</th>
+    </tr>
+
+    <tr>
+        <td>2021/11/11 - 2021/12/11</td>
+        <td>$420.00</td>
+        <td><a asp-controller="Placeholder" asp-action="Placeholder" class="dashboardBtn">View sales</a></td>
+        <td><a asp-controller="Placeholder" asp-action="Placeholder" class="dashboardBtn">View orders (69)</a></td>
+    </tr>
+
+    <tr>
+        <td>2021/11/11 - 2021/12/11</td>
+        <td>$69.00</td>
+        <td><a asp-controller="Placeholder" asp-action="Placeholder" class="dashboardBtn">View sales</a></td>
+        <td><a asp-controller="Placeholder" asp-action="Placeholder" class="dashboardBtn">View orders (420)</a></td>
+    </tr>
+</table>
+
+<style>
+    .dashboardBtn {
+        background-color: forestgreen;
+        color: white;
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    #groupby
+    {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        width: 15em;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between
+    }
+</style>
