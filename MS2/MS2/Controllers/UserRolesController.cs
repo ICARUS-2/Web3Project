@@ -92,8 +92,6 @@ namespace MS2.Controllers
         [HttpPost]
         public async Task<IActionResult> Manage(List<ManageUserRolesViewModel> model, IFormCollection form)
         {
-
-
             var user = await _userManager.FindByIdAsync(form["UserId"]);
             if (user == null)
             {
@@ -177,29 +175,59 @@ namespace MS2.Controllers
             return View("DashboardMenu");
         }
 
-        public IActionResult OrdersDashboard()
+        [HttpPost("/OrdersDashboard")]
+        public IActionResult OrdersDashboard(IFormCollection form)
+        {
+            return OrdersDashboard(form["period"]);
+        }
+
+        [HttpGet("/OrdersDashboard")]
+        public IActionResult OrdersDashboard(string period)
         {
             ViewData["Title"] = "ORDERS DASHBOARD";
-            var ordersByDay = _repository.GetAllOrders().GroupBy((o) => o.OrderDate.ToShortDateString()).ToList();
+            Dictionary<string, List<Order>> ordersByPeriod = null;
+
+            switch (period)
+            {
+                default:
+                case "Day":
+                    ordersByPeriod = _repository.GetOrdersGroupedByDay();
+                    break;
+
+                case "Week":
+                    ordersByPeriod = _repository.GetOrdersGroupedByWeek();
+                    break;
+
+                case "Month":
+                    // GROUP ORDERS BY MONTH
+                    break;
+
+                case "Year":
+                    // GROUP ORDERS BY YEAR
+                    break;
+            }
 
             List<OrderDashboardViewModel> list = new List<OrderDashboardViewModel>();
 
-            foreach (IGrouping<string, Order> group in ordersByDay)
+            // For each "period"
+            foreach (string key in ordersByPeriod.Keys)
             {
                 OrderDashboardViewModel vm = new OrderDashboardViewModel();
-                vm.Period = group.Key;
 
-                foreach (Order o in group)
+                vm.Period = key;
+
+                // For each List of orders in that period
+                foreach (Order order in ordersByPeriod[key])
                 {
-                    foreach (OrderEntry entry in o.Items)
+                    foreach (OrderEntry entry in order.Items)
                     {
                         vm.TotalAmount += entry.EntryPrice * entry.Quantity;
                     }
+
+                    vm.Orders = new List<Order>(ordersByPeriod[key]);
+
+                    list.Add(vm);
                 }
-
-                vm.Orders = new List<Order>(group);
-
-                list.Add(vm);
             }
 
             return View("OrdersDashboard", list);

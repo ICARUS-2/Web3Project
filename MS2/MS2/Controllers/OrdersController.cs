@@ -18,7 +18,7 @@ namespace MS2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrdersController : ControllerBase
+    public class OrdersController : Controller
     {
         private readonly ISiteRepository _repository;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -58,6 +58,20 @@ namespace MS2.Controllers
             } 
 
             return CreatedAtAction("GetSamurai", new { id = order.OrderNumber }, order);
+        }
+
+        [HttpGet("/SalesBreakdown")]
+        public IActionResult SalesBreakdown(string period)
+        {
+            ViewData["Period"] = period;
+            return View();
+        }
+
+        [HttpGet("/OrdersByPeriod")]
+        public IActionResult OrdersByPeriod(string period)
+        {
+            ViewData["Period"] = period;
+            return View();
         }
     }
 }

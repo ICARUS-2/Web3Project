@@ -131,5 +131,46 @@ namespace MS2.Data
         {
             return _context.Orders.Where((o) => o.OrderDate >= start && o.OrderDate <= end);
         }
+
+        // HALF-IMPLEMENTED, MIGHT BE BROKEN
+        public Dictionary<string, List<Order>> GetOrdersGroupedByWeek()
+        {
+            DateTime min = _context.Orders.Min((entry) => entry.OrderDate);
+
+            var ordersForThisWeek = GetOrdersByDateRange(min, min.AddDays(7)).ToList();
+
+            List<IGrouping<string, Order>> muhList = new List<IGrouping<string, Order>>();
+
+            Dictionary<string, Order> dict = new Dictionary<string, Order>();
+
+            foreach (Order item in ordersForThisWeek)
+            {
+                string key = $"{min.ToShortDateString()} - {min.AddDays(7).ToShortDateString()}";
+            }
+
+            return null;
+        }
+
+        public Dictionary<string, List<Order>> GetOrdersGroupedByDay()
+        {
+            // Orders grouped by day
+            var orderGroups = GetAllOrders().GroupBy((o) => o.OrderDate.ToShortDateString()).ToList();
+
+            Dictionary<string, List<Order>> dict = new Dictionary<string, List<Order>>();
+
+            foreach (IGrouping<string, Order> group in orderGroups)
+            {
+                List<Order> listOfOrders = new List<Order>();
+
+                foreach (Order o in group)
+                {
+                    listOfOrders.Add(o);
+                }
+
+                dict.Add(group.Key, listOfOrders);
+            }
+
+            return dict;
+        }
     }
 }

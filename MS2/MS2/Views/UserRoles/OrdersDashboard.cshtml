@@ -5,12 +5,16 @@
 
 <div id="groupby">
     <h2>Group by</h2>
-    <select>
-        <option value="Day">Day</option>
-        <option value="Week">Week</option>
-        <option value="Month">Month</option>
-        <option value="Year">Year</option>
-    </select>
+    @using (Html.BeginForm())
+    {
+        <select onchange="this.form.submit()" name="period">
+            <option value="Day">Day</option>
+            <option value="Week">Week</option>
+            <option value="Month">Month</option>
+            <option value="Year">Year</option>
+        </select>
+    }
+    
 </div>
 
 <table class="table table-striped">
@@ -26,8 +30,8 @@
         <tr>
             <td>@group.Period</td>
             <td>@group.TotalAmount.ToString("c")</td>
-            <td><a asp-controller="Placeholder" asp-action="Placeholder" class="dashboardBtn">View sales</a></td>
-            <td><a asp-controller="Placeholder" asp-action="Placeholder" class="dashboardBtn">View orders (@group.Orders.Count)</a></td>
+            <td><a asp-controller="Orders" asp-action="SalesBreakdown" asp-route-period="@group.Period" class="dashboardBtn">View sales</a></td>
+            <td><a asp-controller="Orders" asp-action="OrdersByPeriod" asp-route-period="@group.Period" class="dashboardBtn">View orders (@group.Orders.Count)</a></td>
         </tr>
     }
 </table>
