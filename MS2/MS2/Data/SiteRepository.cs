@@ -183,10 +183,33 @@ namespace MS2.Data
             return dict;
         }
 
-        // TODO
         public Dictionary<string, List<Order>> GetOrdersGroupedByMonth()
         {
-            throw new NotImplementedException();
+            // Oldest order in the DB
+            DateTime min = _context.Orders.Min((entry) => entry.OrderDate);
+            DateTime max = _context.Orders.Max((entry) => entry.OrderDate);
+
+            Dictionary<string, List<Order>> dict = new Dictionary<string, List<Order>>();
+
+            while (min <= max)
+            {
+                List<Order> ordersForThisMonth = GetOrdersByDateRange(min, min.AddMonths(1)).ToList();
+
+                if (ordersForThisMonth.Count > 0)
+                {
+                    string key = "";
+
+                    if (min.AddMonths(1) > DateTime.Now) key = $"{min.ToShortDateString()} TO PRESENT";
+                    else key = $"{min.ToShortDateString()} TO {min.AddMonths(1).AddDays(-1).ToShortDateString()}";
+
+                    dict.Add(key, ordersForThisMonth);
+                }
+
+                // Continue into next month and so forth
+                min = min.AddMonths(1);
+            }
+
+            return dict;
         }
 
         // TODO

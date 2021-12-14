@@ -202,14 +202,12 @@ namespace MS2.Controllers
 
                 case "Month":
                     ViewData["Index"] = 2;
-                    ordersByPeriod = _repository.GetOrdersGroupedByWeek();
-                    // TODO: GROUP ORDERS BY MONTH
+                    ordersByPeriod = _repository.GetOrdersGroupedByMonth();
                     break;
 
                 case "Year":
                     ViewData["Index"] = 3;
-                    ordersByPeriod = _repository.GetOrdersGroupedByWeek();
-                    // TODO: GROUP ORDERS BY YEAR
+                    ordersByPeriod = _repository.GetOrdersGroupedByYear();
                     break;
             }
 

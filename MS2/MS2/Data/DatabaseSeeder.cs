@@ -175,9 +175,55 @@ namespace MS2.Data
                 DeliveryAddress = "Yet another sample address"
             };
 
+            Order o4 = new Order()
+            {
+                OrderDate = DateTime.Now.AddMonths(-1).AddDays(-7),
+                Status = "Pending",
+                Items = new List<OrderEntry>()
+                    {
+                        new OrderEntry()
+                        {
+                            Product = products.Find((p) => p.ItemName == "All Dressed Pizza"),
+                            Quantity = 1,
+                            Size = "Large"
+                        },
+                        new OrderEntry()
+                        {
+                            Product = products.Find((p) => p.ItemName == "Coke"),
+                            Quantity = 1,
+                            Size = "Large"
+                        }
+                    },
+                DeliveryAddress = "I can't believe it's another sample address"
+            };
+
+            Order o5 = new Order()
+            {
+                OrderDate = DateTime.Now.AddYears(-1).AddMonths(-1).AddDays(-7),
+                Status = "Pending",
+                Items = new List<OrderEntry>()
+                    {
+                        new OrderEntry()
+                        {
+                            Product = products.Find((p) => p.ItemName == "Vegetarian Pizza"),
+                            Quantity = 1,
+                            Size = "Large"
+                        },
+                        new OrderEntry()
+                        {
+                            Product = products.Find((p) => p.ItemName == "Fries"),
+                            Quantity = 1,
+                            Size = "Medium"
+                        }
+                    },
+                DeliveryAddress = "Sample address (again)"
+            };
+
             data.Add(o1);
             data.Add(o2);
             data.Add(o3);
+            data.Add(o4);
+            data.Add(o5);
 
             return data;
         }
