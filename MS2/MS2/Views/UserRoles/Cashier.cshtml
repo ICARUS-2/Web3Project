@@ -6,4 +6,180 @@
 
 <div class="container">
     <h1>Hello Cashier</h1>
+    <div id="body">
+        <table >
+            <tbody>
+                <tr>
+                    <td>
+                        <h2>Create Order</h2>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><h3>Pizzas</h3></td>
+                    <td>
+                        <select>
+                            <option value="" selected="" disabled="" hidden="">Choose Type</option>
+                            <option value="type1">type1</option>
+                            <option value="type2">type2</option>
+                            <option value="type3">type3</option>
+                        </select>
+                    </td>
+
+                    <td>
+                        <select class="size-selection">
+                            <option value="" selected="" disabled="" hidden="">Choose Size</option>
+                            <option value="Small">Small</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Large">Large</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="text" placeholder="Quantity" />
+                    </td>
+                    <td>
+                        <button>Add</button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><h3>Burgers</h3></td>
+
+                    <td>
+                        <select>
+                            <option value="" selected="" disabled="" hidden="">Choose Type</option>
+                            <option value="type1">type1</option>
+                            <option value="type2">type2</option>
+                            <option value="type3">type3</option>
+                        </select>
+                    </td>
+
+                    <td>
+                        <select class="size-selection">
+                            <option value="" selected="" disabled="" hidden="">Choose Size</option>
+                            <option value="Small">Small</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Large">Large</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="text" placeholder="Quantity" />
+                    </td>
+                    <td>
+                        <button>Add</button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><h3>Fries</h3></td>
+
+                    <td>
+                        <select>
+                            <option value="" selected="" disabled="" hidden="">Choose Type</option>
+                            <option value="type1">type1</option>
+                            <option value="type2">type2</option>
+                            <option value="type3">type3</option>
+                        </select>
+                    </td>
+
+                    <td>
+                        <select class="size-selection">
+                            <option value="" selected="" disabled="" hidden="">Choose Size</option>
+                            <option value="Small">Small</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Large">Large</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="text" placeholder="Quantity" />
+                    </td>
+                    <td>
+                        <button>Add</button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><h3>Drinks</h3></td>
+
+                    <td>
+                        <select>
+                            <option value="" selected="" disabled="" hidden="">Choose Type</option>
+                            <option value="type1">type1</option>
+                            <option value="type2">type2</option>
+                            <option value="type3">type3</option>
+                        </select>
+                    </td>
+
+                    <td>
+                        <select class="size-selection">
+                            <option value="" selected="" disabled="" hidden="">Choose Size</option>
+                            <option value="Small">Small</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Large">Large</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="text" placeholder="Quantity" />
+                    </td>
+                    <td>
+                        <button>Add</button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <select id="payment-type">
+                            <option value="" selected="" disabled="" hidden="">Payment Type</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Card">Card</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select id="order-type">
+                            <option value="" selected="" disabled="" hidden="">Order Type</option>
+                            <option value="PickUp">Pick Up</option>
+                            <option value="Delivery">Delivery</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select id="dirver">
+                            <option value="" selected="" disabled="" hidden="">Driver</option>
+                            <option value="driver1">driver1</option>
+                            <option value="driver2">driver2</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <h2>Order Items</h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>Total: </p>
+                        <button>Confrim Order</button>
+                        <button>Cancle Order</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
+
+<style>
+    #body{
+        display:flex;
+        align-items:flex-start;
+        justify-content:space-evenly;
+    }
+    table, th, td {
+        border: 1px solid black;
+    }
+    td{
+        padding:15px;
+    }
+</style>
