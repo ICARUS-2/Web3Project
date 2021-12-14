@@ -191,21 +191,30 @@ namespace MS2.Controllers
             {
                 default:
                 case "Day":
+                    ViewData["Index"] = 0;
                     ordersByPeriod = _repository.GetOrdersGroupedByDay();
                     break;
 
                 case "Week":
+                    ViewData["Index"] = 1;
                     ordersByPeriod = _repository.GetOrdersGroupedByWeek();
                     break;
 
                 case "Month":
-                    // GROUP ORDERS BY MONTH
+                    ViewData["Index"] = 2;
+                    // TODO: GROUP ORDERS BY MONTH
                     break;
 
                 case "Year":
-                    // GROUP ORDERS BY YEAR
+                    ViewData["Index"] = 3;
+                    // TODO: GROUP ORDERS BY YEAR
                     break;
             }
+
+            // Overwrite dictionary so that it is sorted
+            var sortedOrders = ordersByPeriod.OrderByDescending((o) => o.Key).ToList();
+            ordersByPeriod.Clear();
+            foreach (var item in sortedOrders) ordersByPeriod.Add(item.Key, item.Value);
 
             List<OrderDashboardViewModel> list = new List<OrderDashboardViewModel>();
 
@@ -225,9 +234,9 @@ namespace MS2.Controllers
                     }
 
                     vm.Orders = new List<Order>(ordersByPeriod[key]);
-
-                    list.Add(vm);
                 }
+
+                list.Add(vm);
             }
 
             return View("OrdersDashboard", list);

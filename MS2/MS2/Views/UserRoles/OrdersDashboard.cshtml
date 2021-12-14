@@ -8,10 +8,17 @@
     @using (Html.BeginForm())
     {
         <select onchange="this.form.submit()" name="period">
-            <option value="Day">Day</option>
-            <option value="Week">Week</option>
-            <option value="Month">Month</option>
-            <option value="Year">Year</option>
+            @if ((int)ViewData["Index"] == 0) { <option selected value="Day">Day</option> }
+            else { <option value = "Day">Day</option> }
+
+            @if ((int)ViewData["Index"] == 1) { <option selected value="Week">Week</option> }
+            else { <option value="Week">Week</option> }
+
+            @if ((int)ViewData["Index"] == 2) { <option value="Month">Month</option> }
+            else { <option value="Month">Month</option> }
+
+            @if ((int)ViewData["Index"] == 3) { <option value="Year">Year</option> }
+            else { <option value="Year">Year</option> }
         </select>
     }
     

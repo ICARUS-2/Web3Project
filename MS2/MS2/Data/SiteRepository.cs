@@ -123,32 +123,42 @@ namespace MS2.Data
         // Per specific day.
         public IEnumerable<Order> GetOrdersByDate(DateTime day)
         {
-            return _context.Orders.Where((o) => o.OrderDate.ToShortDateString() == day.ToShortDateString());
+            return GetAllOrders().Where((o) => o.OrderDate.ToShortDateString() == day.ToShortDateString());
         }
 
         // Inclusive.
         public IEnumerable<Order> GetOrdersByDateRange(DateTime start, DateTime end)
         {
-            return _context.Orders.Where((o) => o.OrderDate >= start && o.OrderDate <= end);
+            return GetAllOrders().Where((o) => o.OrderDate >= start && o.OrderDate <= end);
         }
 
-        // HALF-IMPLEMENTED, MIGHT BE BROKEN
         public Dictionary<string, List<Order>> GetOrdersGroupedByWeek()
         {
+            // Oldest order in the DB
             DateTime min = _context.Orders.Min((entry) => entry.OrderDate);
+            DateTime max = _context.Orders.Max((entry) => entry.OrderDate);
 
-            var ordersForThisWeek = GetOrdersByDateRange(min, min.AddDays(7)).ToList();
+            Dictionary<string, List<Order>> dict = new Dictionary<string, List<Order>>();
 
-            List<IGrouping<string, Order>> muhList = new List<IGrouping<string, Order>>();
-
-            Dictionary<string, Order> dict = new Dictionary<string, Order>();
-
-            foreach (Order item in ordersForThisWeek)
+            while (min <= max)
             {
-                string key = $"{min.ToShortDateString()} - {min.AddDays(7).ToShortDateString()}";
+                List<Order> ordersForThisWeek = GetOrdersByDateRange(min, min.AddDays(7)).ToList();
+
+                if (ordersForThisWeek.Count > 0)
+                {
+                    string key = "";
+
+                    if (min.AddDays(6) > DateTime.Now) key = $"{min.ToShortDateString()} TO PRESENT";
+                    else key = $"{min.ToShortDateString()} TO {min.AddDays(6).ToShortDateString()}";
+
+                    dict.Add(key, ordersForThisWeek);
+                }
+
+                // Continue into next week and so forth
+                min = min.AddDays(7);
             }
 
-            return null;
+            return dict;
         }
 
         public Dictionary<string, List<Order>> GetOrdersGroupedByDay()
