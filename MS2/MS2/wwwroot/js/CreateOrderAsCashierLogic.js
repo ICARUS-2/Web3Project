@@ -65,7 +65,6 @@ async function renderOrderItems() {
         }
     }
 
-    
     let totalAmount = 0;
 
     for (let i = 0; i < userCart.orderItems.length; i++) {
@@ -82,9 +81,11 @@ async function renderOrderItems() {
                 let subTotal = "Sub Total: $" + dollarCADFormat.format(getItemPriceBySize(item, userCart.itemSize[i]) * userCart.itemQuantity[i]);
 
                 tempTr.setAttribute('data-id', item.id);
-                tempTr.setAttribute('data-size', userCart.itemSize[i])
+                tempTr.setAttribute('data-size', userCart.itemSize[i]);
+                tempTr.setAttribute('data-qty', userCart.itemQuantity[i]);
 
                 let removeBtn = document.createElement('button');
+                removeBtn.classList.add('remove-btn');
                 let text = document.createElement('p');
 
                 removeBtn.innerText = 'Remove';
@@ -98,17 +99,27 @@ async function renderOrderItems() {
             }
         });
     }
+    setRemoveClickListeners()
 }
 
-async function decreaseItemQty() {
-    // get the div that is two nodes up the dom tree.
+function setRemoveClickListeners() {
+    let removeBtns = document.getElementsByClassName('remove-btn');
+
+    for (let i = 0; i < removeBtns.length; i++) {
+        removeBtns[i].addEventListener('click', removeOrderItem, false);
+    }
+}
+async function removeOrderItem() {
     let id = this.parentNode.parentNode.getAttribute("data-id");
     let itemSize = this.parentNode.parentNode.getAttribute("data-size");
+    let qty = parseInt(this.parentNode.parentNode.getAttribute("data-qty"));
     let cart = await ShoppingCart.getCartFromLocalStorage();
 
-    cart.removeItemFromCart(id, itemSize);
+    for (let i = 0; i < qty; i++) {
+        cart.removeItemFromCart(id, itemSize);
+    }
 
-    await updateUI();
+    await renderOrderItems();
 }
 async function setProductSelections() {
     let cart = await ShoppingCart.getCartFromLocalStorage();
