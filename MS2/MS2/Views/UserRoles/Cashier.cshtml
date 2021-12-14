@@ -1,13 +1,12 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@using Microsoft.AspNetCore.Identity
+@using MS2.Data.Entities;
+@inject UserManager<ApplicationUser> UserManager
+
 
 <div class="container">
     <h1>Hello Cashier</h1>
     <div id="body">
-        <table >
+        <table>
             <tbody>
                 <tr>
                     <td>
@@ -18,16 +17,13 @@
                 <tr>
                     <td><h3>Pizzas</h3></td>
                     <td>
-                        <select>
+                        <select class="product-group" id="pizzas">
                             <option value="" selected="" disabled="" hidden="">Choose Type</option>
-                            <option value="type1">type1</option>
-                            <option value="type2">type2</option>
-                            <option value="type3">type3</option>
                         </select>
                     </td>
 
                     <td>
-                        <select class="size-selection">
+                        <select class="size-selection" >
                             <option value="" selected="" disabled="" hidden="">Choose Size</option>
                             <option value="Small">Small</option>
                             <option value="Medium">Medium</option>
@@ -35,10 +31,10 @@
                         </select>
                     </td>
                     <td>
-                        <input type="text" placeholder="Quantity" />
+                        <input type="text" placeholder="Quantity" class="item-qty"/>
                     </td>
                     <td>
-                        <button>Add</button>
+                        <button class="addToOrder">Add</button>
                     </td>
                 </tr>
 
@@ -46,11 +42,8 @@
                     <td><h3>Burgers</h3></td>
 
                     <td>
-                        <select>
+                        <select class="product-group" id="burgers">
                             <option value="" selected="" disabled="" hidden="">Choose Type</option>
-                            <option value="type1">type1</option>
-                            <option value="type2">type2</option>
-                            <option value="type3">type3</option>
                         </select>
                     </td>
 
@@ -63,10 +56,10 @@
                         </select>
                     </td>
                     <td>
-                        <input type="text" placeholder="Quantity" />
+                        <input type="text" placeholder="Quantity" class="item-qty"/>
                     </td>
                     <td>
-                        <button>Add</button>
+                        <button class="addToOrder">Add</button>
                     </td>
                 </tr>
 
@@ -74,11 +67,8 @@
                     <td><h3>Fries</h3></td>
 
                     <td>
-                        <select>
+                        <select class="product-group" id="fries">
                             <option value="" selected="" disabled="" hidden="">Choose Type</option>
-                            <option value="type1">type1</option>
-                            <option value="type2">type2</option>
-                            <option value="type3">type3</option>
                         </select>
                     </td>
 
@@ -91,10 +81,10 @@
                         </select>
                     </td>
                     <td>
-                        <input type="text" placeholder="Quantity" />
+                        <input type="text" placeholder="Quantity" class="item-qty"/>
                     </td>
                     <td>
-                        <button>Add</button>
+                        <button class="addToOrder">Add</button>
                     </td>
                 </tr>
 
@@ -102,11 +92,7 @@
                     <td><h3>Drinks</h3></td>
 
                     <td>
-                        <select>
-                            <option value="" selected="" disabled="" hidden="">Choose Type</option>
-                            <option value="type1">type1</option>
-                            <option value="type2">type2</option>
-                            <option value="type3">type3</option>
+                        <select class="product-group" id="drinks">
                         </select>
                     </td>
 
@@ -119,7 +105,7 @@
                         </select>
                     </td>
                     <td>
-                        <input type="text" placeholder="Quantity" />
+                        <input type="text" placeholder="Quantity" class="item-qty"/>
                     </td>
                     <td>
                         <button>Add</button>
@@ -144,8 +130,16 @@
                     <td>
                         <select id="dirver">
                             <option value="" selected="" disabled="" hidden="">Driver</option>
-                            <option value="driver1">driver1</option>
-                            <option value="driver2">driver2</option>
+
+                            @foreach (var user in Model)
+                            {
+                                List<String> roles = await UserManager.GetRolesAsync(user);
+                                if (roles.Contains("Driver"))
+                                {
+                                    <option value="@user.FirstName">@user.FirstName</option>
+                                }
+                            }
+
                         </select>
                     </td>
                 </tr>
@@ -169,17 +163,22 @@
         </table>
     </div>
 </div>
-
+<script type="module" src="~/js/CreateOrderAsCashierLogic.js"></script>
 <style>
-    #body{
-        display:flex;
-        align-items:flex-start;
-        justify-content:space-evenly;
+    #body {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-evenly;
     }
-    table, th, td {
+
+    table, th, td{
         border: 1px solid black;
     }
-    td{
-        padding:15px;
+
+    td {
+        padding: 15px;
     }
+/*    table{
+        margin: 0.5em;
+    }*/
 </style>

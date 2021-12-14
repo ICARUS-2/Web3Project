@@ -184,7 +184,7 @@ namespace MS2.Controllers
 
             if (roles.Contains("Cashier"))
             {
-                return View("Cashier");
+                return View("Cashier", _userManager.Users.Where(u => u.Id != user.Id));
             }
 
             if (roles.Contains("Cook"))
