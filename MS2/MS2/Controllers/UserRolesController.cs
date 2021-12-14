@@ -171,7 +171,7 @@ namespace MS2.Controllers
             if (roles.Contains("Owner") || roles.Contains("Manager"))
             {
                 if (roles.Contains("Owner")) ViewData["Role"] = "owner";
-                if (roles.Contains("Manager")) ViewData["Role"] = "manager";
+                else if (roles.Contains("Manager")) ViewData["Role"] = "manager";
 
                 ViewData["Title"] = "DASHBOARD";
                 return View("DashboardMenu");
