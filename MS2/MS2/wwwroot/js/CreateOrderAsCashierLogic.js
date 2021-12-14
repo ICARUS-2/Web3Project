@@ -28,6 +28,7 @@ let addfunc = async function () {
     for (let i = 0; i < parseInt(itemQty); i++) {
         cart.addItemToCart(itemSelection, sizeSelection);
     }
+    renderOrderItems()
 }
 
 // for each "add to oder button" set the click listener.
@@ -37,8 +38,78 @@ for (let i = 0; i < elements.length; i++) {
     elements[i].addEventListener('click', addfunc, false);
 }
 
-setProductSelections()
+setProductSelections();
+renderOrderItems();
 
+function getItemPriceBySize(item, itemSize) {
+    itemSize = itemSize.toLowerCase();
+    switch (itemSize) {
+        case 'small': return item.smallPrice;
+        case 'medium': return item.mediumPrice;
+        case 'large': return item.largePrice;
+    }
+}
+
+async function renderOrderItems() {
+    let userCart = localStorage.getItem(ShoppingCart.LOCAL_STORAGE_CART_NAME);
+    userCart = await ShoppingCart.deserializeCartData(userCart);
+    let dollarCADFormat = Intl.NumberFormat('en-CA');
+
+    let orderViewTableBody = document.getElementById('order-view-table-body');
+    let entries = document.getElementsByClassName('order-items-entry');
+    let entriesAmount = entries.length;
+
+    if (entries.length > 0) {
+        for (let i = 0; i < entriesAmount ; i++) {
+            orderViewTableBody.parentNode.deleteRow(2);
+        }
+    }
+
+    
+    let totalAmount = 0;
+
+    for (let i = 0; i < userCart.orderItems.length; i++) {
+        userCart.menuItems.forEach((item) => {
+            if (item.id == userCart.orderItems[i]) {
+
+                let tempTr = document.createElement('tr');
+                tempTr.classList.add('order-items-entry');
+
+                let itemName = item.itemName;
+                let itemPrice = "$" + getItemPriceBySize(item, userCart.itemSize[i]);
+                let itemSize = userCart.itemSize[i];
+                let itemQuantity = "Quantity: " + userCart.itemQuantity[i];
+                let subTotal = "Sub Total: $" + dollarCADFormat.format(getItemPriceBySize(item, userCart.itemSize[i]) * userCart.itemQuantity[i]);
+
+                tempTr.setAttribute('data-id', item.id);
+                tempTr.setAttribute('data-size', userCart.itemSize[i])
+
+                let removeBtn = document.createElement('button');
+                let text = document.createElement('p');
+
+                removeBtn.innerText = 'Remove';
+                text.innerText = `${itemName} ${itemPrice} ${itemSize} ${itemQuantity} ${subTotal}`;
+
+                let tempCell = tempTr.insertCell();
+
+                tempCell.appendChild(text);
+                tempCell.appendChild(removeBtn);
+                orderViewTableBody.appendChild(tempTr);
+            }
+        });
+    }
+}
+
+async function decreaseItemQty() {
+    // get the div that is two nodes up the dom tree.
+    let id = this.parentNode.parentNode.getAttribute("data-id");
+    let itemSize = this.parentNode.parentNode.getAttribute("data-size");
+    let cart = await ShoppingCart.getCartFromLocalStorage();
+
+    cart.removeItemFromCart(id, itemSize);
+
+    await updateUI();
+}
 async function setProductSelections() {
     let cart = await ShoppingCart.getCartFromLocalStorage();
 
@@ -57,7 +128,7 @@ async function setProductSelections() {
         }
         else if (cart.menuItems[i].category === 'Burgers') {
             let option = document.createElement('option');
-            option.value = cart.menuItems[i].itemName;
+            option.value = cart.menuItems[i].id;
             option.text = cart.menuItems[i].itemName;
             option.setAttribute('data-id', cart.menuItems[i].id);
             burgersSelection.appendChild(option);
