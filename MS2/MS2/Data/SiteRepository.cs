@@ -132,6 +132,28 @@ namespace MS2.Data
             return GetAllOrders().Where((o) => o.OrderDate >= start && o.OrderDate <= end);
         }
 
+        public Dictionary<string, List<Order>> GetOrdersGroupedByDay()
+        {
+            // Orders grouped by day
+            var orderGroups = GetAllOrders().GroupBy((o) => o.OrderDate.ToShortDateString()).ToList();
+
+            Dictionary<string, List<Order>> dict = new Dictionary<string, List<Order>>();
+
+            foreach (IGrouping<string, Order> group in orderGroups)
+            {
+                List<Order> listOfOrders = new List<Order>();
+
+                foreach (Order o in group)
+                {
+                    listOfOrders.Add(o);
+                }
+
+                dict.Add(group.Key, listOfOrders);
+            }
+
+            return dict;
+        }
+
         public Dictionary<string, List<Order>> GetOrdersGroupedByWeek()
         {
             // Oldest order in the DB
@@ -161,26 +183,16 @@ namespace MS2.Data
             return dict;
         }
 
-        public Dictionary<string, List<Order>> GetOrdersGroupedByDay()
+        // TODO
+        public Dictionary<string, List<Order>> GetOrdersGroupedByMonth()
         {
-            // Orders grouped by day
-            var orderGroups = GetAllOrders().GroupBy((o) => o.OrderDate.ToShortDateString()).ToList();
+            throw new NotImplementedException();
+        }
 
-            Dictionary<string, List<Order>> dict = new Dictionary<string, List<Order>>();
-
-            foreach (IGrouping<string, Order> group in orderGroups)
-            {
-                List<Order> listOfOrders = new List<Order>();
-
-                foreach (Order o in group)
-                {
-                    listOfOrders.Add(o);
-                }
-
-                dict.Add(group.Key, listOfOrders);
-            }
-
-            return dict;
+        // TODO
+        public Dictionary<string, List<Order>> GetOrdersGroupedByYear()
+        {
+            throw new NotImplementedException();
         }
     }
 }

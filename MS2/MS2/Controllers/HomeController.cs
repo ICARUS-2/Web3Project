@@ -138,7 +138,7 @@ namespace MS2.Controllers
 
             if (isLoggedIn)
             {
-                var user = await _userManager.GetUserAsync(User);
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
 
                 // DID USER FAVORITE?
                 var fav = _repository.DidUserFavorite(user.Id, productID);
@@ -183,7 +183,7 @@ namespace MS2.Controllers
         {
             if (_signInManager.IsSignedIn(User))
             {
-                var user = await _userManager.GetUserAsync(User);
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
 
                 var favs = _repository.GetFavsByUserId(user.Id).ToList();
 

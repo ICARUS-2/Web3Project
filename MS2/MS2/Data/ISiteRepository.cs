@@ -28,8 +28,9 @@ namespace MS2.Data
         void RemoveFav(Favourite fav);
         public IEnumerable<Order> GetOrdersByDate(DateTime day);
         public IEnumerable<Order> GetOrdersByDateRange(DateTime start, DateTime end);
+        public Dictionary<string, List<Order>> GetOrdersGroupedByYear();
+        public Dictionary<string, List<Order>> GetOrdersGroupedByMonth();
         public Dictionary<string, List<Order>> GetOrdersGroupedByWeek();
         public Dictionary<string, List<Order>> GetOrdersGroupedByDay();
-
     }
 }
