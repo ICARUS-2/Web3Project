@@ -1,5 +1,7 @@
 ﻿using MS2.Data.Entities;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MS2.Data
 {
@@ -24,5 +26,11 @@ namespace MS2.Data
         public void AddFavorite(string userID, string productID);
         public IEnumerable<Favourite> DidUserFavorite(string id, string productID);
         void RemoveFav(Favourite fav);
+        public IEnumerable<Order> GetOrdersByDate(DateTime day);
+        public IEnumerable<Order> GetOrdersByDateRange(DateTime start, DateTime end);
+        public Dictionary<string, List<Order>> GetOrdersGroupedByYear();
+        public Dictionary<string, List<Order>> GetOrdersGroupedByMonth();
+        public Dictionary<string, List<Order>> GetOrdersGroupedByWeek();
+        public Dictionary<string, List<Order>> GetOrdersGroupedByDay();
     }
 }
