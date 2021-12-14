@@ -4,7 +4,10 @@
 
 <div id="container">
     <a class="link-btn" asp-controller="UserRoles" asp-action="Dashboard">Users</a>
-    <a class="link-btn" asp-controller="UserRoles" asp-action="OrdersDashboard">Orders</a>
+    @if ((string)ViewData["Role"] == "owner" || (string)ViewData["Role"] == "manager")
+    {
+        <a class="link-btn" asp-controller="UserRoles" asp-action="OrdersDashboard">Orders</a>
+    }
 </div>
 
 <style>

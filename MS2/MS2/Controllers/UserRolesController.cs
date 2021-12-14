@@ -168,11 +168,18 @@ namespace MS2.Controllers
             ApplicationUser user = await _userManager.FindByNameAsync(User.Identity.Name);
             List<string> roles = (List<string>)await _userManager.GetRolesAsync(user);
 
-            if (roles.Contains("Owner")) ViewData["Role"] = "owner";
-            if (roles.Contains("Manager")) ViewData["Role"] = "manager";
+            if (roles.Contains("Owner") || roles.Contains("Manager"))
+            {
+                if (roles.Contains("Owner")) ViewData["Role"] = "owner";
+                if (roles.Contains("Manager")) ViewData["Role"] = "manager";
 
-            ViewData["Title"] = "DASHBOARD";
-            return View("DashboardMenu");
+                ViewData["Title"] = "DASHBOARD";
+                return View("DashboardMenu");
+            }
+            else
+            {
+                return await Dashboard();
+            }
         }
 
         [HttpPost("/OrdersDashboard")]
