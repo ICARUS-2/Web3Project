@@ -191,25 +191,23 @@ namespace MS2.Controllers
             {
                 default:
                 case "Day":
-                    ViewData["Index"] = 0;
                     ordersByPeriod = _repository.GetOrdersGroupedByDay();
                     break;
 
                 case "Week":
-                    ViewData["Index"] = 1;
                     ordersByPeriod = _repository.GetOrdersGroupedByWeek();
                     break;
 
                 case "Month":
-                    ViewData["Index"] = 2;
                     ordersByPeriod = _repository.GetOrdersGroupedByMonth();
                     break;
 
                 case "Year":
-                    ViewData["Index"] = 3;
                     ordersByPeriod = _repository.GetOrdersGroupedByYear();
                     break;
             }
+
+            ViewData["Index"] = period;
 
             // Overwrite dictionary so that it is sorted
             var sortedOrders = ordersByPeriod.OrderByDescending((o) => o.Key).ToList();
