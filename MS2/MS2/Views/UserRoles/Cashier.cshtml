@@ -93,6 +93,7 @@
 
                     <td>
                         <select class="product-group" id="drinks">
+                            <option value="" selected="" disabled="" hidden="">Choose Type</option>
                         </select>
                     </td>
 
@@ -171,13 +172,18 @@
         justify-content: space-evenly;
     }
 
-    table,tr {
+    .product-group {
+        width: 155px;
+    }
+
+    table, tr {
         border: 1px solid #DEE2E6;
     }
 
     td {
         padding: 15px;
     }
+
     table{
         margin: 0.5em;
     }
