@@ -40,6 +40,7 @@ for (let i = 0; i < elements.length; i++) {
 
 setProductSelections();
 renderOrderItems();
+document.getElementById('cancle-order').addEventListener('click', cancleOrder, false)
 
 function getItemPriceBySize(item, itemSize) {
     itemSize = itemSize.toLowerCase();
@@ -102,6 +103,41 @@ async function renderOrderItems() {
     setRemoveClickListeners()
 }
 
+function makeAddressInput() {
+    let userAddress = document.getElementById("user-address").innerText;
+    let street = document.createElement('input');
+    let header = document.createElement('h4');
+    let addressDiv = document.createElement('div');
+    let postalCode = document.createElement('input');
+
+    addressDiv.style.display = 'none';
+
+    let citySelection = makeCitySelection();
+
+    header.innerText = 'Delivery Address';
+    addressDiv.setAttribute('id', 'address-div');
+
+    street.setAttribute('type', 'street');
+    street.setAttribute('id', 'street');
+    street.setAttribute('placeholder', 'Street');
+
+    postalCode.setAttribute('type', 'postalCode');
+    postalCode.setAttribute('id', 'postalCode');
+    postalCode.setAttribute('placeholder', 'Postal Code');
+
+    addressDiv.appendChild(header);
+    addressDiv.appendChild(street);
+    addressDiv.appendChild(postalCode);
+    addressDiv.appendChild(citySelection);
+
+
+    if (userAddress) {
+        street.value = userAddress;
+    }
+
+    return addressDiv;
+}
+
 function setRemoveClickListeners() {
     let removeBtns = document.getElementsByClassName('remove-btn');
 
@@ -109,6 +145,7 @@ function setRemoveClickListeners() {
         removeBtns[i].addEventListener('click', removeOrderItem, false);
     }
 }
+
 async function removeOrderItem() {
     let id = this.parentNode.parentNode.getAttribute("data-id");
     let itemSize = this.parentNode.parentNode.getAttribute("data-size");
@@ -121,6 +158,7 @@ async function removeOrderItem() {
 
     await renderOrderItems();
 }
+
 async function setProductSelections() {
     let cart = await ShoppingCart.getCartFromLocalStorage();
 
@@ -161,4 +199,38 @@ async function setProductSelections() {
 
 
     }
+}
+
+async function placeOrder() {
+
+    let userCart = await ShoppingCart.getCartFromLocalStorage();
+
+    let tempCartObject = {};
+
+    tempCartObject.address = address;
+    tempCartObject.itemQuantity = userCart.itemQuantity;
+    tempCartObject.itemSize = userCart.itemSize;
+    tempCartObject.orderItems = userCart.orderItems;
+    tempCartObject.isDelivery = userCart.isDelivery;
+    tempCartObject.cardInfo = cardInfo;
+
+    const response = await fetch(ShoppingCart.URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', },
+        body: JSON.stringify(tempCartObject),
+    });
+
+    if (response.status === 201) {
+        ShoppingCart.clearCart();
+        userCart = await ShoppingCart.getInstance();
+        localStorage.setItem(ShoppingCart.LOCAL_STORAGE_CART_NAME, JSON.stringify(userCart));
+        await renderOrderItems();
+    }
+}
+
+async function cancleOrder() {
+    ShoppingCart.clearCart();
+    userCart = await ShoppingCart.getInstance();
+    localStorage.setItem(ShoppingCart.LOCAL_STORAGE_CART_NAME, JSON.stringify(userCart));
+    renderOrderItems();
 }

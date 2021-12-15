@@ -6,7 +6,7 @@
 <div class="container">
     <h1>Hello Cashier</h1>
     <div id="body">
-        <table>
+        <table class="table">
             <tbody>
                 <tr>
                     <td>
@@ -145,7 +145,7 @@
                 </tr>
             </tbody>
         </table>
-        <table id="order-view-table">
+        <table  class="table" id="order-view-table">
             <tbody id="order-view-table-body">
                 <tr>
                     <td>
@@ -156,7 +156,7 @@
                     <td>
                         <p>Total: </p>
                         <button>Confrim Order</button>
-                        <button>Cancle Order</button>
+                        <button id="cancle-order">Cancle Order</button>
                     </td>
                 </tr>
             </tbody>
@@ -171,8 +171,8 @@
         justify-content: space-evenly;
     }
 
-    table, th, td{
-        border: 1px solid black;
+    table {
+        border: 1px solid #DEE2E6;
     }
 
     td {
