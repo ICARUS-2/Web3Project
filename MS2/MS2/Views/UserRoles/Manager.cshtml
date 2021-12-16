@@ -7,7 +7,7 @@
 }
 
 <div class="container">
-    <h1>Hello Manager</h1>
+    <h1>USERS DASHBOARD</h1>
     <button class="btn btn-primary"> <a style="color:white;" asp-controller="UserRoles" asp-action="CreateEmployee">Create Employee</a></button>
     <table class="table table-striped">
         <thead>
@@ -37,14 +37,17 @@
                             <a class="btn btn-primary" asp-controller="UserRoles" asp-action="Manage" asp-route-userId="@user.Id">Manage Roles</a>
                         </td>
                         <td>
-                            <form asp-controller="UserRoles" asp-action="Terminate" method="post">
-                                <div class="form-group">
-                                    <label>Reason</label>
-                                    <input name="reason" type="text" />
-                                </div>
-                                <input name="Id" hidden value="@id" />
-                                <button type="submit" class="btn btn-secondary" asp-controller="UserRoles" asp-action="Terminate">Terminate Employee</button>
-                            </form>
+                            @if (!(roles.Count == 1 && roles.Contains("Customer")) && !(roles.Count == 0))
+                            {
+                                <form asp-controller="UserRoles" asp-action="Terminate" method="post">
+                                    <div class="form-group">
+                                        <label>Reason</label>
+                                        <input name="reason" type="text" />
+                                    </div>
+                                    <input name="Id" hidden value="@id" />
+                                    <button type="submit" class="btn btn-secondary" asp-controller="UserRoles" asp-action="Terminate">Terminate Employee</button>
+                                </form>
+                            }
                         </td>
                     </tr>
                 }

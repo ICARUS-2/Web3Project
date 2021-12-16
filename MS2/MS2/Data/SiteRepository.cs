@@ -120,5 +120,125 @@ namespace MS2.Data
                .ThenInclude(oi => oi.Product).FirstOrDefault();
         }
 
+        // Per specific day.
+        public IEnumerable<Order> GetOrdersByDate(DateTime day)
+        {
+            return GetAllOrders().Where((o) => o.OrderDate.ToShortDateString() == day.ToShortDateString());
+        }
+
+        // Inclusive.
+        public IEnumerable<Order> GetOrdersByDateRange(DateTime start, DateTime end)
+        {
+            return GetAllOrders().Where((o) => o.OrderDate >= start && o.OrderDate <= end);
+        }
+
+        public Dictionary<string, List<Order>> GetOrdersGroupedByDay()
+        {
+            // Orders grouped by day
+            var orderGroups = GetAllOrders().GroupBy((o) => o.OrderDate.ToShortDateString()).ToList();
+
+            Dictionary<string, List<Order>> dict = new Dictionary<string, List<Order>>();
+
+            foreach (IGrouping<string, Order> group in orderGroups)
+            {
+                List<Order> listOfOrders = new List<Order>();
+
+                foreach (Order o in group)
+                {
+                    listOfOrders.Add(o);
+                }
+
+                dict.Add(group.Key, listOfOrders);
+            }
+
+            return dict;
+        }
+
+        public Dictionary<string, List<Order>> GetOrdersGroupedByWeek()
+        {
+            // Oldest order in the DB
+            DateTime min = _context.Orders.Min((entry) => entry.OrderDate);
+            DateTime max = _context.Orders.Max((entry) => entry.OrderDate);
+
+            Dictionary<string, List<Order>> dict = new Dictionary<string, List<Order>>();
+
+            while (min <= max)
+            {
+                List<Order> ordersForThisWeek = GetOrdersByDateRange(min, min.AddDays(7)).ToList();
+
+                if (ordersForThisWeek.Count > 0)
+                {
+                    string key = "";
+
+                    if (min.AddDays(6) > DateTime.Now) key = $"{min.ToShortDateString()} TO PRESENT";
+                    else key = $"{min.ToShortDateString()} TO {min.AddDays(6).ToShortDateString()}";
+
+                    dict.Add(key, ordersForThisWeek);
+                }
+
+                // Continue into next week and so forth
+                min = min.AddDays(7);
+            }
+
+            return dict;
+        }
+
+        public Dictionary<string, List<Order>> GetOrdersGroupedByMonth()
+        {
+            // Oldest order in the DB
+            DateTime min = _context.Orders.Min((entry) => entry.OrderDate);
+            DateTime max = _context.Orders.Max((entry) => entry.OrderDate);
+
+            Dictionary<string, List<Order>> dict = new Dictionary<string, List<Order>>();
+
+            while (min <= max)
+            {
+                List<Order> ordersForThisMonth = GetOrdersByDateRange(min, min.AddMonths(1)).ToList();
+
+                if (ordersForThisMonth.Count > 0)
+                {
+                    string key = "";
+
+                    if (min.AddMonths(1) > DateTime.Now) key = $"{min.ToShortDateString()} TO PRESENT";
+                    else key = $"{min.ToShortDateString()} TO {min.AddMonths(1).AddDays(-1).ToShortDateString()}";
+
+                    dict.Add(key, ordersForThisMonth);
+                }
+
+                // Continue into next month and so forth
+                min = min.AddMonths(1);
+            }
+
+            return dict;
+        }
+
+        public Dictionary<string, List<Order>> GetOrdersGroupedByYear()
+        {
+            // Oldest order in the DB
+            DateTime min = _context.Orders.Min((entry) => entry.OrderDate);
+            DateTime max = _context.Orders.Max((entry) => entry.OrderDate);
+
+            Dictionary<string, List<Order>> dict = new Dictionary<string, List<Order>>();
+
+            while (min <= max)
+            {
+                List<Order> ordersForThisYear = GetOrdersByDateRange(min, min.AddYears(1)).ToList();
+
+                if (ordersForThisYear.Count > 0)
+                {
+                    string key = "";
+
+                    if (min.AddYears(1) > DateTime.Now) key = $"{min.ToShortDateString()} TO PRESENT";
+                    else key = $"{min.ToShortDateString()} TO {min.AddYears(1).AddDays(-1).ToShortDateString()}";
+
+                    dict.Add(key, ordersForThisYear);
+                }
+
+                // Continue into next month and so forth
+                min = min.AddYears(1);
+            }
+
+            return dict;
+        }
     }
 }

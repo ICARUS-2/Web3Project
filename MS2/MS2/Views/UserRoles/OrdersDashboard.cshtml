@@ -1,0 +1,62 @@
+﻿@using MS2.Data.Entities
+@model List<OrderDashboardViewModel>
+
+<h1>@ViewData["Title"]</h1>
+
+<div id="groupby">
+    <h2>Group by</h2>
+    @using (Html.BeginForm())
+    {
+        <select onchange="this.form.submit()" name="period">
+            @if ((string)ViewData["Index"] == "Day") { <option selected value="Day">Day</option> }
+            else { <option value = "Day">Day</option> }
+
+            @if ((string) ViewData["Index"] == "Week") { <option selected value="Week">Week</option> }
+            else { <option value="Week">Week</option> }
+
+            @if ((string)ViewData["Index"] == "Month") { <option selected value="Month">Month</option> }
+            else { <option value="Month">Month</option> }
+
+            @if ((string)ViewData["Index"] == "Year") { <option selected value="Year">Year</option> }
+            else { <option value="Year">Year</option> }
+        </select>
+    }
+    
+</div>
+
+<table class="table table-striped">
+    <tr>
+        <th>Period</th>
+        <th>Total earnings</th>
+        <th>Sales breakdown</th>
+        <th>Orders made</th>
+    </tr>
+
+    @foreach (OrderDashboardViewModel group in Model)
+    {
+        <tr>
+            <td>@group.Period</td>
+            <td>@group.TotalAmount.ToString("c")</td>
+            <td><a asp-controller="Orders" asp-action="SalesBreakdown" asp-route-period="@ViewData["Index"].ToString() @group.Period" class="dashboardBtn">View sales</a></td>
+            <td><a asp-controller="Orders" asp-action="OrdersByPeriod" asp-route-period="@group.Period" class="dashboardBtn">View orders (@group.Orders.Count)</a></td>
+        </tr>
+    }
+</table>
+
+<style>
+    .dashboardBtn {
+        background-color: forestgreen;
+        color: white;
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    #groupby {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        width: 15em;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between
+    }
+</style>

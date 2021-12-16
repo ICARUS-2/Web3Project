@@ -92,8 +92,6 @@ namespace MS2.Controllers
         [HttpPost]
         public async Task<IActionResult> Manage(List<ManageUserRolesViewModel> model, IFormCollection form)
         {
-
-
             var user = await _userManager.FindByIdAsync(form["UserId"]);
             if (user == null)
             {
@@ -163,6 +161,90 @@ namespace MS2.Controllers
             }
             user.Status = "Employee Termination. Reason: " + form["Reason"];
             return await Dashboard();
+        }
+
+        public async Task<IActionResult> DashboardMenuAsync()
+        {
+            ApplicationUser user = await _userManager.FindByNameAsync(User.Identity.Name);
+            List<string> roles = (List<string>)await _userManager.GetRolesAsync(user);
+
+            if (roles.Contains("Owner") || roles.Contains("Manager"))
+            {
+                if (roles.Contains("Owner")) ViewData["Role"] = "owner";
+                else if (roles.Contains("Manager")) ViewData["Role"] = "manager";
+
+                ViewData["Title"] = "DASHBOARD";
+                return View("DashboardMenu");
+            }
+            else
+            {
+                return await Dashboard();
+            }
+        }
+
+        [HttpPost("/OrdersDashboard")]
+        public IActionResult OrdersDashboard(IFormCollection form)
+        {
+            return OrdersDashboard(form["period"]);
+        }
+
+        [HttpGet("/OrdersDashboard")]
+        public IActionResult OrdersDashboard(string period)
+        {
+            ViewData["Title"] = "ORDERS DASHBOARD";
+            Dictionary<string, List<Order>> ordersByPeriod = null;
+
+            switch (period)
+            {
+                default:
+                case "Day":
+                    ordersByPeriod = _repository.GetOrdersGroupedByDay();
+                    break;
+
+                case "Week":
+                    ordersByPeriod = _repository.GetOrdersGroupedByWeek();
+                    break;
+
+                case "Month":
+                    ordersByPeriod = _repository.GetOrdersGroupedByMonth();
+                    break;
+
+                case "Year":
+                    ordersByPeriod = _repository.GetOrdersGroupedByYear();
+                    break;
+            }
+
+            ViewData["Index"] = period == null ? "Day" : period;
+
+            // Overwrite dictionary so that it is sorted
+            var sortedOrders = ordersByPeriod.OrderByDescending((o) => o.Key).ToList();
+            ordersByPeriod.Clear();
+            foreach (var item in sortedOrders) ordersByPeriod.Add(item.Key, item.Value);
+
+            List<OrderDashboardViewModel> list = new List<OrderDashboardViewModel>();
+
+            // For each "period"
+            foreach (string key in ordersByPeriod.Keys)
+            {
+                OrderDashboardViewModel vm = new OrderDashboardViewModel();
+
+                vm.Period = key;
+
+                // For each List of orders in that period
+                foreach (Order order in ordersByPeriod[key])
+                {
+                    foreach (OrderEntry entry in order.Items)
+                    {
+                        vm.TotalAmount += entry.EntryPrice;
+                    }
+
+                    vm.Orders = new List<Order>(ordersByPeriod[key]);
+                }
+
+                list.Add(vm);
+            }
+
+            return View("OrdersDashboard", list);
         }
 
         public async Task<IActionResult> Dashboard()
