@@ -37,7 +37,7 @@
         <tr>
             <td>@group.Period</td>
             <td>@group.TotalAmount.ToString("c")</td>
-            <td><a asp-controller="Orders" asp-action="SalesBreakdown" asp-route-period="@group.Period" class="dashboardBtn">View sales</a></td>
+            <td><a asp-controller="Orders" asp-action="SalesBreakdown" asp-route-period="@ViewData["Index"].ToString() @group.Period" class="dashboardBtn">View sales</a></td>
             <td><a asp-controller="Orders" asp-action="OrdersByPeriod" asp-route-period="@group.Period" class="dashboardBtn">View orders (@group.Orders.Count)</a></td>
         </tr>
     }

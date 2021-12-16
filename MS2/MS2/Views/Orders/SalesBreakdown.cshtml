@@ -1,1 +1,21 @@
-﻿<h1>SALES BREAKDOWN FOR @ViewData["Period"]</h1>
+﻿@model IEnumerable<MS2.Data.Entities.Order>
+
+<h1>SALES BREAKDOWN FOR @ViewData["Period"]</h1>
+
+<table class="table table-striped">
+    <tr>
+        <th>Item Name</th>
+        <th>Units sold (Small)</th>
+        <th>Units sold (Medium)</th>
+        <th>Units sold (Large)</th>
+        <th>Total</th>
+    </tr>
+
+    <tr>
+        <td>Placeholder item</td>
+        <td>69 (420.00$)</td>
+        <td>420 (69.00$)</td>
+        <td>0 (0.00$)</td>
+        <td>489 (489.00$)</td>
+    </tr>
+</table>

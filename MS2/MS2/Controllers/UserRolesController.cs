@@ -214,7 +214,7 @@ namespace MS2.Controllers
                     break;
             }
 
-            ViewData["Index"] = period;
+            ViewData["Index"] = period == null ? "Day" : period;
 
             // Overwrite dictionary so that it is sorted
             var sortedOrders = ordersByPeriod.OrderByDescending((o) => o.Key).ToList();
