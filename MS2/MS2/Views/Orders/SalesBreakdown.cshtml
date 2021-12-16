@@ -1,6 +1,6 @@
-﻿@model IEnumerable<MS2.Data.Entities.Order>
+﻿@model List<MS2.Models.SalesBreakdownViewModel>
 
-<h1>SALES BREAKDOWN FOR @ViewData["Period"]</h1>
+<h1 id="header">SALES BREAKDOWN FOR @ViewData["Period"]</h1>
 
 <table class="table table-striped">
     <tr>
@@ -11,11 +11,47 @@
         <th>Total</th>
     </tr>
 
-    <tr>
-        <td>Placeholder item</td>
-        <td>69 (420.00$)</td>
-        <td>420 (69.00$)</td>
-        <td>0 (0.00$)</td>
-        <td>489 (489.00$)</td>
-    </tr>
+    @foreach (SalesBreakdownViewModel vm in Model)
+    {
+        int totalUnits = vm.SmallUnits + vm.MediumUnits + vm.LargeUnits;
+        double totalAmount = vm.SmallTotal + vm.MediumTotal + vm.LargeTotal;
+
+        <tr>
+            <td>@vm.Product.ItemName</td>
+            <td>
+                @if (vm.SmallUnits > 0)
+                {
+                    string output = $"{vm.SmallUnits.ToString()} ({vm.SmallTotal.ToString("c2")})";
+                    @output
+                }
+                else { <b>-</b> }
+            </td>
+            <td>
+                @if (vm.MediumUnits > 0)
+                {
+                    string output = $"{vm.MediumUnits.ToString()} ({vm.MediumTotal.ToString("c2")})";
+                    @output
+                }
+                else
+                { <b>-</b>}
+            </td>
+            <td>
+                @if (vm.LargeUnits > 0)
+                {
+                    string output = $"{vm.LargeUnits.ToString()} ({vm.LargeTotal.ToString("c2")})";
+                    @output
+                }
+                else
+                { <b>-</b>}
+            </td>
+            <td>@totalUnits @totalAmount.ToString("c2"))</td>
+      </tr>
+    }
 </table>
+
+<style>
+    #header
+    {
+        margin: 5em;
+    }
+</style>
