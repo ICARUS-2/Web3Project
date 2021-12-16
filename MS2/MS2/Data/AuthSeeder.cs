@@ -35,7 +35,7 @@ namespace MS2.Data
             await userManager.CreateAsync(cashierUser, DEFAULT_PASS);
             await userManager.AddToRoleAsync(cashierUser, Roles.Cashier.ToString());
 
-            var driverUser = new ApplicationUser() { UserName = "driver@hgpizza.com", Email = "driver@hgpizza.com", EmailConfirmed = true, PhoneNumberConfirmed = true, PhoneNumber = "5155142500", FirstName = "FirstName", LastName = "LastName", Address = "1111", CreatedAt = DateTime.Now };
+            var driverUser = new ApplicationUser() { UserName = "driver@hgpizza.com", Email = "driver@hgpizza.com", EmailConfirmed = true, PhoneNumberConfirmed = true, PhoneNumber = "5155142500", FirstName = "DriverFirstName", LastName = "LastName", Address = "1111", CreatedAt = DateTime.Now };
             await userManager.CreateAsync(driverUser, DEFAULT_PASS);
             await userManager.AddToRoleAsync(driverUser, Roles.Driver.ToString());
 

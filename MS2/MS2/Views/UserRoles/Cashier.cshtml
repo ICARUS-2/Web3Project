@@ -1,9 +1,240 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@using Microsoft.AspNetCore.Identity
+@using MS2.Data.Entities;
+@inject UserManager<ApplicationUser> UserManager
+
 
 <div class="container">
     <h1>Hello Cashier</h1>
+    <div id="body">
+        <table id="product-table">
+            <tbody>
+                <tr>
+                    <td>
+                        <h2>Create Order</h2>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><h3>Pizzas</h3></td>
+                    <td>
+                        <select class="product-group" id="pizzas">
+                            <option value="" selected="" disabled="" hidden="">Choose Type</option>
+                        </select>
+                    </td>
+
+                    <td>
+                        <select class="size-selection" >
+                            <option value="" selected="" disabled="" hidden="">Choose Size</option>
+                            <option value="Small">Small</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Large">Large</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="number" placeholder="Quantity" class="item-qty"/>
+                    </td>
+                    <td>
+                        <button class="addToOrder">Add</button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><h3>Burgers</h3></td>
+
+                    <td>
+                        <select class="product-group" id="burgers">
+                            <option value="" selected="" disabled="" hidden="">Choose Type</option>
+                        </select>
+                    </td>
+
+                    <td>
+                        <select class="size-selection">
+                            <option value="" selected="" disabled="" hidden="">Choose Size</option>
+                            <option value="Small">Small</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Large">Large</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="number" placeholder="Quantity" class="item-qty"/>
+                    </td>
+                    <td>
+                        <button class="addToOrder">Add</button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><h3>Fries</h3></td>
+
+                    <td>
+                        <select class="product-group" id="fries">
+                            <option value="" selected="" disabled="" hidden="">Choose Type</option>
+                        </select>
+                    </td>
+
+                    <td>
+                        <select class="size-selection">
+                            <option value="" selected="" disabled="" hidden="">Choose Size</option>
+                            <option value="Small">Small</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Large">Large</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="number" placeholder="Quantity" class="item-qty"/>
+                    </td>
+                    <td>
+                        <button class="addToOrder">Add</button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><h3>Drinks</h3></td>
+
+                    <td>
+                        <select class="product-group" id="drinks">
+                            <option value="" selected="" disabled="" hidden="">Choose Type</option>
+                        </select>
+                    </td>
+
+                    <td>
+                        <select class="size-selection">
+                            <option value="" selected="" disabled="" hidden="">Choose Size</option>
+                            <option value="Small">Small</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Large">Large</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="number" placeholder="Quantity" class="item-qty"/>
+                    </td>
+                    <td>
+                        <button class="addToOrder">Add</button>
+                    </td>
+                </tr>
+
+                <tr>
+
+                    <td colspan="2">
+                        <div id="options-div">
+                            <h5>Order Options</h5>
+                            <select id="payment-type" class="order-option">
+                                <option value="" selected="" disabled="" hidden="">Payment Type</option>
+                                <option value="Cash">Cash</option>
+                                <option value="Card">Card</option>
+                            </select>
+
+                            <select id="order-type" class="order-option">
+                                <option value="" selected="" disabled="" hidden="">Order Type</option>
+                                <option value="PickUp">Pick Up</option>
+                                <option value="Delivery">Delivery</option>
+                            </select>
+
+                            <select id="dirver" class="order-option">
+                                <option value="" selected="" disabled="" hidden="">Driver</option>
+
+                                @foreach (var user in Model)
+                                {
+                                    List<String> roles = await UserManager.GetRolesAsync(user);
+                                    if (roles.Contains("Driver"))
+                                    {
+                                        <option value="@user.Id">@user.FirstName</option>
+                                    }
+                                }
+
+                            </select>
+                        </div>
+                    </td>
+                    <td colspan="3">
+
+                        <div id="address-div">
+                            <h5>Delivery Address</h5>
+                            <input type="street" id="street" placeholder="Street">
+                            <input type="postalCode" id="postalCode" placeholder="Postal Code">
+                            <select id="city-selection" type="city">
+                                <option selected="" disabled="" hidden="">Choose City</option>
+                                <option value="Sainte-Anne-De-Bellevue">Sainte-Anne-De-Bellevue</option>
+                                <option value="Baie-D'Urfé">Baie-D'Urfé</option>
+                                <option value="Senneville">Senneville</option>
+                                <option value="Kirkland">Kirkland</option>
+                                <option value="Dollard-Des Ormeaux">Dollard-Des Ormeaux</option>
+                                <option value="Beaconsfield Pierrefonds and Roxboro">Beaconsfield Pierrefonds and Roxboro</option>
+                                <option value="L'Île-Bizard–Sainte-Geneviève">L'Île-Bizard–Sainte-Geneviève</option>
+                                <option value="Pointe-Claire">Pointe-Claire</option>
+                                <option value="Dorval">Dorval</option>
+                            </select>
+                        </div>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table  id="order-view-table">
+            <tbody id="order-view-table-body">
+                <tr>
+                    <td>
+                        <h2>Order Items</h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p id="order-total">Total: </p>
+                        <button id="confirm-order">Confirm Order</button>
+                        <button id="cancle-order">Cancel Order</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
+<script type="module" src="~/js/CreateOrderAsCashierLogic.js"></script>
+<style>
+    #body {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-evenly;
+    }
+
+    #options-div{
+        display:flex;
+        flex-direction:column;
+    }
+    #address-div{
+        display:none;
+    }
+
+    #address-div > * {
+        margin-bottom: 0.25em;
+        margin-top: 0.25em;
+    }
+
+    .order-option {
+        width: 155px;
+        margin-bottom: 0.25em;
+        margin-top: 0.25em;
+    }
+
+    #address-div{
+        flex-direction:column;
+    }
+
+    .product-group {
+        width: 155px;
+    }
+
+    table, tr,td {
+        border: 1px solid #DEE2E6;
+    }
+
+    td {
+        padding: 15px;
+    }
+
+    #product-table {
+        max-width:750px;
+    }
+
+    table{
+        margin: 0.5em;
+    }
+</style>
