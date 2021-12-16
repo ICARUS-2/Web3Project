@@ -5,9 +5,9 @@
 <table class="table table-striped">
     <tr>
         <th>Item Name</th>
-        <th>Units sold (Small)</th>
-        <th>Units sold (Medium)</th>
-        <th>Units sold (Large)</th>
+        <th>Units Sold (Small)</th>
+        <th>Units Sold (Medium)</th>
+        <th>Units Sold (Large)</th>
         <th>Total</th>
     </tr>
 
@@ -44,7 +44,7 @@
                 else
                 { <b>-</b>}
             </td>
-            <td>@totalUnits @totalAmount.ToString("c2"))</td>
+            <td>@totalUnits (@totalAmount.ToString("c2"))</td>
       </tr>
     }
 </table>
@@ -52,6 +52,6 @@
 <style>
     #header
     {
-        margin: 5em;
+        margin-bottom: 1em;
     }
 </style>

@@ -235,7 +235,7 @@ namespace MS2.Controllers
                 {
                     foreach (OrderEntry entry in order.Items)
                     {
-                        vm.TotalAmount += entry.EntryPrice * entry.Quantity;
+                        vm.TotalAmount += entry.EntryPrice;
                     }
 
                     vm.Orders = new List<Order>(ordersByPeriod[key]);
