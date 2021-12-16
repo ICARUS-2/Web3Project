@@ -156,9 +156,9 @@ namespace MS2.Data
 
         public Dictionary<string, List<Order>> GetOrdersGroupedByWeek()
         {
-            // Oldest order in the DB
-            DateTime min = _context.Orders.Min((entry) => entry.OrderDate);
-            DateTime max = _context.Orders.Max((entry) => entry.OrderDate);
+            // Oldest order in the DB (without time)
+            DateTime min = DateTime.Parse(_context.Orders.Min((entry) => entry.OrderDate).ToShortDateString());
+            DateTime max = DateTime.Parse(_context.Orders.Max((entry) => entry.OrderDate).ToShortDateString());
 
             Dictionary<string, List<Order>> dict = new Dictionary<string, List<Order>>();
 
@@ -170,8 +170,8 @@ namespace MS2.Data
                 {
                     string key = "";
 
-                    if (min.AddDays(6) > DateTime.Now) key = $"{min.ToShortDateString()} TO PRESENT";
-                    else key = $"{min.ToShortDateString()} TO {min.AddDays(6).ToShortDateString()}";
+                    if (min.AddDays(7) >= DateTime.Now) key = $"{min.ToShortDateString()} TO PRESENT";
+                    else key = $"{min.ToShortDateString()} TO {min.AddDays(7).AddDays(-1).ToShortDateString()}";
 
                     dict.Add(key, ordersForThisWeek);
                 }
@@ -185,9 +185,9 @@ namespace MS2.Data
 
         public Dictionary<string, List<Order>> GetOrdersGroupedByMonth()
         {
-            // Oldest order in the DB
-            DateTime min = _context.Orders.Min((entry) => entry.OrderDate);
-            DateTime max = _context.Orders.Max((entry) => entry.OrderDate);
+            // Oldest order in the DB (without time)
+            DateTime min = DateTime.Parse(_context.Orders.Min((entry) => entry.OrderDate).ToShortDateString());
+            DateTime max = DateTime.Parse(_context.Orders.Max((entry) => entry.OrderDate).ToShortDateString());
 
             Dictionary<string, List<Order>> dict = new Dictionary<string, List<Order>>();
 
@@ -199,7 +199,7 @@ namespace MS2.Data
                 {
                     string key = "";
 
-                    if (min.AddMonths(1) > DateTime.Now) key = $"{min.ToShortDateString()} TO PRESENT";
+                    if (min.AddMonths(1) >= DateTime.Now) key = $"{min.ToShortDateString()} TO PRESENT";
                     else key = $"{min.ToShortDateString()} TO {min.AddMonths(1).AddDays(-1).ToShortDateString()}";
 
                     dict.Add(key, ordersForThisMonth);
@@ -214,9 +214,9 @@ namespace MS2.Data
 
         public Dictionary<string, List<Order>> GetOrdersGroupedByYear()
         {
-            // Oldest order in the DB
-            DateTime min = _context.Orders.Min((entry) => entry.OrderDate);
-            DateTime max = _context.Orders.Max((entry) => entry.OrderDate);
+            // Oldest order in the DB (without time)
+            DateTime min = DateTime.Parse(_context.Orders.Min((entry) => entry.OrderDate).ToShortDateString());
+            DateTime max = DateTime.Parse(_context.Orders.Max((entry) => entry.OrderDate).ToShortDateString());
 
             Dictionary<string, List<Order>> dict = new Dictionary<string, List<Order>>();
 
@@ -228,7 +228,7 @@ namespace MS2.Data
                 {
                     string key = "";
 
-                    if (min.AddYears(1) > DateTime.Now) key = $"{min.ToShortDateString()} TO PRESENT";
+                    if (min.AddYears(1) >= DateTime.Now) key = $"{min.ToShortDateString()} TO PRESENT";
                     else key = $"{min.ToShortDateString()} TO {min.AddYears(1).AddDays(-1).ToShortDateString()}";
 
                     dict.Add(key, ordersForThisYear);
