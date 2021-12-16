@@ -12,7 +12,14 @@
         {
             @if (!role.Equals("Customer"))
             {
-                <a class="link-btn" href="/UserRoles/Dashboard/@role">@role</a>
+                @if (role == "Owner" || role == "Manager")
+                {
+                    <a class="link-btn" href="/UserRoles/DashboardMenu/@role">@role</a>
+                }
+                else
+                {
+                    <a class="link-btn" href="/UserRoles/Dashboard/@role">@role</a>
+                }
             }
         }
     </div>
