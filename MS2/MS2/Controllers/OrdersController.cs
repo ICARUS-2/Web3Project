@@ -131,7 +131,9 @@ namespace MS2.Controllers
         public IActionResult OrdersByPeriod(string period)
         {
             ViewData["Period"] = period;
-            return View();
+            DateTime date = DateTime.Parse(period);
+            List<Order> orders = _repository.GetOrdersByDate(date).ToList();
+            return View(orders);
         }
     }
 }
