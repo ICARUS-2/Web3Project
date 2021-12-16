@@ -33,6 +33,7 @@ let addfunc = async function () {
 
     if (parseInt(itemQty) > 100 || parseInt(itemQty) < 0) {
         alert('Please Enter a Reasonable Qty, none negative positive integer less than 100');
+        return;
     }
 
     let cart = await ShoppingCart.getCartFromLocalStorage();
@@ -107,6 +108,7 @@ async function renderOrderItems() {
                 let itemSize = userCart.itemSize[i];
                 let itemQuantity = "Quantity: " + userCart.itemQuantity[i];
                 let subTotal = "Sub Total: $" + dollarCADFormat.format(getItemPriceBySize(item, userCart.itemSize[i]) * userCart.itemQuantity[i]);
+                totalAmount += getItemPriceBySize(item, userCart.itemSize[i]) * userCart.itemQuantity[i];;
 
                 tempTr.setAttribute('data-id', item.id);
                 tempTr.setAttribute('data-size', userCart.itemSize[i]);
@@ -127,7 +129,9 @@ async function renderOrderItems() {
             }
         });
     }
-    setRemoveClickListeners()
+
+    document.getElementById('order-total').innerText = 'Total: $' + dollarCADFormat.format(totalAmount);
+    setRemoveClickListeners();
 }
 
 
@@ -280,6 +284,7 @@ async function cancleOrder() {
     userCart = await ShoppingCart.getInstance();
     localStorage.setItem(ShoppingCart.LOCAL_STORAGE_CART_NAME, JSON.stringify(userCart));
     renderOrderItems();
+    clearInputs();
 }
 function clearInputs() {
     let inputs = document.getElementsByTagName('input');
