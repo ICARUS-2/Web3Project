@@ -214,7 +214,7 @@ namespace MS2.Controllers
                     break;
             }
 
-            ViewData["Index"] = period;
+            ViewData["Index"] = period == null ? "Day" : period;
 
             // Overwrite dictionary so that it is sorted
             var sortedOrders = ordersByPeriod.OrderByDescending((o) => o.Key).ToList();
@@ -235,7 +235,7 @@ namespace MS2.Controllers
                 {
                     foreach (OrderEntry entry in order.Items)
                     {
-                        vm.TotalAmount += entry.EntryPrice * entry.Quantity;
+                        vm.TotalAmount += entry.EntryPrice;
                     }
 
                     vm.Orders = new List<Order>(ordersByPeriod[key]);

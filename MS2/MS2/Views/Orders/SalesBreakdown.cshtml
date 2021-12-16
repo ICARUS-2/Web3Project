@@ -1,1 +1,57 @@
-﻿<h1>SALES BREAKDOWN FOR @ViewData["Period"]</h1>
+﻿@model List<MS2.Models.SalesBreakdownViewModel>
+
+<h1 id="header">SALES BREAKDOWN FOR @ViewData["Period"]</h1>
+
+<table class="table table-striped">
+    <tr>
+        <th>Item Name</th>
+        <th>Units Sold (Small)</th>
+        <th>Units Sold (Medium)</th>
+        <th>Units Sold (Large)</th>
+        <th>Total</th>
+    </tr>
+
+    @foreach (SalesBreakdownViewModel vm in Model)
+    {
+        int totalUnits = vm.SmallUnits + vm.MediumUnits + vm.LargeUnits;
+        double totalAmount = vm.SmallTotal + vm.MediumTotal + vm.LargeTotal;
+
+        <tr>
+            <td>@vm.Product.ItemName</td>
+            <td>
+                @if (vm.SmallUnits > 0)
+                {
+                    string output = $"{vm.SmallUnits.ToString()} ({vm.SmallTotal.ToString("c2")})";
+                    @output
+                }
+                else { <b>-</b> }
+            </td>
+            <td>
+                @if (vm.MediumUnits > 0)
+                {
+                    string output = $"{vm.MediumUnits.ToString()} ({vm.MediumTotal.ToString("c2")})";
+                    @output
+                }
+                else
+                { <b>-</b>}
+            </td>
+            <td>
+                @if (vm.LargeUnits > 0)
+                {
+                    string output = $"{vm.LargeUnits.ToString()} ({vm.LargeTotal.ToString("c2")})";
+                    @output
+                }
+                else
+                { <b>-</b>}
+            </td>
+            <td>@totalUnits (@totalAmount.ToString("c2"))</td>
+      </tr>
+    }
+</table>
+
+<style>
+    #header
+    {
+        margin-bottom: 1em;
+    }
+</style>
