@@ -6,7 +6,7 @@
 <div class="container">
     <h1>Hello Cashier</h1>
     <div id="body">
-        <table>
+        <table id="product-table">
             <tbody>
                 <tr>
                     <td>
@@ -31,7 +31,7 @@
                         </select>
                     </td>
                     <td>
-                        <input type="text" placeholder="Quantity" class="item-qty"/>
+                        <input type="number" placeholder="Quantity" class="item-qty"/>
                     </td>
                     <td>
                         <button class="addToOrder">Add</button>
@@ -56,7 +56,7 @@
                         </select>
                     </td>
                     <td>
-                        <input type="text" placeholder="Quantity" class="item-qty"/>
+                        <input type="number" placeholder="Quantity" class="item-qty"/>
                     </td>
                     <td>
                         <button class="addToOrder">Add</button>
@@ -81,7 +81,7 @@
                         </select>
                     </td>
                     <td>
-                        <input type="text" placeholder="Quantity" class="item-qty"/>
+                        <input type="number" placeholder="Quantity" class="item-qty"/>
                     </td>
                     <td>
                         <button class="addToOrder">Add</button>
@@ -106,7 +106,7 @@
                         </select>
                     </td>
                     <td>
-                        <input type="text" placeholder="Quantity" class="item-qty"/>
+                        <input type="number" placeholder="Quantity" class="item-qty"/>
                     </td>
                     <td>
                         <button class="addToOrder">Add</button>
@@ -114,34 +114,57 @@
                 </tr>
 
                 <tr>
-                    <td>
-                        <select id="payment-type">
-                            <option value="" selected="" disabled="" hidden="">Payment Type</option>
-                            <option value="Cash">Cash</option>
-                            <option value="Card">Card</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select id="order-type">
-                            <option value="" selected="" disabled="" hidden="">Order Type</option>
-                            <option value="PickUp">Pick Up</option>
-                            <option value="Delivery">Delivery</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select id="dirver">
-                            <option value="" selected="" disabled="" hidden="">Driver</option>
 
-                            @foreach (var user in Model)
-                            {
-                                List<String> roles = await UserManager.GetRolesAsync(user);
-                                if (roles.Contains("Driver"))
+                    <td colspan="2">
+                        <div id="options-div">
+                            <h5>Order Options</h5>
+                            <select id="payment-type" class="order-option">
+                                <option value="" selected="" disabled="" hidden="">Payment Type</option>
+                                <option value="Cash">Cash</option>
+                                <option value="Card">Card</option>
+                            </select>
+
+                            <select id="order-type" class="order-option">
+                                <option value="" selected="" disabled="" hidden="">Order Type</option>
+                                <option value="PickUp">Pick Up</option>
+                                <option value="Delivery">Delivery</option>
+                            </select>
+
+                            <select id="dirver" class="order-option">
+                                <option value="" selected="" disabled="" hidden="">Driver</option>
+
+                                @foreach (var user in Model)
                                 {
-                                    <option value="@user.FirstName">@user.FirstName</option>
+                                    List<String> roles = await UserManager.GetRolesAsync(user);
+                                    if (roles.Contains("Driver"))
+                                    {
+                                        <option value="@user.Id">@user.FirstName</option>
+                                    }
                                 }
-                            }
 
-                        </select>
+                            </select>
+                        </div>
+                    </td>
+                    <td colspan="3">
+
+                        <div id="address-div">
+                            <h5>Delivery Address</h5>
+                            <input type="street" id="street" placeholder="Street">
+                            <input type="postalCode" id="postalCode" placeholder="Postal Code">
+                            <select id="city-selection" type="city">
+                                <option selected="" disabled="" hidden="">Choose City</option>
+                                <option value="Sainte-Anne-De-Bellevue">Sainte-Anne-De-Bellevue</option>
+                                <option value="Baie-D'Urfé">Baie-D'Urfé</option>
+                                <option value="Senneville">Senneville</option>
+                                <option value="Kirkland">Kirkland</option>
+                                <option value="Dollard-Des Ormeaux">Dollard-Des Ormeaux</option>
+                                <option value="Beaconsfield Pierrefonds and Roxboro">Beaconsfield Pierrefonds and Roxboro</option>
+                                <option value="L'Île-Bizard–Sainte-Geneviève">L'Île-Bizard–Sainte-Geneviève</option>
+                                <option value="Pointe-Claire">Pointe-Claire</option>
+                                <option value="Dorval">Dorval</option>
+                            </select>
+                        </div>
+
                     </td>
                 </tr>
             </tbody>
@@ -156,8 +179,8 @@
                 <tr>
                     <td>
                         <p>Total: </p>
-                        <button>Confrim Order</button>
-                        <button id="cancle-order">Cancle Order</button>
+                        <button id="confirm-order">Confirm Order</button>
+                        <button id="cancle-order">Cancel Order</button>
                     </td>
                 </tr>
             </tbody>
@@ -172,16 +195,43 @@
         justify-content: space-evenly;
     }
 
+    #options-div{
+        display:flex;
+        flex-direction:column;
+    }
+    #address-div{
+        display:none;
+    }
+
+    #address-div > * {
+        margin-bottom: 0.25em;
+        margin-top: 0.25em;
+    }
+
+    .order-option {
+        width: 155px;
+        margin-bottom: 0.25em;
+        margin-top: 0.25em;
+    }
+
+    #address-div{
+        flex-direction:column;
+    }
+
     .product-group {
         width: 155px;
     }
 
-    table, tr {
+    table, tr,td {
         border: 1px solid #DEE2E6;
     }
 
     td {
         padding: 15px;
+    }
+
+    #product-table {
+        max-width:750px;
     }
 
     table{

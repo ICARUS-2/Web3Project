@@ -19,8 +19,20 @@ let addfunc = async function () {
     let itemQty = tableDataCell.querySelector('.item-qty').value;
 
     if (!sizeSelection) {
-        alert('you must choose a size');
+        alert('you must choose a size.');
         return;
+    }
+    else if (!itemSelection) {
+        alert('you must choose an Item.');
+        return;
+    }
+    else if (!itemQty) {
+        alert('you must input a Quantity');
+        return;
+    }
+
+    if (parseInt(itemQty) > 100 || parseInt(itemQty) < 0) {
+        alert('Please Enter a Reasonable Qty, none negative positive integer less than 100');
     }
 
     let cart = await ShoppingCart.getCartFromLocalStorage();
@@ -40,7 +52,22 @@ for (let i = 0; i < elements.length; i++) {
 
 setProductSelections();
 renderOrderItems();
-document.getElementById('cancle-order').addEventListener('click', cancleOrder, false)
+document.getElementById('cancle-order').addEventListener('click', cancleOrder, false);
+document.getElementById('order-type').addEventListener('change', addressInputVisibility, false);
+document.getElementById('confirm-order').addEventListener('click', placeOrder, false);
+
+function addressInputVisibility() {
+    let addressDiv = document.getElementById('address-div');
+
+    if (this.value == 'Delivery') {
+
+        addressDiv.style.display = 'flex';
+    }
+    else {
+        addressDiv.style.display = 'none';
+    }
+    
+}
 
 function getItemPriceBySize(item, itemSize) {
     itemSize = itemSize.toLowerCase();
@@ -103,40 +130,6 @@ async function renderOrderItems() {
     setRemoveClickListeners()
 }
 
-function makeAddressInput() {
-    let userAddress = document.getElementById("user-address").innerText;
-    let street = document.createElement('input');
-    let header = document.createElement('h4');
-    let addressDiv = document.createElement('div');
-    let postalCode = document.createElement('input');
-
-    addressDiv.style.display = 'none';
-
-    let citySelection = makeCitySelection();
-
-    header.innerText = 'Delivery Address';
-    addressDiv.setAttribute('id', 'address-div');
-
-    street.setAttribute('type', 'street');
-    street.setAttribute('id', 'street');
-    street.setAttribute('placeholder', 'Street');
-
-    postalCode.setAttribute('type', 'postalCode');
-    postalCode.setAttribute('id', 'postalCode');
-    postalCode.setAttribute('placeholder', 'Postal Code');
-
-    addressDiv.appendChild(header);
-    addressDiv.appendChild(street);
-    addressDiv.appendChild(postalCode);
-    addressDiv.appendChild(citySelection);
-
-
-    if (userAddress) {
-        street.value = userAddress;
-    }
-
-    return addressDiv;
-}
 
 function setRemoveClickListeners() {
     let removeBtns = document.getElementsByClassName('remove-btn');
@@ -201,29 +194,83 @@ async function setProductSelections() {
     }
 }
 
+function validateAddress(street, selectedCity, postalCode) {
+
+    if (street == "" || postalCode == "" || selectedCity == "Choose City") {
+        alert('address is not inputed correctly');
+        return false;
+    }
+    return true;
+}
+
+function validateOrderOption(paymentType,orderType,driver) {
+
+    if (orderType === 'Delivery') {
+        
+        if (paymentType === '' || orderType === '' || driver === '') {
+            alert('Please ensure that the order options are corretly selected')
+            return false;
+        }
+        return true;
+    }
+
+    if (paymentType === '' || orderType === '') {
+        alert('Please ensure that the order options are corretly selected')
+        return false;
+    }
+
+    return true;
+}
+
 async function placeOrder() {
 
     let userCart = await ShoppingCart.getCartFromLocalStorage();
 
-    let tempCartObject = {};
+    let paymentType = document.getElementById('payment-type').value;
+    let orderType = document.getElementById('order-type').value;
+    let driver = document.getElementById('dirver').value;
 
-    tempCartObject.address = address;
-    tempCartObject.itemQuantity = userCart.itemQuantity;
-    tempCartObject.itemSize = userCart.itemSize;
-    tempCartObject.orderItems = userCart.orderItems;
-    tempCartObject.isDelivery = userCart.isDelivery;
-    tempCartObject.cardInfo = cardInfo;
+    let street = document.getElementById('street').value;
+    let postalCode = document.getElementById('postalCode').value;
+    let selectedCity = document.getElementById('city-selection').value;
+
+    if (userCart.orderItems.length === 0) {
+        alert('No order items added');
+        return;
+    }
+
+    if (!validateOrderOption(paymentType, orderType, driver)) {
+        return;
+    }
+
+    if (orderType === 'Delivery' ) {
+        if (!validateAddress(street, selectedCity, postalCode)) {
+            return;
+        }
+    }
+
+    let address = street + ',' + selectedCity + ',' + postalCode;
+    let orderParser = {};
+
+    orderParser.address = address;
+    orderParser.itemQuantity = userCart.itemQuantity;
+    orderParser.itemSize = userCart.itemSize;
+    orderParser.orderItems = userCart.orderItems;
+    orderParser.isDelivery = (orderType === 'Delivery') ? true : false;
+    orderParser.cardInfo = '';
+    orderParser.driverId = driver;
 
     const response = await fetch(ShoppingCart.URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', },
-        body: JSON.stringify(tempCartObject),
+        body: JSON.stringify(orderParser),
     });
 
     if (response.status === 201) {
         ShoppingCart.clearCart();
         userCart = await ShoppingCart.getInstance();
         localStorage.setItem(ShoppingCart.LOCAL_STORAGE_CART_NAME, JSON.stringify(userCart));
+        clearInputs();
         await renderOrderItems();
     }
 }
@@ -233,4 +280,17 @@ async function cancleOrder() {
     userCart = await ShoppingCart.getInstance();
     localStorage.setItem(ShoppingCart.LOCAL_STORAGE_CART_NAME, JSON.stringify(userCart));
     renderOrderItems();
+}
+function clearInputs() {
+    let inputs = document.getElementsByTagName('input');
+    let selects = document.getElementsByTagName('select');
+
+
+    for (let i = 0; i < inputs.length; i++) {
+        inputs[i].value = '';
+    }
+
+    for (let i = 0; i < selects.length; i++) {
+        selects[i].selectedIndex = 0;
+    }
 }
