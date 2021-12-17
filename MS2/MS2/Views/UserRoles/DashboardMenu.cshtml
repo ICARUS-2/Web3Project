@@ -3,8 +3,8 @@
 <h2 style="text-align:center">@ViewData["Title"]</h2>
 
 <div id="container">
-    <a class="link-btn" asp-controller="UserRoles" asp-action="Dashboard">Users</a>
-    @if ((string)ViewData["Role"] == "owner" || (string)ViewData["Role"] == "manager")
+    <a class="link-btn" href="/UserRoles/Dashboard/@ViewData["Role"]">Users</a>
+    @if ((string)ViewData["Role"] == "Owner" || (string)ViewData["Role"] == "Manager")
     {
         <a class="link-btn" asp-controller="UserRoles" asp-action="OrdersDashboard">Orders</a>
     }
