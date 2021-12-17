@@ -277,6 +277,8 @@ async function placeOrder() {
     orderParser.isDelivery = (orderType === 'Delivery') ? true : false;
     orderParser.cardInfo = '';
     orderParser.driverId = driver;
+    orderParser.paymentType = paymentType;
+
 
     const response = await fetch(ShoppingCart.URL, {
         method: 'POST',
@@ -300,6 +302,7 @@ async function cancleOrder() {
     renderOrderItems();
     clearInputs();
 }
+
 function clearInputs() {
     let inputs = document.getElementsByTagName('input');
     let selects = document.getElementsByTagName('select');
