@@ -18,9 +18,18 @@
         {
             @if (role != "Customer")
             {
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-controller="UserRoles" asp-action="Dashboard">Dashboard</a>
-                </li>
+                @if (roles.Contains("Owner") || roles.Contains("Manager"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="UserRoles" asp-action="DashboardMenu">Dashboard</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="UserRoles" asp-action="Dashboard">Dashboard</a>
+                    </li>
+                }
                 break;
             }
             else
