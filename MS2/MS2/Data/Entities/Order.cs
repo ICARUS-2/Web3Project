@@ -20,6 +20,7 @@ namespace MS2.Data.Entities
         public string DeliveryDriverId { get; set; }
         public string OrderType{ get; set; }
         public string CardInfo { get; set; }
+        public string PaymentType { get; set; }
 
         [NotMapped]
         public double Price

@@ -17,6 +17,7 @@ namespace MS2.Utils
         public bool IsDelivery { get; set; }
         public string CardInfo { get; set; }
         public string DriverId { get; set; }
+        public string PaymentType { get; set; }
 
 
         public Order ParseOrder(ISiteRepository repository)
@@ -41,12 +42,19 @@ namespace MS2.Utils
 
                 order.Items.Add(newEntry);
             }
+
+            if(this.CardInfo != string.Empty || this.CardInfo != null)
+            {
+                this.PaymentType = "Card";
+            }
+
             order.DeliveryAddress = this.IsDelivery ? this.Address : string.Empty;
             order.OrderType = this.IsDelivery ? orderTypes[1] : orderTypes[0];
             order.OrderDate = DateTime.Now;
             order.Status = OrderStatus.Ordered.ToString();
             order.CardInfo = this.CardInfo;
             order.DeliveryDriverId = DriverId;
+            order.PaymentType = this.PaymentType;
 
             return order;
         }
