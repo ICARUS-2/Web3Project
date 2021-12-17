@@ -301,10 +301,20 @@ function makeOrderPlacedSuccessfully() {
 }
 
 function validateAddress(street, selectedCity, postalCode) {
+    let postalCodeRegex = new RegExp('[a-zA-Z][0-9][a-zA-Z][- ][0-9][a-zA-Z][0-9]');
 
     if (street == "" || postalCode == "" || selectedCity == "Choose City") {
         return false;
     }
+
+    if (postalCode.match(postalCodeRegex)) {
+        return true;
+    }
+    else {
+        alert('Invalid postal code.');
+        return false;
+    }
+
 
     return true;
 }

@@ -59,10 +59,13 @@ document.getElementById('confirm-order').addEventListener('click', placeOrder, f
 
 function addressInputVisibility() {
     let addressDiv = document.getElementById('address-div');
+    let driverSelection = document.getElementById('dirver');
 
     if (this.value == 'Delivery') {
 
         addressDiv.style.display = 'flex';
+        driverSelection.disabled = false;
+
     }
     else {
         addressDiv.style.display = 'none';
@@ -200,10 +203,21 @@ async function setProductSelections() {
 
 function validateAddress(street, selectedCity, postalCode) {
 
+    let postalCodeRegex = new RegExp('[a-zA-Z][0-9][a-zA-Z][- ][0-9][a-zA-Z][0-9]');
     if (street == "" || postalCode == "" || selectedCity == "Choose City") {
         alert('address is not inputed correctly');
         return false;
     }
+
+    if (postalCode.match(postalCodeRegex)) {
+        return true;
+    }
+    else {
+        alert('Invalid postal code.');
+        return false;
+    }
+
+
     return true;
 }
 
