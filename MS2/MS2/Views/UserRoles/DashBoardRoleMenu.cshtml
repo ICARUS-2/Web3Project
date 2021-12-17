@@ -1,0 +1,28 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model List<string>
+
+<div id="container">
+    <h1>Please choose a dashboard</h1>
+    <div id="secondContainer" style="display:flex; flex-direction:column">
+        @foreach (string role in Model)
+        {
+            @if (!role.Equals("Customer"))
+            {
+                <a class="link-btn" href="/UserRoles/Dashboard/@role">@role</a>
+            }
+        }
+    </div>
+</div>
+<style>
+    .link-btn {
+        background-color: forestgreen;
+        color: white;
+        padding: 20px;
+        margin: 10px;
+        border-radius: 5px;
+    }
+</style>

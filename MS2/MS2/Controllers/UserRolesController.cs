@@ -247,10 +247,21 @@ namespace MS2.Controllers
             return View("OrdersDashboard", list);
         }
 
-        public async Task<IActionResult> Dashboard()
+        [Route("/UserRoles/Dashboard/{role?}")]
+        public async Task<IActionResult> Dashboard(string role = null)
         {
             ApplicationUser user = await _userManager.FindByNameAsync(User.Identity.Name);
-            List<string> roles = (List<string>)await _userManager.GetRolesAsync(user);
+            List<string> roles;
+            if (role != null)
+            {
+                roles = new List<string>();
+                roles.Add(role);
+            }
+            else
+                roles = (List<string>)await _userManager.GetRolesAsync(user);
+
+            if (roles.Count > 1)
+                return View("DashboardRoleMenu", roles);
 
             if (roles.Contains("Owner"))
             {
