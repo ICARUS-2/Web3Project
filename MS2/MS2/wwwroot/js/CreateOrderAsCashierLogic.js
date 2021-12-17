@@ -212,14 +212,14 @@ function validateOrderOption(paymentType,orderType,driver) {
     if (orderType === 'Delivery') {
         
         if (paymentType === '' || orderType === '' || driver === '') {
-            alert('Please ensure that the order options are corretly selected')
+            alert('Please ensure that the order options are correctly selected')
             return false;
         }
         return true;
     }
 
     if (paymentType === '' || orderType === '') {
-        alert('Please ensure that the order options are corretly selected')
+        alert('Please ensure that the order options are correctly selected')
         return false;
     }
 
